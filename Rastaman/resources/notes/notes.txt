@@ -1,0 +1,36 @@
+notes.txt - γενικές σημειώσεις για το project
+
+- Όνομα project & branding
+1. Από το RAdio STAtion MANager προκύπτει το Rastaman. Ταιριάζει και με το μουσικό θέμα
+    του project.
+2. Έχουν εντοπιστεί ενδιαφέροντα αρχεία για εικονίδια κλπ.
+
+- Versioning
+1. Απαιτείται χρήση Subversion repository.
+2. Μετά από σύντομη έρευνα, επιλέχθηκε το Google Code, βασικό πλεονέκτημα πως είναι δωρεάν.
+3. Bitbucket και GitHub δεν υποστηρίζουν svn.
+4. Στο Google Code το όνομα rastaman ήταν κατειλημμένο, οπότε χρησιμοποιήθηκε το rasta-manager.
+5. Το URL για checkout του κώδικα είναι https://rasta-manager.googlecode.com/svn/trunk/
+
+- License
+1. Το Google Code επιβάλλει το project να είναι open source.
+2. Ως άδεια επιλέχθηκε η GNU GPL v3.
+
+- NetBeans project
+1. Το όνομα του project στο NetBeans είναι Rastaman.
+2. Το αρχικό import στο repository έγινε αμέσως μετά τη δημιουργία του project, δηλαδή
+    με εντελώς κενό project.
+3. Μέσα στη τυπική δομή φακέλων που δημιουργεί το IDE, δημιουργήθηκε και ένας φάκελος resources,
+    με υποφακέλους για αποθήκευση λοιπών αρχείων.
+4. Φάκελος resources/notes: αρχείο notes.txt με σημειώσεις (αυτό το αρχείο).
+5. Φάκελος resources/sql: για αποθήκευση queries για δημιουργία ΒΔ κ.α.
+
+- NetBeans shortcuts
+1. Shift-Esc: maximize window (toggle).
+2. Ctrl-0: μετάβαση στον editor
+3. Ctrl-4: μετάβαση στο output
+
+- Ονομασία Java packages
+1. Η συνιστώμενη πρακτική είναι η χρήση ενός αντεστραμμένου domain name.
+2. Η ομάδα φυσικά δεν διαθέτει domain, οπότε θα χρησιμοποιηθεί εικονικό.
+3. Προτείνεται το "eap.pli24.rastaman".
