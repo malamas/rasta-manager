@@ -9,16 +9,49 @@ INSERT INTO GENRE VALUES (7, 'Latin');
 INSERT INTO GENRE VALUES (8, 'Classical');
 
 -- labels
-INSERT INTO LABEL VALUES (1, 'Harvest');
-INSERT INTO LABEL VALUES (2, 'Swan Song');
-INSERT INTO LABEL VALUES (3, 'Atlantic');
-INSERT INTO LABEL VALUES (4, 'Sony Music');
+INSERT INTO LABEL VALUES (1, 'Harvest', NULL, NULL);
+INSERT INTO LABEL VALUES (2, 'Swan Song', NULL, NULL);
+INSERT INTO LABEL VALUES (3, 'Atlantic', NULL, NULL);
+INSERT INTO LABEL VALUES (4, 'Sony Music', '550 Madison Ave., New York, NY 10022, USA', NULL);
+INSERT INTO LABEL VALUES (5, 'Universal Music', '2220 Colorado Avenue, Santa Monica, CA 90404, USA', NULL);
+INSERT INTO LABEL VALUES (6, 'Warner Music', '75 Rockefeller Plaza, New York, NY 10019, USA', NULL);
+
+-- groups
+INSERT INTO MUSIC_GROUP VALUES (1, 'Pink Floyd', '1965-01-01');
+INSERT INTO MUSIC_GROUP VALUES (2, 'Led Zeppelin', '1968-01-01');
+
+-- artists
+INSERT INTO ARTIST VALUES (1, 'Waters', 'Roger', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (2, 'Gilmour', 'David', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (3, 'Mason', 'Nick', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (4, 'Wright', 'Richard', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (5, 'Barrett', 'Syd', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (6, 'Page', 'Jimmy', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (7, 'Plant', 'Robert', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (8, 'Bonham', 'John', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (9, 'Jones', 'John Paul', NULL, 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (10, 'Χατζηδάκις', 'Μάνος', NULL, 'm', NULL, NULL, 4);
+
+-- group artists
+-- Pink Floyd members
+INSERT INTO GROUP_ARTIST VALUES (1, 1);
+INSERT INTO GROUP_ARTIST VALUES (1, 2);
+INSERT INTO GROUP_ARTIST VALUES (1, 3);
+INSERT INTO GROUP_ARTIST VALUES (1, 4);
+INSERT INTO GROUP_ARTIST VALUES (1, 5);
+
+-- Led Zeppelin members
+INSERT INTO GROUP_ARTIST VALUES (2, 6);
+INSERT INTO GROUP_ARTIST VALUES (2, 7);
+INSERT INTO GROUP_ARTIST VALUES (2, 8);
+INSERT INTO GROUP_ARTIST VALUES (2, 9);
+--
 
 -- albums
-INSERT INTO ALBUM VALUES (1, 'The Dark Side Of The Moon', '1973-03-01', 'lp', 1, 1);
-INSERT INTO ALBUM VALUES (2, 'Celebration Day', '2012-11-16', 'lp', 1, 2);
-INSERT INTO ALBUM VALUES (3, 'Celebration Day', '2012-11-16', 'lp', 2, 2);
-INSERT INTO ALBUM VALUES (4, 'Reflections', '1970-01-01', 'lp', 1, 3);
+INSERT INTO ALBUM VALUES (1, 'The Dark Side Of The Moon', '1973-03-01', 'lp', 1, 1, NULL, 1);
+INSERT INTO ALBUM VALUES (2, 'Celebration Day', '2012-11-16', 'lp', 1, 2, NULL, 2);
+INSERT INTO ALBUM VALUES (3, 'Celebration Day', '2012-11-16', 'lp', 2, 2, NULL, 2);
+INSERT INTO ALBUM VALUES (4, 'Reflections', '1970-01-01', 'lp', 1, NULL, 10, 3);
 
 -- songs
 INSERT INTO SONG VALUES (1, 'Speak To Me', 90, 1, 1);
@@ -47,12 +80,23 @@ INSERT INTO SONG VALUES (23, 'Misty Mountain Hop', 288, 5, 3);
 INSERT INTO SONG VALUES (24, 'Kashmir', 528, 6, 3);
 INSERT INTO SONG VALUES (25, 'Whole Lotta Love', 409, 7, 3);
 INSERT INTO SONG VALUES (26, 'Rock And Roll', 259, 8, 3);
+INSERT INTO SONG VALUES (27, 'Orpheus', 151, 1, 4);
+INSERT INTO SONG VALUES (28, 'The Day', 220, 2, 4);
+INSERT INTO SONG VALUES (29, 'Love Her', 257, 3, 4);
+INSERT INTO SONG VALUES (30, 'Dance Of The Dogs', 178, 4, 4);
+INSERT INTO SONG VALUES (31, 'Kemal', 241, 5, 4);
+INSERT INTO SONG VALUES (32, 'Dedication', 167, 6, 4);
+INSERT INTO SONG VALUES (33, 'The Three Answers', 228, 7, 4);
+INSERT INTO SONG VALUES (34, 'Street Song', 206, 8, 4);
+INSERT INTO SONG VALUES (35, 'Bitter Way', 255, 9, 4);
+INSERT INTO SONG VALUES (36, 'Noble Dame', 191, 10, 4);
 
 -- playlists
 INSERT INTO PLAYLIST VALUES (1, 'Afternoon classics');
 INSERT INTO PLAYLIST VALUES (2, 'Evening energy');
 INSERT INTO PLAYLIST VALUES (3, 'Midnight mood');
 
+-- playlist songs
 -- playlist #1 contents
 INSERT INTO PLAYLIST_SONG VALUES (1, 6);
 INSERT INTO PLAYLIST_SONG VALUES (1, 2);
@@ -65,3 +109,4 @@ INSERT INTO PLAYLIST_SONG VALUES (2, 1);
 -- playlist #3 contents
 INSERT INTO PLAYLIST_SONG VALUES (3, 8);
 INSERT INTO PLAYLIST_SONG VALUES (3, 5);
+--
