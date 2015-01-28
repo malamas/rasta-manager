@@ -52,10 +52,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    /**
-     * Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
-     * εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
-     */
+    //
+    // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
+    // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
+    //
     private MainFrameController controller;
 
     public void setController(MainFrameController controller) {
