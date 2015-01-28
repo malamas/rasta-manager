@@ -1,6 +1,9 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.Rastaman;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.util.logging.Level;
@@ -40,6 +43,8 @@ public class MainFrameController implements Runnable {
 
     private void initMainFrame() {
         mainFrame = new MainFrame();
+        RootMenuPanel rmp = new RootMenuPanel();
+        SideBarPanel sbp = new SideBarPanel();
 
         // Πέρασμα αναφοράς αυτού του ελεγκτή στο παράθυρο, για callbacks
         mainFrame.setController(this);
@@ -65,8 +70,18 @@ public class MainFrameController implements Runnable {
             mainFrame.setIconImage(icon.getImage());
         }
 
+        mainFrame.setLayout(new BorderLayout());
+
+        sbp.setPreferredSize(new Dimension(224, 0));
+        sbp.setBackground(new Color(102, 102, 0));
+        mainFrame.add(sbp, BorderLayout.LINE_START);
+
+        rmp.setBackground(new Color(255, 255, 204));
+        mainFrame.add(rmp, BorderLayout.CENTER);
+
         // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
+
     }
 
     public void shutdown() {
