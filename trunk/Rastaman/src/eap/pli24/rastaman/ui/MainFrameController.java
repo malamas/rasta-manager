@@ -1,7 +1,9 @@
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.Rastaman;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import javax.swing.ImageIcon;
 import javax.swing.WindowConstants;
 
 /**
@@ -19,20 +21,30 @@ public class MainFrameController implements Runnable {
 
     private void initMainFrame() {
         mainFrame = new MainFrame();
-        //pass a reference of this controller to the frame for callbacks
+
+        // Πέρασμα αναφοράς αυτού του ελεγκτή στο παράθυρο, για callbacks
         mainFrame.setController(this);
 
-        //set frame size
+        // Ορισμός διαστάσεων παραθύρου
         mainFrame.setSize(900, 600);
 
-        //Center the frame on screen
+        // Τοποθέτηση του παραθύρου στο κέντρο της οθόνης
         Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
         mainFrame.setLocation(screenCenter.x - mainFrame.getWidth() / 2, screenCenter.y - mainFrame.getHeight() / 2);
 
-        mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); //The window closing event is handled in a listener
+        // Απενεργοποίηση αυτόματου κλεισίματος παραθύρου, ο χειρισμός του κλεισίματος γίνεται με ειδικό listener
+        mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         mainFrame.setTitle("Rastaman");
 
+        // Φόρτωση και ορισμός εικονιδίου 
+        java.net.URL imageURL = Rastaman.class.getResource("resources/images/rastaman_32x32.png");
+        if (imageURL != null) {
+            ImageIcon icon = new ImageIcon(imageURL);
+            mainFrame.setIconImage(icon.getImage());
+        }
+
+        // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
     }
 
