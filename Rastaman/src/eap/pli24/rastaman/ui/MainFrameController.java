@@ -3,7 +3,11 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.Rastaman;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
@@ -12,11 +16,26 @@ import javax.swing.WindowConstants;
  */
 public class MainFrameController implements Runnable {
 
+    private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
     MainFrame mainFrame;
 
     @Override
     public void run() {
+        initLookAndFeel();
         initMainFrame();
+    }
+
+    /**
+     * Αρχικοποιεί το Swing L&F για την εφαρμογή, επιλέγοντας το L&F του
+     * συστήματος. Πρέπει να κλήθεί πριν τη δημιουργία οποιουδήποτε αντικειμένου
+     * UI.
+     */
+    private void initLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
 
     private void initMainFrame() {
@@ -32,7 +51,9 @@ public class MainFrameController implements Runnable {
         Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
         mainFrame.setLocation(screenCenter.x - mainFrame.getWidth() / 2, screenCenter.y - mainFrame.getHeight() / 2);
 
-        // Απενεργοποίηση αυτόματου κλεισίματος παραθύρου, ο χειρισμός του κλεισίματος γίνεται με ειδικό listener
+        // Απενεργοποίηση αυτόματου κλεισίματος παραθύρου.
+        // Ο χειρισμός του κλεισίματος γίνεται με ειδικό listener,
+        // ώστε να καλείται η μέθοδος shutdown() του ελεγκτή (για ελέγχους κλπ.)
         mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         mainFrame.setTitle("Rastaman");
