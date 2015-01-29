@@ -1,14 +1,16 @@
 package eap.pli24.rastaman.ui;
 
-import eap.pli24.rastaman.Rastaman;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -19,12 +21,22 @@ import javax.swing.WindowConstants;
  */
 public class MainFrameController implements Runnable {
 
+    public enum Panel {
+
+        ROOT_MENU,
+        ARTIST_TABLE,
+        GROUP_TABLE
+    }
+
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
-    MainFrame mainFrame;
+    private MainFrame mainFrame;
+    private SideBarPanel sbp;
+    private final EnumMap<Panel, JPanel> panels = new EnumMap(Panel.class);
 
     @Override
     public void run() {
         initLookAndFeel();
+        initPanels();
         initMainFrame();
     }
 
@@ -41,10 +53,28 @@ public class MainFrameController implements Runnable {
         }
     }
 
+    private void initPanels() {
+        RootMenuPanel rmp = new RootMenuPanel();
+        ArtistTablePanel atp = new ArtistTablePanel();
+        GroupTablePanel gtp = new GroupTablePanel();
+
+        rmp.setBackground(new Color(255, 255, 204));
+        rmp.setController(this);
+
+        sbp = new SideBarPanel();
+        sbp.setPreferredSize(new Dimension(224, 0));
+        sbp.setBackground(new Color(102, 102, 0));
+
+        atp.setController(this);
+        gtp.setController(this);
+
+        panels.put(Panel.ROOT_MENU, rmp);
+        panels.put(Panel.ARTIST_TABLE, atp);
+        panels.put(Panel.GROUP_TABLE, gtp);
+    }
+
     private void initMainFrame() {
         mainFrame = new MainFrame();
-        RootMenuPanel rmp = new RootMenuPanel();
-        SideBarPanel sbp = new SideBarPanel();
 
         // Πέρασμα αναφοράς αυτού του ελεγκτή στο παράθυρο, για callbacks
         mainFrame.setController(this);
@@ -64,21 +94,19 @@ public class MainFrameController implements Runnable {
         mainFrame.setTitle("Rastaman");
 
         // Φόρτωση και ορισμός εικονιδίου 
-        java.net.URL imageURL = Rastaman.class.getResource("resources/images/rastaman_32x32.png");
+        java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_32x32.png");
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);
             mainFrame.setIconImage(icon.getImage());
         }
 
         mainFrame.setLayout(new BorderLayout());
-
-        sbp.setPreferredSize(new Dimension(224, 0));
-        sbp.setBackground(new Color(102, 102, 0));
         mainFrame.add(sbp, BorderLayout.LINE_START);
+        mainFrame.add(panels.get(Panel.ROOT_MENU), BorderLayout.CENTER);
 
-        rmp.setBackground(new Color(255, 255, 204));
-        mainFrame.add(rmp, BorderLayout.CENTER);
-
+        //clt.addLayoutComponent(rmp, "RootMenuPanel");
+        //mainFrame.add(rmp, "RootMenuPanel");
+        //mainFrame.add(gtp, "GroupTablePanel");
         // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
 
@@ -86,5 +114,20 @@ public class MainFrameController implements Runnable {
 
     public void shutdown() {
         mainFrame.dispose();
+    }
+
+    public void hidePanel(JPanel panel) {
+        panel.setVisible(false);
+        JPanel p = panels.get(Panel.ROOT_MENU);
+        mainFrame.add(p, BorderLayout.CENTER);
+        p.setVisible(true);
+    }
+
+    public void showPanel(Panel p) {
+        JPanel r = panels.get(Panel.ROOT_MENU);
+        r.setVisible(false);
+        JPanel pn = panels.get(p);
+        mainFrame.add(pn, BorderLayout.CENTER);
+        pn.setVisible(true);
     }
 }
