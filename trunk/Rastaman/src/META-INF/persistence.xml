@@ -6,14 +6,14 @@
     <class>eap.pli24.rastaman.entities.Song</class>
     <class>eap.pli24.rastaman.entities.Playlist</class>
     <class>eap.pli24.rastaman.entities.Album</class>
-    <class>eap.pli24.rastaman.entities.Genre</class>
-    <class>eap.pli24.rastaman.entities.MusicGroup</class>
     <class>eap.pli24.rastaman.entities.Label</class>
+    <class>eap.pli24.rastaman.entities.Musicgroup</class>
+    <class>eap.pli24.rastaman.entities.Musicgenre</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rastaman"/>
-      <property name="javax.persistence.jdbc.user" value="dj"/>
+      <property name="javax.persistence.jdbc.user" value="rastaman"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.password" value="123"/>
+      <property name="javax.persistence.jdbc.password" value="12345"/>
     </properties>
   </persistence-unit>
 </persistence>
