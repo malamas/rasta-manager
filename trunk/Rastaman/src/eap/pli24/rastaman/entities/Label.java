@@ -8,6 +8,7 @@ package eap.pli24.rastaman.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,15 +23,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author apostolis
  */
 @Entity
 @Table(name = "LABEL")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Label.findAll", query = "SELECT l FROM Label l"),
-    @NamedQuery(name = "Label.findById", query = "SELECT l FROM Label l WHERE l.id = :id"),
-    @NamedQuery(name = "Label.findByLabelName", query = "SELECT l FROM Label l WHERE l.labelName = :labelName"),
+    @NamedQuery(name = "Label.findByLabelid", query = "SELECT l FROM Label l WHERE l.labelid = :labelid"),
+    @NamedQuery(name = "Label.findByName", query = "SELECT l FROM Label l WHERE l.name = :name"),
     @NamedQuery(name = "Label.findByAddress", query = "SELECT l FROM Label l WHERE l.address = :address"),
     @NamedQuery(name = "Label.findByTelephone", query = "SELECT l FROM Label l WHERE l.telephone = :telephone")})
 public class Label implements Serializable {
@@ -38,44 +39,44 @@ public class Label implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "LABELID")
+    private Long labelid;
     @Basic(optional = false)
-    @Column(name = "LABEL_NAME")
-    private String labelName;
+    @Column(name = "NAME")
+    private String name;
     @Column(name = "ADDRESS")
     private String address;
     @Column(name = "TELEPHONE")
     private String telephone;
-    @OneToMany(mappedBy = "labelId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "labelid")
     private List<Album> albumList;
 
     public Label() {
     }
 
-    public Label(Integer id) {
-        this.id = id;
+    public Label(Long labelid) {
+        this.labelid = labelid;
     }
 
-    public Label(Integer id, String labelName) {
-        this.id = id;
-        this.labelName = labelName;
+    public Label(Long labelid, String name) {
+        this.labelid = labelid;
+        this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getLabelid() {
+        return labelid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setLabelid(Long labelid) {
+        this.labelid = labelid;
     }
 
-    public String getLabelName() {
-        return labelName;
+    public String getName() {
+        return name;
     }
 
-    public void setLabelName(String labelName) {
-        this.labelName = labelName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -106,7 +107,7 @@ public class Label implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (labelid != null ? labelid.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +118,7 @@ public class Label implements Serializable {
             return false;
         }
         Label other = (Label) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.labelid == null && other.labelid != null) || (this.labelid != null && !this.labelid.equals(other.labelid))) {
             return false;
         }
         return true;
@@ -125,7 +126,7 @@ public class Label implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Label[ id=" + id + " ]";
+        return "eap.pli24.rastaman.entities.Label[ labelid=" + labelid + " ]";
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,79 +25,86 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author apostolis
  */
 @Entity
 @Table(name = "SONG")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Song.findAll", query = "SELECT s FROM Song s"),
-    @NamedQuery(name = "Song.findById", query = "SELECT s FROM Song s WHERE s.id = :id"),
-    @NamedQuery(name = "Song.findBySongTitle", query = "SELECT s FROM Song s WHERE s.songTitle = :songTitle"),
+    @NamedQuery(name = "Song.findBySongid", query = "SELECT s FROM Song s WHERE s.songid = :songid"),
+    @NamedQuery(name = "Song.findByTitle", query = "SELECT s FROM Song s WHERE s.title = :title"),
     @NamedQuery(name = "Song.findByDuration", query = "SELECT s FROM Song s WHERE s.duration = :duration"),
-    @NamedQuery(name = "Song.findByTrackNo", query = "SELECT s FROM Song s WHERE s.trackNo = :trackNo")})
+    @NamedQuery(name = "Song.findByTracknr", query = "SELECT s FROM Song s WHERE s.tracknr = :tracknr")})
 public class Song implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "SONGID")
+    private Long songid;
     @Basic(optional = false)
-    @Column(name = "SONG_TITLE")
-    private String songTitle;
+    @Column(name = "TITLE")
+    private String title;
+    @Basic(optional = false)
     @Column(name = "DURATION")
-    private Integer duration;
-    @Column(name = "TRACK_NO")
-    private Integer trackNo;
-    @ManyToMany(mappedBy = "songList")
+    private int duration;
+    @Basic(optional = false)
+    @Column(name = "TRACKNR")
+    private int tracknr;
+    @JoinTable(name = "PLAYLIST_SONG", joinColumns = {
+        @JoinColumn(name = "SONGSONGID", referencedColumnName = "SONGID")}, inverseJoinColumns = {
+        @JoinColumn(name = "PLAYLISTPLAYLISTID", referencedColumnName = "PLAYLISTID")})
+    @ManyToMany
     private List<Playlist> playlistList;
-    @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Album albumId;
+    @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
+    @ManyToOne(optional = false)
+    private Album albumid;
 
     public Song() {
     }
 
-    public Song(Integer id) {
-        this.id = id;
+    public Song(Long songid) {
+        this.songid = songid;
     }
 
-    public Song(Integer id, String songTitle) {
-        this.id = id;
-        this.songTitle = songTitle;
+    public Song(Long songid, String title, int duration, int tracknr) {
+        this.songid = songid;
+        this.title = title;
+        this.duration = duration;
+        this.tracknr = tracknr;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getSongid() {
+        return songid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSongid(Long songid) {
+        this.songid = songid;
     }
 
-    public String getSongTitle() {
-        return songTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSongTitle(String songTitle) {
-        this.songTitle = songTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Integer getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public Integer getTrackNo() {
-        return trackNo;
+    public int getTracknr() {
+        return tracknr;
     }
 
-    public void setTrackNo(Integer trackNo) {
-        this.trackNo = trackNo;
+    public void setTracknr(int tracknr) {
+        this.tracknr = tracknr;
     }
 
     @XmlTransient
@@ -108,18 +116,18 @@ public class Song implements Serializable {
         this.playlistList = playlistList;
     }
 
-    public Album getAlbumId() {
-        return albumId;
+    public Album getAlbumid() {
+        return albumid;
     }
 
-    public void setAlbumId(Album albumId) {
-        this.albumId = albumId;
+    public void setAlbumid(Album albumid) {
+        this.albumid = albumid;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (songid != null ? songid.hashCode() : 0);
         return hash;
     }
 
@@ -130,7 +138,7 @@ public class Song implements Serializable {
             return false;
         }
         Song other = (Song) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.songid == null && other.songid != null) || (this.songid != null && !this.songid.equals(other.songid))) {
             return false;
         }
         return true;
@@ -138,7 +146,7 @@ public class Song implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Song[ id=" + id + " ]";
+        return "eap.pli24.rastaman.entities.Song[ songid=" + songid + " ]";
     }
     
 }

@@ -5,12 +5,11 @@
  */
 package eap.pli24.rastaman.entities;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,101 +24,103 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author apostolis
  */
 @Entity
 @Table(name = "ARTIST")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Artist.findAll", query = "SELECT a FROM Artist a"),
-    @NamedQuery(name = "Artist.findById", query = "SELECT a FROM Artist a WHERE a.id = :id"),
-    @NamedQuery(name = "Artist.findByLastName", query = "SELECT a FROM Artist a WHERE a.lastName = :lastName"),
-    @NamedQuery(name = "Artist.findByFirstName", query = "SELECT a FROM Artist a WHERE a.firstName = :firstName"),
-    @NamedQuery(name = "Artist.findByArtisticName", query = "SELECT a FROM Artist a WHERE a.artisticName = :artisticName"),
+    @NamedQuery(name = "Artist.findByArtistid", query = "SELECT a FROM Artist a WHERE a.artistid = :artistid"),
+    @NamedQuery(name = "Artist.findByFirstname", query = "SELECT a FROM Artist a WHERE a.firstname = :firstname"),
+    @NamedQuery(name = "Artist.findByLastname", query = "SELECT a FROM Artist a WHERE a.lastname = :lastname"),
+    @NamedQuery(name = "Artist.findByArtisticname", query = "SELECT a FROM Artist a WHERE a.artisticname = :artisticname"),
     @NamedQuery(name = "Artist.findBySex", query = "SELECT a FROM Artist a WHERE a.sex = :sex"),
-    @NamedQuery(name = "Artist.findByBirthDate", query = "SELECT a FROM Artist a WHERE a.birthDate = :birthDate"),
-    @NamedQuery(name = "Artist.findByPlaceOfBirth", query = "SELECT a FROM Artist a WHERE a.placeOfBirth = :placeOfBirth")})
+    @NamedQuery(name = "Artist.findByBirthday", query = "SELECT a FROM Artist a WHERE a.birthday = :birthday"),
+    @NamedQuery(name = "Artist.findByBirthplace", query = "SELECT a FROM Artist a WHERE a.birthplace = :birthplace")})
 public class Artist implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Column(name = "LAST_NAME")
-    private String lastName;
-    @Column(name = "FIRST_NAME")
-    private String firstName;
-    @Column(name = "ARTISTIC_NAME")
-    private String artisticName;
+    @Column(name = "ARTISTID")
+    private Long artistid;
+    @Basic(optional = false)
+    @Column(name = "FIRSTNAME")
+    private String firstname;
+    @Basic(optional = false)
+    @Column(name = "LASTNAME")
+    private String lastname;
+    @Basic(optional = false)
+    @Column(name = "ARTISTICNAME")
+    private String artisticname;
+    @Basic(optional = false)
     @Column(name = "SEX")
     private String sex;
-    @Column(name = "BIRTH_DATE")
+    @Column(name = "BIRTHDAY")
     @Temporal(TemporalType.DATE)
-    private Date birthDate;
-    @Column(name = "PLACE_OF_BIRTH")
-    private String placeOfBirth;
+    private Date birthday;
+    @Column(name = "BIRTHPLACE")
+    @Temporal(TemporalType.DATE)
+    private Date birthplace;
     @ManyToMany(mappedBy = "artistList")
-    private List<MusicGroup> musicGroupList;
-    @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID")
+    private List<Musicgroup> musicgroupList;
+    @JoinColumn(name = "MUSCIGENREID", referencedColumnName = "MUSICGENREID")
     @ManyToOne(optional = false)
-    private Genre genreId;
-    @OneToMany(mappedBy = "artistId")
+    private Musicgenre muscigenreid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artistartistid")
     private List<Album> albumList;
 
     public Artist() {
     }
 
-    public Artist(Integer id) {
-        this.id = id;
+    public Artist(Long artistid) {
+        this.artistid = artistid;
     }
 
-    public Integer getId() {
-        return id;
+    public Artist(Long artistid, String firstname, String lastname, String artisticname, String sex) {
+        this.artistid = artistid;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.artisticname = artisticname;
+        this.sex = sex;
     }
 
-    public void setId(Integer id) {
-        Integer oldId = this.id;
-        this.id = id;
-        changeSupport.firePropertyChange("id", oldId, id);
+    public Long getArtistid() {
+        return artistid;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setArtistid(Long artistid) {
+        this.artistid = artistid;
     }
 
-    public void setLastName(String lastName) {
-        String oldLastName = this.lastName;
-        this.lastName = lastName;
-        changeSupport.firePropertyChange("lastName", oldLastName, lastName);
+    public String getFirstname() {
+        return firstname;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public void setFirstName(String firstName) {
-        String oldFirstName = this.firstName;
-        this.firstName = firstName;
-        changeSupport.firePropertyChange("firstName", oldFirstName, firstName);
+    public String getLastname() {
+        return lastname;
     }
 
-    public String getArtisticName() {
-        return artisticName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public void setArtisticName(String artisticName) {
-        String oldArtisticName = this.artisticName;
-        this.artisticName = artisticName;
-        changeSupport.firePropertyChange("artisticName", oldArtisticName, artisticName);
+    public String getArtisticname() {
+        return artisticname;
+    }
+
+    public void setArtisticname(String artisticname) {
+        this.artisticname = artisticname;
     }
 
     public String getSex() {
@@ -127,48 +128,40 @@ public class Artist implements Serializable {
     }
 
     public void setSex(String sex) {
-        String oldSex = this.sex;
         this.sex = sex;
-        changeSupport.firePropertyChange("sex", oldSex, sex);
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDate(Date birthDate) {
-        Date oldBirthDate = this.birthDate;
-        this.birthDate = birthDate;
-        changeSupport.firePropertyChange("birthDate", oldBirthDate, birthDate);
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
-    public String getPlaceOfBirth() {
-        return placeOfBirth;
+    public Date getBirthplace() {
+        return birthplace;
     }
 
-    public void setPlaceOfBirth(String placeOfBirth) {
-        String oldPlaceOfBirth = this.placeOfBirth;
-        this.placeOfBirth = placeOfBirth;
-        changeSupport.firePropertyChange("placeOfBirth", oldPlaceOfBirth, placeOfBirth);
+    public void setBirthplace(Date birthplace) {
+        this.birthplace = birthplace;
     }
 
     @XmlTransient
-    public List<MusicGroup> getMusicGroupList() {
-        return musicGroupList;
+    public List<Musicgroup> getMusicgroupList() {
+        return musicgroupList;
     }
 
-    public void setMusicGroupList(List<MusicGroup> musicGroupList) {
-        this.musicGroupList = musicGroupList;
+    public void setMusicgroupList(List<Musicgroup> musicgroupList) {
+        this.musicgroupList = musicgroupList;
     }
 
-    public Genre getGenreId() {
-        return genreId;
+    public Musicgenre getMuscigenreid() {
+        return muscigenreid;
     }
 
-    public void setGenreId(Genre genreId) {
-        Genre oldGenreId = this.genreId;
-        this.genreId = genreId;
-        changeSupport.firePropertyChange("genreId", oldGenreId, genreId);
+    public void setMuscigenreid(Musicgenre muscigenreid) {
+        this.muscigenreid = muscigenreid;
     }
 
     @XmlTransient
@@ -183,7 +176,7 @@ public class Artist implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (artistid != null ? artistid.hashCode() : 0);
         return hash;
     }
 
@@ -194,7 +187,7 @@ public class Artist implements Serializable {
             return false;
         }
         Artist other = (Artist) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.artistid == null && other.artistid != null) || (this.artistid != null && !this.artistid.equals(other.artistid))) {
             return false;
         }
         return true;
@@ -202,15 +195,7 @@ public class Artist implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Artist[ id=" + id + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
+        return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
     }
     
 }

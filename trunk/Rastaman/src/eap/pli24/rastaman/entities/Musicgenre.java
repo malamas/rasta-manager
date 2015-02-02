@@ -23,54 +23,54 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author apostolis
  */
 @Entity
-@Table(name = "GENRE")
+@Table(name = "MUSICGENRE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Genre.findAll", query = "SELECT g FROM Genre g"),
-    @NamedQuery(name = "Genre.findById", query = "SELECT g FROM Genre g WHERE g.id = :id"),
-    @NamedQuery(name = "Genre.findByGenreName", query = "SELECT g FROM Genre g WHERE g.genreName = :genreName")})
-public class Genre implements Serializable {
+    @NamedQuery(name = "Musicgenre.findAll", query = "SELECT m FROM Musicgenre m"),
+    @NamedQuery(name = "Musicgenre.findByMusicgenreid", query = "SELECT m FROM Musicgenre m WHERE m.musicgenreid = :musicgenreid"),
+    @NamedQuery(name = "Musicgenre.findByName", query = "SELECT m FROM Musicgenre m WHERE m.name = :name")})
+public class Musicgenre implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "MUSICGENREID")
+    private Integer musicgenreid;
     @Basic(optional = false)
-    @Column(name = "GENRE_NAME")
-    private String genreName;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genreId")
+    @Column(name = "NAME")
+    private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "muscigenreid")
     private List<Artist> artistList;
 
-    public Genre() {
+    public Musicgenre() {
     }
 
-    public Genre(Integer id) {
-        this.id = id;
+    public Musicgenre(Integer musicgenreid) {
+        this.musicgenreid = musicgenreid;
     }
 
-    public Genre(Integer id, String genreName) {
-        this.id = id;
-        this.genreName = genreName;
+    public Musicgenre(Integer musicgenreid, String name) {
+        this.musicgenreid = musicgenreid;
+        this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getMusicgenreid() {
+        return musicgenreid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMusicgenreid(Integer musicgenreid) {
+        this.musicgenreid = musicgenreid;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public String getName() {
+        return name;
     }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlTransient
@@ -85,18 +85,18 @@ public class Genre implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (musicgenreid != null ? musicgenreid.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Genre)) {
+        if (!(object instanceof Musicgenre)) {
             return false;
         }
-        Genre other = (Genre) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        Musicgenre other = (Musicgenre) object;
+        if ((this.musicgenreid == null && other.musicgenreid != null) || (this.musicgenreid != null && !this.musicgenreid.equals(other.musicgenreid))) {
             return false;
         }
         return true;
@@ -104,7 +104,7 @@ public class Genre implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Genre[ id=" + id + " ]";
+        return "eap.pli24.rastaman.entities.Musicgenre[ musicgenreid=" + musicgenreid + " ]";
     }
     
 }
