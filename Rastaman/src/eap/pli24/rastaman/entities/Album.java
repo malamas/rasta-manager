@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,97 +28,114 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author apostolis
  */
 @Entity
 @Table(name = "ALBUM")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a"),
-    @NamedQuery(name = "Album.findById", query = "SELECT a FROM Album a WHERE a.id = :id"),
-    @NamedQuery(name = "Album.findByAlbumTitle", query = "SELECT a FROM Album a WHERE a.albumTitle = :albumTitle"),
-    @NamedQuery(name = "Album.findByReleaseDate", query = "SELECT a FROM Album a WHERE a.releaseDate = :releaseDate"),
-    @NamedQuery(name = "Album.findByAlbumType", query = "SELECT a FROM Album a WHERE a.albumType = :albumType"),
-    @NamedQuery(name = "Album.findByDiskNo", query = "SELECT a FROM Album a WHERE a.diskNo = :diskNo")})
+    @NamedQuery(name = "Album.findByAlbumid", query = "SELECT a FROM Album a WHERE a.albumid = :albumid"),
+    @NamedQuery(name = "Album.findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title"),
+    @NamedQuery(name = "Album.findByMpcid", query = "SELECT a FROM Album a WHERE a.mpcid = :mpcid"),
+    @NamedQuery(name = "Album.findByReleasedate", query = "SELECT a FROM Album a WHERE a.releasedate = :releasedate"),
+    @NamedQuery(name = "Album.findByType", query = "SELECT a FROM Album a WHERE a.type = :type"),
+    @NamedQuery(name = "Album.findByDisknumber", query = "SELECT a FROM Album a WHERE a.disknumber = :disknumber")})
 public class Album implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "ALBUMID")
+    private Long albumid;
     @Basic(optional = false)
-    @Column(name = "ALBUM_TITLE")
-    private String albumTitle;
-    @Column(name = "RELEASE_DATE")
+    @Column(name = "TITLE")
+    private String title;
+    @Basic(optional = false)
+    @Column(name = "MPCID")
+    private int mpcid;
+    @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.DATE)
-    private Date releaseDate;
-    @Column(name = "ALBUM_TYPE")
-    private String albumType;
-    @Column(name = "DISK_NO")
-    private Integer diskNo;
-    @OneToMany(mappedBy = "albumId")
+    private Date releasedate;
+    @Basic(optional = false)
+    @Column(name = "TYPE")
+    private String type;
+    @Basic(optional = false)
+    @Column(name = "DISKNUMBER")
+    private int disknumber;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumid")
     private List<Song> songList;
-    @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Artist artistId;
-    @JoinColumn(name = "LABEL_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Label labelId;
-    @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private MusicGroup groupId;
+    @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")
+    @ManyToOne(optional = false)
+    private Artist artistartistid;
+    @JoinColumn(name = "LABELID", referencedColumnName = "LABELID")
+    @ManyToOne(optional = false)
+    private Label labelid;
+    @JoinColumn(name = "MUSICGROUPMUSICGROUPID", referencedColumnName = "MUSICGROUPID")
+    @ManyToOne(optional = false)
+    private Musicgroup musicgroupmusicgroupid;
 
     public Album() {
     }
 
-    public Album(Integer id) {
-        this.id = id;
+    public Album(Long albumid) {
+        this.albumid = albumid;
     }
 
-    public Album(Integer id, String albumTitle) {
-        this.id = id;
-        this.albumTitle = albumTitle;
+    public Album(Long albumid, String title, int mpcid, String type, int disknumber) {
+        this.albumid = albumid;
+        this.title = title;
+        this.mpcid = mpcid;
+        this.type = type;
+        this.disknumber = disknumber;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getAlbumid() {
+        return albumid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAlbumid(Long albumid) {
+        this.albumid = albumid;
     }
 
-    public String getAlbumTitle() {
-        return albumTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAlbumTitle(String albumTitle) {
-        this.albumTitle = albumTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
+    public int getMpcid() {
+        return mpcid;
     }
 
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setMpcid(int mpcid) {
+        this.mpcid = mpcid;
     }
 
-    public String getAlbumType() {
-        return albumType;
+    public Date getReleasedate() {
+        return releasedate;
     }
 
-    public void setAlbumType(String albumType) {
-        this.albumType = albumType;
+    public void setReleasedate(Date releasedate) {
+        this.releasedate = releasedate;
     }
 
-    public Integer getDiskNo() {
-        return diskNo;
+    public String getType() {
+        return type;
     }
 
-    public void setDiskNo(Integer diskNo) {
-        this.diskNo = diskNo;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getDisknumber() {
+        return disknumber;
+    }
+
+    public void setDisknumber(int disknumber) {
+        this.disknumber = disknumber;
     }
 
     @XmlTransient
@@ -129,34 +147,34 @@ public class Album implements Serializable {
         this.songList = songList;
     }
 
-    public Artist getArtistId() {
-        return artistId;
+    public Artist getArtistartistid() {
+        return artistartistid;
     }
 
-    public void setArtistId(Artist artistId) {
-        this.artistId = artistId;
+    public void setArtistartistid(Artist artistartistid) {
+        this.artistartistid = artistartistid;
     }
 
-    public Label getLabelId() {
-        return labelId;
+    public Label getLabelid() {
+        return labelid;
     }
 
-    public void setLabelId(Label labelId) {
-        this.labelId = labelId;
+    public void setLabelid(Label labelid) {
+        this.labelid = labelid;
     }
 
-    public MusicGroup getGroupId() {
-        return groupId;
+    public Musicgroup getMusicgroupmusicgroupid() {
+        return musicgroupmusicgroupid;
     }
 
-    public void setGroupId(MusicGroup groupId) {
-        this.groupId = groupId;
+    public void setMusicgroupmusicgroupid(Musicgroup musicgroupmusicgroupid) {
+        this.musicgroupmusicgroupid = musicgroupmusicgroupid;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (albumid != null ? albumid.hashCode() : 0);
         return hash;
     }
 
@@ -167,7 +185,7 @@ public class Album implements Serializable {
             return false;
         }
         Album other = (Album) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.albumid == null && other.albumid != null) || (this.albumid != null && !this.albumid.equals(other.albumid))) {
             return false;
         }
         return true;
@@ -175,7 +193,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Album[ id=" + id + " ]";
+        return "eap.pli24.rastaman.entities.Album[ albumid=" + albumid + " ]";
     }
     
 }
