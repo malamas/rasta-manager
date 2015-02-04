@@ -21,16 +21,16 @@ INSERT INTO MUSIC_GROUP VALUES (1, 'Pink Floyd', '1965-01-01');
 INSERT INTO MUSIC_GROUP VALUES (2, 'Led Zeppelin', '1968-01-01');
 
 -- artists
-INSERT INTO ARTIST VALUES (1, 'Waters', 'Roger', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (2, 'Gilmour', 'David', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (3, 'Mason', 'Nick', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (4, 'Wright', 'Richard', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (5, 'Barrett', 'Syd', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (6, 'Page', 'Jimmy', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (7, 'Plant', 'Robert', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (8, 'Bonham', 'John', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (9, 'Jones', 'John Paul', NULL, 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (10, 'Χατζηδάκις', 'Μάνος', NULL, 'm', NULL, NULL, 4);
+INSERT INTO ARTIST VALUES (1, 'Roger','Waters',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (2, 'David','Gilmour',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (3, 'Nick','Mason',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (4, 'Richard','Wright',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (5, 'Syd','Barrett',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (6, 'Jimmy','Page',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (7, 'Robert','Plant',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (8, 'John','Bonham',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (9, 'John Paul','Jones',  '', 'm', NULL, NULL, 1);
+INSERT INTO ARTIST VALUES (10, 'Μάνος','Χατζηδάκις',  '', 'm', NULL, NULL, 4);
 
 -- group artists
 -- Pink Floyd members
