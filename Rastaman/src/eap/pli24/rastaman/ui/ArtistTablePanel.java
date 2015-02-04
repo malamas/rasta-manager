@@ -1,6 +1,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
+import eap.pli24.rastaman.entities.Musicgenre;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,16 +14,22 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -50,36 +57,53 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
         artistQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
+        jButton2 = new JButton();
         jScrollPane2 = new JScrollPane();
         jTable2 = new JTable();
         jLabel1 = new JLabel();
         jPanel1 = new JPanel();
-        jButton1 = new JButton();
+        newButton = new JButton();
+        editButton = new JButton();
+        deleteButton = new JButton();
+        saveButton = new JButton();
+        cancelButton = new JButton();
+        exitButton = new JButton();
+
+        jButton2.setText("jButton2");
 
         setLayout(new BorderLayout());
 
+        jTable2.getTableHeader().setReorderingAllowed(false);
+
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, jTable2);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastName}"));
-        columnBinding.setColumnName("Last Name");
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstname}"));
+        columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstName}"));
-        columnBinding.setColumnName("First Name");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastname}"));
+        columnBinding.setColumnName("Επίθετο");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artisticName}"));
-        columnBinding.setColumnName("Artistic Name");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artisticname}"));
+        columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${sex}"));
-        columnBinding.setColumnName("Sex");
+        columnBinding.setColumnName("Φύλο");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthDate}"));
-        columnBinding.setColumnName("Birth Date");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthday}"));
+        columnBinding.setColumnName("Ημ. Γέννησης");
         columnBinding.setColumnClass(Date.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${placeOfBirth}"));
-        columnBinding.setColumnName("Place Of Birth");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthplace}"));
+        columnBinding.setColumnName("Τόπος Γέννησης");
+        columnBinding.setColumnClass(Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${muscigenreid.name}"));
+        columnBinding.setColumnName("Είδος Μουσικής");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${genreId.genreName}"));
-        columnBinding.setColumnName("Genre Id");
-        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane2.setViewportView(jTable2);
@@ -91,36 +115,80 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new Dimension(0, 30));
         add(jLabel1, BorderLayout.PAGE_START);
 
-        jPanel1.setLayout(new BorderLayout());
+        newButton.setText("Εισαγωγή");
 
-        jButton1.setText("Πίσω");
-        jButton1.setPreferredSize(new Dimension(80, 23));
-        jButton1.addActionListener(new ActionListener() {
+        editButton.setText("Επεξεργασία");
+
+        deleteButton.setText("Διαγραφή");
+
+        saveButton.setText("Αποθήκευση");
+        saveButton.setEnabled(false);
+
+        cancelButton.setText("Ακύρωση");
+        cancelButton.setEnabled(false);
+
+        exitButton.setText("Πίσω");
+        exitButton.setPreferredSize(new Dimension(80, 23));
+        exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                exitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, BorderLayout.LINE_END);
+
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(newButton)
+                .addGap(5, 5, 5)
+                .addComponent(editButton)
+                .addGap(5, 5, 5)
+                .addComponent(deleteButton)
+                .addGap(156, 156, 156)
+                .addComponent(saveButton)
+                .addGap(5, 5, 5)
+                .addComponent(cancelButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(newButton)
+                    .addComponent(editButton)
+                    .addComponent(deleteButton)
+                    .addComponent(saveButton)
+                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(cancelButton)
+                        .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+        );
 
         add(jPanel1, BorderLayout.PAGE_END);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         controller.hidePanel(this);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private EntityManager RastamanPUEntityManager;
     private List<Artist> artistList;
     private Query artistQuery;
-    private JButton jButton1;
+    private JButton cancelButton;
+    private JButton deleteButton;
+    private JButton editButton;
+    private JButton exitButton;
+    private JButton jButton2;
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane2;
     private JTable jTable2;
+    private JButton newButton;
+    private JButton saveButton;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //

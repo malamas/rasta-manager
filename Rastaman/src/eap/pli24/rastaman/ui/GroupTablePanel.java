@@ -5,7 +5,8 @@
  */
 package eap.pli24.rastaman.ui;
 
-import eap.pli24.rastaman.entities.MusicGroup;
+import eap.pli24.rastaman.entities.Album;
+import eap.pli24.rastaman.entities.Musicgroup;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -53,13 +54,17 @@ public class GroupTablePanel extends javax.swing.JPanel {
         bindingGroup = new BindingGroup();
 
         RastamanPUEntityManager0 = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        musicGroupQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT m FROM MusicGroup m");
-        musicGroupList = Beans.isDesignTime() ? Collections.emptyList() : musicGroupQuery.getResultList();
+        musicgroupQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT m FROM Musicgroup m");
+        musicgroupList = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery.getResultList();
+        albumQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT a FROM Album a");
+        albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
+        musicgroupQuery2 = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT m FROM Musicgroup m");
+        musicgroupList2 = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery2.getResultList();
         jLabel1 = new JLabel();
-        jScrollPane1 = new JScrollPane();
-        jTable1 = new JTable();
         jPanel1 = new JPanel();
         jButton1 = new JButton();
+        jScrollPane1 = new JScrollPane();
+        jTable1 = new JTable();
 
         setLayout(new BorderLayout());
 
@@ -67,22 +72,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
         jLabel1.setText("Συγκροτήματα");
         jLabel1.setPreferredSize(new Dimension(0, 30));
         add(jLabel1, BorderLayout.PAGE_START);
-
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicGroupList, jTable1);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${id}"));
-        columnBinding.setColumnName("Id");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${groupName}"));
-        columnBinding.setColumnName("Group Name");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationDate}"));
-        columnBinding.setColumnName("Formation Date");
-        columnBinding.setColumnClass(Date.class);
-        bindingGroup.addBinding(jTableBinding);
-
-        jScrollPane1.setViewportView(jTable1);
-
-        add(jScrollPane1, BorderLayout.CENTER);
 
         jPanel1.setLayout(new BorderLayout());
 
@@ -97,6 +86,28 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
         add(jPanel1, BorderLayout.PAGE_END);
 
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList2, jTable1);
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${albumList}"));
+        columnBinding.setColumnName("Album List");
+        columnBinding.setColumnClass(List.class);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artistList}"));
+        columnBinding.setColumnName("Artist List");
+        columnBinding.setColumnClass(List.class);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationdate}"));
+        columnBinding.setColumnName("Formationdate");
+        columnBinding.setColumnClass(Date.class);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
+        columnBinding.setColumnName("Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${musicgroupid}"));
+        columnBinding.setColumnName("Musicgroupid");
+        columnBinding.setColumnClass(Long.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(jTable1);
+
+        add(jScrollPane1, BorderLayout.CENTER);
+
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -107,13 +118,17 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private EntityManager RastamanPUEntityManager0;
+    private List<Album> albumList;
+    private Query albumQuery;
     private JButton jButton1;
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane1;
     private JTable jTable1;
-    private List<MusicGroup> musicGroupList;
-    private Query musicGroupQuery;
+    private List<Musicgroup> musicgroupList;
+    private List<Musicgroup> musicgroupList2;
+    private Query musicgroupQuery;
+    private Query musicgroupQuery2;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
