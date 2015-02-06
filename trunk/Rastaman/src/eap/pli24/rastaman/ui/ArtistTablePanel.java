@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -88,7 +89,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${sex}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${greekSex}"));
         columnBinding.setColumnName("Φύλο");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
@@ -115,19 +116,22 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new Dimension(0, 30));
         add(jLabel1, BorderLayout.PAGE_START);
 
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
 
+        editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
         editButton.setText("Επεξεργασία");
 
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
 
+        saveButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
         saveButton.setText("Αποθήκευση");
-        saveButton.setEnabled(false);
 
+        cancelButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
         cancelButton.setText("Ακύρωση");
-        cancelButton.setEnabled(false);
 
-        exitButton.setText("Πίσω");
+        exitButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
         exitButton.setPreferredSize(new Dimension(80, 23));
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -144,12 +148,12 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 .addComponent(editButton)
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
-                .addGap(156, 156, 156)
+                .addGap(18, 18, 18)
                 .addComponent(saveButton)
-                .addGap(5, 5, 5)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
-                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
+                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -157,11 +161,11 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(newButton)
                     .addComponent(editButton)
-                    .addComponent(deleteButton)
-                    .addComponent(saveButton)
                     .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(cancelButton)
-                        .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(deleteButton)
+                        .addComponent(saveButton)
+                        .addComponent(cancelButton))
+                    .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
         );
 
         add(jPanel1, BorderLayout.PAGE_END);
