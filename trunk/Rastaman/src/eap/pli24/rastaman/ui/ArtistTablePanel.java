@@ -1,7 +1,6 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
-import eap.pli24.rastaman.entities.Musicgenre;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,15 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -58,7 +53,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
         artistQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        jButton2 = new JButton();
         jScrollPane2 = new JScrollPane();
         jTable2 = new JTable();
         jLabel1 = new JLabel();
@@ -69,8 +63,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         saveButton = new JButton();
         cancelButton = new JButton();
         exitButton = new JButton();
-
-        jButton2.setText("jButton2");
 
         setLayout(new BorderLayout());
 
@@ -186,7 +178,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private JButton deleteButton;
     private JButton editButton;
     private JButton exitButton;
-    private JButton jButton2;
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane2;

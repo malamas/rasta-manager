@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author apostolis
+ * @author malamas
  */
 @Entity
 @Table(name = "PLAYLIST")
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Playlist.findAll", query = "SELECT p FROM Playlist p"),
     @NamedQuery(name = "Playlist.findByPlaylistid", query = "SELECT p FROM Playlist p WHERE p.playlistid = :playlistid"),
-    @NamedQuery(name = "Playlist.findByNane", query = "SELECT p FROM Playlist p WHERE p.nane = :nane"),
+    @NamedQuery(name = "Playlist.findByName", query = "SELECT p FROM Playlist p WHERE p.name = :name"),
     @NamedQuery(name = "Playlist.findByCreationdate", query = "SELECT p FROM Playlist p WHERE p.creationdate = :creationdate")})
 public class Playlist implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -43,8 +43,8 @@ public class Playlist implements Serializable {
     @Column(name = "PLAYLISTID")
     private Long playlistid;
     @Basic(optional = false)
-    @Column(name = "NANE")
-    private String nane;
+    @Column(name = "NAME")
+    private String name;
     @Basic(optional = false)
     @Column(name = "CREATIONDATE")
     @Temporal(TemporalType.DATE)
@@ -59,9 +59,9 @@ public class Playlist implements Serializable {
         this.playlistid = playlistid;
     }
 
-    public Playlist(Long playlistid, String nane, Date creationdate) {
+    public Playlist(Long playlistid, String name, Date creationdate) {
         this.playlistid = playlistid;
-        this.nane = nane;
+        this.name = name;
         this.creationdate = creationdate;
     }
 
@@ -73,12 +73,12 @@ public class Playlist implements Serializable {
         this.playlistid = playlistid;
     }
 
-    public String getNane() {
-        return nane;
+    public String getName() {
+        return name;
     }
 
-    public void setNane(String nane) {
-        this.nane = nane;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreationdate() {

@@ -53,13 +53,11 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        RastamanPUEntityManager0 = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        musicgroupQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT m FROM Musicgroup m");
+        RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
+        musicgroupQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m FROM Musicgroup m");
         musicgroupList = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT a FROM Album a");
+        albumQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Album a");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
-        musicgroupQuery2 = Beans.isDesignTime() ? null : RastamanPUEntityManager0.createQuery("SELECT m FROM Musicgroup m");
-        musicgroupList2 = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery2.getResultList();
         jLabel1 = new JLabel();
         jPanel1 = new JPanel();
         jButton1 = new JButton();
@@ -86,22 +84,13 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
         add(jPanel1, BorderLayout.PAGE_END);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList2, jTable1);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${albumList}"));
-        columnBinding.setColumnName("Album List");
-        columnBinding.setColumnClass(List.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artistList}"));
-        columnBinding.setColumnName("Artist List");
-        columnBinding.setColumnClass(List.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationdate}"));
-        columnBinding.setColumnName("Formationdate");
-        columnBinding.setColumnClass(Date.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
-        columnBinding.setColumnName("Name");
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, jTable1);
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
+        columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${musicgroupid}"));
-        columnBinding.setColumnName("Musicgroupid");
-        columnBinding.setColumnClass(Long.class);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationdate}"));
+        columnBinding.setColumnName("Ημερομηνία δημιουργίας");
+        columnBinding.setColumnClass(Date.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -117,7 +106,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private EntityManager RastamanPUEntityManager0;
+    private EntityManager RastamanPUEntityManager;
     private List<Album> albumList;
     private Query albumQuery;
     private JButton jButton1;
@@ -126,9 +115,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private JScrollPane jScrollPane1;
     private JTable jTable1;
     private List<Musicgroup> musicgroupList;
-    private List<Musicgroup> musicgroupList2;
     private Query musicgroupQuery;
-    private Query musicgroupQuery2;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
