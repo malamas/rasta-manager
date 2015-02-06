@@ -126,6 +126,10 @@ public class Artist implements Serializable {
     public String getSex() {
         return sex;
     }
+    public String getGreekSex(){
+        if ( sex.equals("m"))  return "Ανδρας";
+        else return "Γυναίκα";
+    }
 
     public void setSex(String sex) {
         this.sex = sex;
