@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author apostolis
+ * @author malamas
  */
 @Entity
 @Table(name = "ARTIST")
@@ -73,7 +72,7 @@ public class Artist implements Serializable {
     @JoinColumn(name = "MUSCIGENREID", referencedColumnName = "MUSICGENREID")
     @ManyToOne(optional = false)
     private Musicgenre muscigenreid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artistartistid")
+    @OneToMany(mappedBy = "artistartistid")
     private List<Album> albumList;
 
     public Artist() {
@@ -125,10 +124,6 @@ public class Artist implements Serializable {
 
     public String getSex() {
         return sex;
-    }
-    public String getGreekSex(){
-        if ( sex.equals("m"))  return "Ανδρας";
-        else return "Γυναίκα";
     }
 
     public void setSex(String sex) {

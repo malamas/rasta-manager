@@ -5,13 +5,10 @@
  */
 package eap.pli24.rastaman.entities;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,13 +23,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author apostolis
+ * @author malamas
  */
 @Entity
 @Table(name = "MUSICGROUP")
@@ -43,8 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Musicgroup.findByName", query = "SELECT m FROM Musicgroup m WHERE m.name = :name"),
     @NamedQuery(name = "Musicgroup.findByFormationdate", query = "SELECT m FROM Musicgroup m WHERE m.formationdate = :formationdate")})
 public class Musicgroup implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,7 +56,7 @@ public class Musicgroup implements Serializable {
         @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")})
     @ManyToMany
     private List<Artist> artistList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "musicgroupmusicgroupid")
+    @OneToMany(mappedBy = "musicgroupmusicgroupid")
     private List<Album> albumList;
 
     public Musicgroup() {
@@ -82,9 +76,7 @@ public class Musicgroup implements Serializable {
     }
 
     public void setMusicgroupid(Long musicgroupid) {
-        Long oldMusicgroupid = this.musicgroupid;
         this.musicgroupid = musicgroupid;
-        changeSupport.firePropertyChange("musicgroupid", oldMusicgroupid, musicgroupid);
     }
 
     public String getName() {
@@ -92,9 +84,7 @@ public class Musicgroup implements Serializable {
     }
 
     public void setName(String name) {
-        String oldName = this.name;
         this.name = name;
-        changeSupport.firePropertyChange("name", oldName, name);
     }
 
     public Date getFormationdate() {
@@ -102,9 +92,7 @@ public class Musicgroup implements Serializable {
     }
 
     public void setFormationdate(Date formationdate) {
-        Date oldFormationdate = this.formationdate;
         this.formationdate = formationdate;
-        changeSupport.firePropertyChange("formationdate", oldFormationdate, formationdate);
     }
 
     @XmlTransient
@@ -148,14 +136,6 @@ public class Musicgroup implements Serializable {
     @Override
     public String toString() {
         return "eap.pli24.rastaman.entities.Musicgroup[ musicgroupid=" + musicgroupid + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
