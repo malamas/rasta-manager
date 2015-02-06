@@ -1,112 +1,114 @@
 -- genres
-INSERT INTO GENRE VALUES (1, 'Rock');
-INSERT INTO GENRE VALUES (2, 'Pop');
-INSERT INTO GENRE VALUES (3, 'Folk');
-INSERT INTO GENRE VALUES (4, 'World');
-INSERT INTO GENRE VALUES (5, 'R&B');
-INSERT INTO GENRE VALUES (6, 'Tango');
-INSERT INTO GENRE VALUES (7, 'Latin');
-INSERT INTO GENRE VALUES (8, 'Classical');
+INSERT INTO MusicGenre VALUES (1, 'Rock');
+INSERT INTO MusicGenre VALUES (2, 'Pop');
+INSERT INTO MusicGenre VALUES (3, 'Folk');
+INSERT INTO MusicGenre VALUES (4, 'World');
+INSERT INTO MusicGenre VALUES (5, 'R&B');
+INSERT INTO MusicGenre VALUES (6, 'Tango');
+INSERT INTO MusicGenre VALUES (7, 'Latin');
+INSERT INTO MusicGenre VALUES (8, 'Classical');
+INSERT INTO MusicGenre VALUES (9, 'Reggae');
+INSERT INTO MusicGenre VALUES (10, 'Blues');
 
 -- labels
-INSERT INTO LABEL VALUES (1, 'Harvest', NULL, NULL);
-INSERT INTO LABEL VALUES (2, 'Swan Song', NULL, NULL);
-INSERT INTO LABEL VALUES (3, 'Atlantic', NULL, NULL);
-INSERT INTO LABEL VALUES (4, 'Sony Music', '550 Madison Ave., New York, NY 10022, USA', NULL);
-INSERT INTO LABEL VALUES (5, 'Universal Music', '2220 Colorado Avenue, Santa Monica, CA 90404, USA', NULL);
-INSERT INTO LABEL VALUES (6, 'Warner Music', '75 Rockefeller Plaza, New York, NY 10019, USA', NULL);
+INSERT INTO Label VALUES (1, 'Harvest', NULL, NULL);
+INSERT INTO Label VALUES (2, 'Swan Song', NULL, NULL);
+INSERT INTO Label VALUES (3, 'Atlantic', NULL, NULL);
+INSERT INTO Label VALUES (4, 'Sony Music', '550 Madison Ave., New York, NY 10022, USA', NULL);
+INSERT INTO Label VALUES (5, 'Universal Music', '2220 Colorado Avenue, Santa Monica, CA 90404, USA', NULL);
+INSERT INTO Label VALUES (6, 'Warner Music', '75 Rockefeller Plaza, New York, NY 10019, USA', NULL);
 
 -- groups
-INSERT INTO MUSIC_GROUP VALUES (1, 'Pink Floyd', '1965-01-01');
-INSERT INTO MUSIC_GROUP VALUES (2, 'Led Zeppelin', '1968-01-01');
+INSERT INTO MusicGroup VALUES (1, 'Pink Floyd', '1965-01-01');
+INSERT INTO MusicGroup VALUES (2, 'Led Zeppelin', '1968-01-01');
 
 -- artists
-INSERT INTO ARTIST VALUES (1, 'Roger','Waters',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (2, 'David','Gilmour',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (3, 'Nick','Mason',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (4, 'Richard','Wright',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (5, 'Syd','Barrett',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (6, 'Jimmy','Page',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (7, 'Robert','Plant',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (8, 'John','Bonham',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (9, 'John Paul','Jones',  '', 'm', NULL, NULL, 1);
-INSERT INTO ARTIST VALUES (10, 'Μάνος','Χατζηδάκις',  '', 'm', NULL, NULL, 4);
+INSERT INTO Artist VALUES (1, 'Roger','Waters',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (2, 'David','Gilmour',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (3, 'Nick','Mason',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (4, 'Richard','Wright',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (5, 'Syd','Barrett',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (6, 'Jimmy','Page',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (7, 'Robert','Plant',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (8, 'John','Bonham',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (9, 'John Paul','Jones',  '', 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (10, 'Μάνος','Χατζηδάκις',  '', 'm', NULL, NULL, 4);
 
 -- group artists
 -- Pink Floyd members
-INSERT INTO GROUP_ARTIST VALUES (1, 1);
-INSERT INTO GROUP_ARTIST VALUES (1, 2);
-INSERT INTO GROUP_ARTIST VALUES (1, 3);
-INSERT INTO GROUP_ARTIST VALUES (1, 4);
-INSERT INTO GROUP_ARTIST VALUES (1, 5);
+INSERT INTO Artist_MusicGroup VALUES (1, 1);
+INSERT INTO Artist_MusicGroup VALUES (2, 1);
+INSERT INTO Artist_MusicGroup VALUES (3, 1);
+INSERT INTO Artist_MusicGroup VALUES (4, 1);
+INSERT INTO Artist_MusicGroup VALUES (5, 1);
 
 -- Led Zeppelin members
-INSERT INTO GROUP_ARTIST VALUES (2, 6);
-INSERT INTO GROUP_ARTIST VALUES (2, 7);
-INSERT INTO GROUP_ARTIST VALUES (2, 8);
-INSERT INTO GROUP_ARTIST VALUES (2, 9);
+INSERT INTO Artist_MusicGroup VALUES (6, 2);
+INSERT INTO Artist_MusicGroup VALUES (7, 2);
+INSERT INTO Artist_MusicGroup VALUES (8, 2);
+INSERT INTO Artist_MusicGroup VALUES (9, 2);
 --
 
 -- albums
-INSERT INTO ALBUM VALUES (1, 'The Dark Side Of The Moon', '1973-03-01', 'lp', 1, 1, NULL, 1);
-INSERT INTO ALBUM VALUES (2, 'Celebration Day', '2012-11-16', 'lp', 1, 2, NULL, 2);
-INSERT INTO ALBUM VALUES (3, 'Celebration Day', '2012-11-16', 'lp', 2, 2, NULL, 2);
-INSERT INTO ALBUM VALUES (4, 'Reflections', '1970-01-01', 'lp', 1, NULL, 10, 3);
+INSERT INTO Album VALUES (1, 'The Dark Side Of The Moon', 1, '1973-03-01', 'lp', 1, NULL, 1);
+INSERT INTO Album VALUES (2, 'Celebration Day', 2, '2012-11-16', 'lp', 1, NULL, 2);
+INSERT INTO Album VALUES (3, 'Celebration Day', 2, '2012-11-16', 'lp', 2, NULL, 2);
+INSERT INTO Album VALUES (4, 'Reflections', 3, '1970-01-01', 'lp', 1, 10, NULL);
 
 -- songs
-INSERT INTO SONG VALUES (1, 'Speak To Me', 90, 1, 1);
-INSERT INTO SONG VALUES (2, 'Breathe', 163, 2, 1);
-INSERT INTO SONG VALUES (3, 'On The Run', 210, 3, 1);
-INSERT INTO SONG VALUES (4, 'Time', 413, 4, 1);
-INSERT INTO SONG VALUES (5, 'The Great Gig In The Sky', 255, 5, 1);
-INSERT INTO SONG VALUES (6, 'Money', 390, 6, 1);
-INSERT INTO SONG VALUES (7, 'Us And Them', 454, 7, 1);
-INSERT INTO SONG VALUES (8, 'Any Colour You Like', 204, 8, 1);
-INSERT INTO SONG VALUES (9, 'Brain Damage', 230, 9, 1);
-INSERT INTO SONG VALUES (10, 'Eclipse', 105, 10, 1);
-INSERT INTO SONG VALUES (11, 'Good Times Bad Times', 190, 1, 2);
-INSERT INTO SONG VALUES (12, 'Ramble On', 337, 2, 2);
-INSERT INTO SONG VALUES (13, 'Black Dog', 318, 3, 2);
-INSERT INTO SONG VALUES (14, 'In My Time Of Dying', 661, 4, 2);
-INSERT INTO SONG VALUES (15, 'For Your Life', 368, 5, 2);
-INSERT INTO SONG VALUES (16, 'Trampled Under Foot', 362, 6, 2);
-INSERT INTO SONG VALUES (17, 'Nobody''s Fault But Mine', 384, 7, 2);
-INSERT INTO SONG VALUES (18, 'No Quarter', 540, 8, 2);
-INSERT INTO SONG VALUES (19, 'Since I''ve Been Loving You', 455, 1, 3);
-INSERT INTO SONG VALUES (20, 'Dazed And Confused', 679, 2, 3);
-INSERT INTO SONG VALUES (21, 'Stairway To Heaven', 508, 3, 3);
-INSERT INTO SONG VALUES (22, 'The Song Remains The Same', 335, 4, 3);
-INSERT INTO SONG VALUES (23, 'Misty Mountain Hop', 288, 5, 3);
-INSERT INTO SONG VALUES (24, 'Kashmir', 528, 6, 3);
-INSERT INTO SONG VALUES (25, 'Whole Lotta Love', 409, 7, 3);
-INSERT INTO SONG VALUES (26, 'Rock And Roll', 259, 8, 3);
-INSERT INTO SONG VALUES (27, 'Orpheus', 151, 1, 4);
-INSERT INTO SONG VALUES (28, 'The Day', 220, 2, 4);
-INSERT INTO SONG VALUES (29, 'Love Her', 257, 3, 4);
-INSERT INTO SONG VALUES (30, 'Dance Of The Dogs', 178, 4, 4);
-INSERT INTO SONG VALUES (31, 'Kemal', 241, 5, 4);
-INSERT INTO SONG VALUES (32, 'Dedication', 167, 6, 4);
-INSERT INTO SONG VALUES (33, 'The Three Answers', 228, 7, 4);
-INSERT INTO SONG VALUES (34, 'Street Song', 206, 8, 4);
-INSERT INTO SONG VALUES (35, 'Bitter Way', 255, 9, 4);
-INSERT INTO SONG VALUES (36, 'Noble Dame', 191, 10, 4);
+INSERT INTO Song VALUES (1, 'Speak To Me', 90, 1, 1);
+INSERT INTO Song VALUES (2, 'Breathe', 163, 2, 1);
+INSERT INTO Song VALUES (3, 'On The Run', 210, 3, 1);
+INSERT INTO Song VALUES (4, 'Time', 413, 4, 1);
+INSERT INTO Song VALUES (5, 'The Great Gig In The Sky', 255, 5, 1);
+INSERT INTO Song VALUES (6, 'Money', 390, 6, 1);
+INSERT INTO Song VALUES (7, 'Us And Them', 454, 7, 1);
+INSERT INTO Song VALUES (8, 'Any Colour You Like', 204, 8, 1);
+INSERT INTO Song VALUES (9, 'Brain Damage', 230, 9, 1);
+INSERT INTO Song VALUES (10, 'Eclipse', 105, 10, 1);
+INSERT INTO Song VALUES (11, 'Good Times Bad Times', 190, 1, 2);
+INSERT INTO Song VALUES (12, 'Ramble On', 337, 2, 2);
+INSERT INTO Song VALUES (13, 'Black Dog', 318, 3, 2);
+INSERT INTO Song VALUES (14, 'In My Time Of Dying', 661, 4, 2);
+INSERT INTO Song VALUES (15, 'For Your Life', 368, 5, 2);
+INSERT INTO Song VALUES (16, 'Trampled Under Foot', 362, 6, 2);
+INSERT INTO Song VALUES (17, 'Nobody''s Fault But Mine', 384, 7, 2);
+INSERT INTO Song VALUES (18, 'No Quarter', 540, 8, 2);
+INSERT INTO Song VALUES (19, 'Since I''ve Been Loving You', 455, 1, 3);
+INSERT INTO Song VALUES (20, 'Dazed And Confused', 679, 2, 3);
+INSERT INTO Song VALUES (21, 'Stairway To Heaven', 508, 3, 3);
+INSERT INTO Song VALUES (22, 'The Song Remains The Same', 335, 4, 3);
+INSERT INTO Song VALUES (23, 'Misty Mountain Hop', 288, 5, 3);
+INSERT INTO Song VALUES (24, 'Kashmir', 528, 6, 3);
+INSERT INTO Song VALUES (25, 'Whole Lotta Love', 409, 7, 3);
+INSERT INTO Song VALUES (26, 'Rock And Roll', 259, 8, 3);
+INSERT INTO Song VALUES (27, 'Orpheus', 151, 1, 4);
+INSERT INTO Song VALUES (28, 'The Day', 220, 2, 4);
+INSERT INTO Song VALUES (29, 'Love Her', 257, 3, 4);
+INSERT INTO Song VALUES (30, 'Dance Of The Dogs', 178, 4, 4);
+INSERT INTO Song VALUES (31, 'Kemal', 241, 5, 4);
+INSERT INTO Song VALUES (32, 'Dedication', 167, 6, 4);
+INSERT INTO Song VALUES (33, 'The Three Answers', 228, 7, 4);
+INSERT INTO Song VALUES (34, 'Street Song', 206, 8, 4);
+INSERT INTO Song VALUES (35, 'Bitter Way', 255, 9, 4);
+INSERT INTO Song VALUES (36, 'Noble Dame', 191, 10, 4);
 
 -- playlists
-INSERT INTO PLAYLIST VALUES (1, 'Afternoon classics');
-INSERT INTO PLAYLIST VALUES (2, 'Evening energy');
-INSERT INTO PLAYLIST VALUES (3, 'Midnight mood');
+INSERT INTO PlayList VALUES (1, 'Afternoon classics', '2015-02-01');
+INSERT INTO PlayList VALUES (2, 'Evening energy', '2015-02-02');
+INSERT INTO PlayList VALUES (3, 'Midnight mood', '2015-02-03');
 
 -- playlist songs
 -- playlist #1 contents
-INSERT INTO PLAYLIST_SONG VALUES (1, 6);
-INSERT INTO PLAYLIST_SONG VALUES (1, 2);
-INSERT INTO PLAYLIST_SONG VALUES (1, 9);
+INSERT INTO PlayList_Song VALUES (1, 6);
+INSERT INTO PlayList_Song VALUES (1, 2);
+INSERT INTO PlayList_Song VALUES (1, 9);
 
 -- playlist #2 contents
-INSERT INTO PLAYLIST_SONG VALUES (2, 10);
-INSERT INTO PLAYLIST_SONG VALUES (2, 1);
+INSERT INTO PlayList_Song VALUES (2, 10);
+INSERT INTO PlayList_Song VALUES (2, 1);
 
 -- playlist #3 contents
-INSERT INTO PLAYLIST_SONG VALUES (3, 8);
-INSERT INTO PLAYLIST_SONG VALUES (3, 5);
+INSERT INTO PlayList_Song VALUES (3, 8);
+INSERT INTO PlayList_Song VALUES (3, 5);
 --
