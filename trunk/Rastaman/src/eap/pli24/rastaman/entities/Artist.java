@@ -129,7 +129,12 @@ public class Artist implements Serializable {
     public void setSex(String sex) {
         this.sex = sex;
     }
-
+   // Κώδικας δικός μας
+    public String getGreekSex(){
+        if (sex.equals("m")) return "Άνδρας";
+        else   return "Γυναίκα";
+    }
+    
     public Date getBirthday() {
         return birthday;
     }
@@ -196,5 +201,7 @@ public class Artist implements Serializable {
     public String toString() {
         return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
     }
+    
+ 
     
 }
