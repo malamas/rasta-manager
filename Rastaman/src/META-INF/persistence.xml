@@ -6,8 +6,6 @@
     <class>eap.pli24.rastaman.entities.Song</class>
     <class>eap.pli24.rastaman.entities.Playlist</class>
     <class>eap.pli24.rastaman.entities.Album</class>
-    <class>eap.pli24.rastaman.entities.Genre</class>
-    <class>eap.pli24.rastaman.entities.MusicGroup</class>
     <class>eap.pli24.rastaman.entities.Label</class>
     <class>eap.pli24.rastaman.entities.Musicgroup</class>
     <class>eap.pli24.rastaman.entities.Musicgenre</class>
