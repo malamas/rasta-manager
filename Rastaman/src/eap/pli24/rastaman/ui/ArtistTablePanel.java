@@ -16,7 +16,9 @@ import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -60,8 +62,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         newButton = new JButton();
         editButton = new JButton();
         deleteButton = new JButton();
-        saveButton = new JButton();
-        cancelButton = new JButton();
         exitButton = new JButton();
 
         setLayout(new BorderLayout());
@@ -110,18 +110,27 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
 
         editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
         editButton.setText("Επεξεργασία");
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
-
-        saveButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
-        saveButton.setText("Αποθήκευση");
-
-        cancelButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
-        cancelButton.setText("Ακύρωση");
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         exitButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
         exitButton.setPreferredSize(new Dimension(80, 23));
@@ -140,11 +149,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 .addComponent(editButton)
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
-                .addGap(18, 18, 18)
-                .addComponent(saveButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 437, Short.MAX_VALUE)
                 .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -153,10 +158,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(newButton)
                     .addComponent(editButton)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(deleteButton)
-                        .addComponent(saveButton)
-                        .addComponent(cancelButton))
+                    .addComponent(deleteButton)
                     .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -169,12 +171,122 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         controller.hidePanel(this);
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    
+    //Νέα εγγραφή Καλλιτέχνη  ***********************
+    private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+       
+        controller.hidePanel(this);
+        controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);
+    }//GEN-LAST:event_newButtonActionPerformed
+    
+    //Επεξεργασία Εγγραφής Καλιτέχνη  ****************
+    private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        try{
+            int selectedIndex= jTable2.getSelectedRow();
+            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
+          
+            Artist a = artistList.get(selectedIndex);
+            System.out.println(a.getLastname());
+            controller.hidePanel(this);
+            controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);         
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+        }
+
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        try{
+            int selectedIndex= jTable2.getSelectedRow();
+            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
+            Artist a = artistList.get(selectedIndex);
+            if (a.getAlbumList().isEmpty()){
+                if (a.getMusicgroupList().isEmpty()){
+                    Object[] options = {"Ναι",
+                                       "Όχι"};
+                    int n = JOptionPane.showOptionDialog(new JFrame(),
+                         "Να διαγραφεί ο Καλιτέχνης" + a.getLastname() + " " + a.getFirstname() + ";",
+                         "Επιβεβαίωση Διαγραφής",
+                         JOptionPane.YES_NO_OPTION,
+                         JOptionPane.QUESTION_MESSAGE,
+                         null,     //do not use a custom Icon
+                         options,  //the titles of buttons
+                         options[0]); //default button title
+                    if (n==0) {
+                        RastamanPUEntityManager.getTransaction().begin();
+                        try{
+                           Query q=RastamanPUEntityManager.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ", 
+                                                                   Artist.class).setParameter("artistID", a.getArtistid());
+                           q.executeUpdate();  
+                           RastamanPUEntityManager.getTransaction().commit();
+                           artistList.remove(selectedIndex);
+                           jTable2.updateUI();
+                        } catch (Exception e){
+                                     e.printStackTrace();
+                                     RastamanPUEntityManager.getTransaction().rollback();   
+                        }
+                    } 
+                }
+                else{
+                    Object[] options = {"ΟΚ"};
+                    int n = JOptionPane.showOptionDialog(new JFrame(),
+                         "Ο καλλιτέχνης συμμετέχει σε συγκρότημα \n"
+                         + "πρέπει πρώτα να διαγραφεί απο αυτό",
+                         "Διαγραφή Καλλιτέχνη",
+                         JOptionPane.NO_OPTION,
+                         JOptionPane.INFORMATION_MESSAGE,
+                         null,     //do not use a custom Icon
+                         options,  //the titles of buttons
+                         options[0]); //default button title
+                }
+            } 
+            else {
+                if (a.getMusicgroupList().isEmpty()){
+                    Object[] options = {"ΟΚ"};
+                    int n = JOptionPane.showOptionDialog(new JFrame(),
+                         "Υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
+                         + "πρέπει πρώτα να διαγραφεί αυτό",
+                         "Διαγραφή Καλλιτέχνη",
+                         JOptionPane.NO_OPTION,
+                         JOptionPane.INFORMATION_MESSAGE,
+                         null,     //do not use a custom Icon
+                         options,  //the titles of buttons
+                         options[0]); //default button title
+                    }
+                else{
+                    Object[] options = {"ΟΚ"};
+                    int n = JOptionPane.showOptionDialog(new JFrame(),
+                         "Ο καλλιτέχνης συμμετέχει σε συγκρότημα  και\n" 
+                         +"υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
+                         + "πρέπει πρώτα να διαγραφεί το άλμπουμ και να διαγραφεί απο το συγκρότημα",
+                         "Διαγραφή Καλλιτέχνη",
+                         JOptionPane.NO_OPTION,
+                         JOptionPane.INFORMATION_MESSAGE,
+                         null,     //do not use a custom Icon
+                         options,  //the titles of buttons
+                         options[0]); //default button title
+                }
+                
+            }
+               
+            
+            
+            //System.out.println(n);
+            //controller.hidePanel(this);
+            //controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);         
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+        }
+        
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private EntityManager RastamanPUEntityManager;
     private List<Artist> artistList;
     private Query artistQuery;
-    private JButton cancelButton;
     private JButton deleteButton;
     private JButton editButton;
     private JButton exitButton;
@@ -183,7 +295,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private JScrollPane jScrollPane2;
     private JTable jTable2;
     private JButton newButton;
-    private JButton saveButton;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //

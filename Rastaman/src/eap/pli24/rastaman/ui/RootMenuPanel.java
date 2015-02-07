@@ -110,6 +110,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
+    
 
     public void setController(MainFrameController controller) {
         this.controller = controller;
