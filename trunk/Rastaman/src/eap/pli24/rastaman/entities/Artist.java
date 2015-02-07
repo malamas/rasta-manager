@@ -65,8 +65,7 @@ public class Artist implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthday;
     @Column(name = "BIRTHPLACE")
-    @Temporal(TemporalType.DATE)
-    private Date birthplace;
+    private String birthplace;
     @ManyToMany(mappedBy = "artistList")
     private List<Musicgroup> musicgroupList;
     @JoinColumn(name = "MUSCIGENREID", referencedColumnName = "MUSICGENREID")
@@ -143,11 +142,11 @@ public class Artist implements Serializable {
         this.birthday = birthday;
     }
 
-    public Date getBirthplace() {
+    public String getBirthplace() {
         return birthplace;
     }
 
-    public void setBirthplace(Date birthplace) {
+    public void setBirthplace(String birthplace) {
         this.birthplace = birthplace;
     }
 
