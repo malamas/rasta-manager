@@ -30,34 +30,43 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new JButton();
+        musicgroupButton = new JButton();
         jLabel1 = new JLabel();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
+        artistButton = new JButton();
+        exitButton = new JButton();
+        artistAlbumButton = new JButton();
+        groupAlbumButton = new JButton();
+        playlistButton = new JButton();
 
-        jButton1.setText("Συγκροτήματα");
-        jButton1.addActionListener(new ActionListener() {
+        musicgroupButton.setText("Συγκροτήματα");
+        musicgroupButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                musicgroupButtonActionPerformed(evt);
             }
         });
 
         jLabel1.setFont(new Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Αρχικό Μενού");
 
-        jButton2.setText("Καλλιτέχνες");
-        jButton2.addActionListener(new ActionListener() {
+        artistButton.setText("Καλλιτέχνες");
+        artistButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                artistButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Έξοδος");
-        jButton3.addActionListener(new ActionListener() {
+        exitButton.setText("Έξοδος");
+        exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                exitButtonActionPerformed(evt);
             }
         });
+
+        artistAlbumButton.setText("Αλμπουμ Καλιτεχνών");
+
+        groupAlbumButton.setText("Άλμπουμ Συγκροτημάτων");
+
+        playlistButton.setText("Λίστες");
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -67,43 +76,59 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(287, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                            .addComponent(artistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(musicgroupButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(exitButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                            .addComponent(artistAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(groupAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(81, 81, 81)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(artistButton)
+                    .addComponent(artistAlbumButton))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(musicgroupButton)
+                    .addComponent(groupAlbumButton))
+                .addGap(26, 26, 26)
+                .addComponent(playlistButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(exitButton)
+                .addGap(40, 40, 40))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void musicgroupButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_musicgroupButtonActionPerformed
         controller.showPanel(MainFrameController.Panel.GROUP_TABLE);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_musicgroupButtonActionPerformed
 
-    private void jButton2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void artistButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistButtonActionPerformed
         controller.showPanel(MainFrameController.Panel.ARTIST_TABLE);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_artistButtonActionPerformed
 
-    private void jButton3ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         controller.shutdown();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton jButton1;
-    private JButton jButton2;
-    private JButton jButton3;
+    private JButton artistAlbumButton;
+    private JButton artistButton;
+    private JButton exitButton;
+    private JButton groupAlbumButton;
     private JLabel jLabel1;
+    private JButton musicgroupButton;
+    private JButton playlistButton;
     // End of variables declaration//GEN-END:variables
     //
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι

@@ -6,7 +6,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.Beans;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
@@ -195,7 +201,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_editButtonActionPerformed
-
+    //Διαγραφή Εγγραφής Καλιτέχνη  ****************
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try{
             int selectedIndex= jTable2.getSelectedRow();
@@ -212,7 +218,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                          JOptionPane.QUESTION_MESSAGE,
                          null,     //do not use a custom Icon
                          options,  //the titles of buttons
-                         options[0]); //default button title
+                         options[1]); //default button title
                     if (n==0) {
                         RastamanPUEntityManager.getTransaction().begin();
                         try{
@@ -223,8 +229,8 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                            artistList.remove(selectedIndex);
                            jTable2.updateUI();
                         } catch (Exception e){
-                                     e.printStackTrace();
-                                     RastamanPUEntityManager.getTransaction().rollback();   
+                           e.printStackTrace();
+                           RastamanPUEntityManager.getTransaction().rollback();   
                         }
                     } 
                 }
@@ -269,12 +275,8 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 }
                 
             }
-               
             
-            
-            //System.out.println(n);
-            //controller.hidePanel(this);
-            //controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);         
+       
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage());

@@ -26,7 +26,8 @@ public class MainFrameController implements Runnable {
         ROOT_MENU,
         ARTIST_TABLE,
         EDIT_ARTIST_TABLE,   //********* Προσθήκη Αποστόλης
-        GROUP_TABLE
+        GROUP_TABLE,
+        EDIT_GROUP_TABLE
     }
    
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
@@ -59,6 +60,7 @@ public class MainFrameController implements Runnable {
         ArtistTablePanel atp = new ArtistTablePanel();
         EditArtistPanel eatp = new EditArtistPanel();   //********* Προσθήκη Αποστόλης
         GroupTablePanel gtp = new GroupTablePanel();
+        EditGroupPanel egtp = new EditGroupPanel();
 
         rmp.setBackground(new Color(255, 255, 204));
         rmp.setController(this);
@@ -70,11 +72,13 @@ public class MainFrameController implements Runnable {
         atp.setController(this);
         gtp.setController(this);
         eatp.setController(this);    //********* Προσθήκη Αποστόλης
-
+        egtp.setController(this);    //********* Προσθήκη Αποστόλης
+        
         panels.put(Panel.ROOT_MENU, rmp);
         panels.put(Panel.ARTIST_TABLE, atp);
         panels.put(Panel.EDIT_ARTIST_TABLE, eatp); //********* Προσθήκη Αποστόλης
         panels.put(Panel.GROUP_TABLE, gtp);
+        panels.put(Panel.EDIT_GROUP_TABLE, egtp); //********* Προσθήκη Αποστόλης        
     }
 
     private void initMainFrame() {
