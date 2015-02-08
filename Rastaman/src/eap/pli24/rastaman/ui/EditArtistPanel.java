@@ -5,8 +5,9 @@
  */
 package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Artist;
-/**
- *
+
+
+/*
  * @author apostolis
  */
 public class EditArtistPanel extends javax.swing.JPanel {

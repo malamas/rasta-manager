@@ -19,11 +19,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.LayoutStyle;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
@@ -60,7 +65,10 @@ public class GroupTablePanel extends javax.swing.JPanel {
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         jLabel1 = new JLabel();
         jPanel1 = new JPanel();
-        jButton1 = new JButton();
+        exitButton = new JButton();
+        deleteButton = new JButton();
+        editButton = new JButton();
+        newButton = new JButton();
         jScrollPane1 = new JScrollPane();
         jTable1 = new JTable();
 
@@ -71,26 +79,73 @@ public class GroupTablePanel extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new Dimension(0, 30));
         add(jLabel1, BorderLayout.PAGE_START);
 
-        jPanel1.setLayout(new BorderLayout());
-
-        jButton1.setText("Πίσω");
-        jButton1.setPreferredSize(new Dimension(80, 23));
-        jButton1.addActionListener(new ActionListener() {
+        exitButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
+        exitButton.setPreferredSize(new Dimension(80, 23));
+        exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                exitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, BorderLayout.LINE_END);
+
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
+        deleteButton.setText("Διαγραφή");
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
+        editButton.setText("Επεξεργασία");
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
+        newButton.setText("Εισαγωγή");
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
+
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(newButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(editButton)
+                .addGap(5, 5, 5)
+                .addComponent(deleteButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 11, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(exitButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteButton)))
+        );
 
         add(jPanel1, BorderLayout.PAGE_END);
+
+        jTable1.getTableHeader().setReorderingAllowed(false);
 
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, jTable1);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationdate}"));
         columnBinding.setColumnName("Ημερομηνία δημιουργίας");
         columnBinding.setColumnClass(Date.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -100,22 +155,111 @@ public class GroupTablePanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         controller.hidePanel(this);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        try{
+            int selectedIndex= jTable1.getSelectedRow();
+            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Συγκρότημα");
+            Musicgroup a = musicgroupList.get(selectedIndex);
+            if (a.getAlbumList().isEmpty()){
+                Object[] options = {"Ναι", "Όχι"};
+                int n;
+                if (a.getArtistList().isEmpty()){
+                    n = JOptionPane.showOptionDialog(new JFrame(),
+                        "Να διαγραφεί το συγκρότημα " + a.getName() + ";",
+                        "Επιβεβαίωση Διαγραφής",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,     //do not use a custom Icon
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                }
+                else{
+                  
+                    n = JOptionPane.showOptionDialog(new JFrame(),
+                        "To συγκρότημα " + a.getName() + "\n"
+                        + "έχει καλλιτέχνες οι οποίοι δεν θα  διαγραφούν."
+                        + "Να διαγραφεί το Συγκρότημα;",
+                        "Διαγραφή Συγκροτήματος",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,     //do not use a custom Icon
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                }
+                if (n==0) {
+                        RastamanPUEntityManager.getTransaction().begin();
+                        try{
+                            Query q=RastamanPUEntityManager.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
+                                Musicgroup.class).setParameter("musicgroupID", a.getMusicgroupid());
+                            q.executeUpdate();
+                            RastamanPUEntityManager.getTransaction().commit();
+                            musicgroupList.remove(selectedIndex);
+                            jTable1.updateUI();
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            RastamanPUEntityManager.getTransaction().rollback();
+                        }
+                    }
+            }
+            else {
+         
+                Object[] options = {"ΟΚ"};
+                int n = JOptionPane.showOptionDialog(new JFrame(),
+                        "Υπάρχει άλμπουμ για το συγκεκριμένο Συγκρότημα \n"
+                        + "πρέπει πρώτα να διαγραφεί αυτό",
+                        "Διαγραφή Συγκροτήματος",
+                        JOptionPane.NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,     //do not use a custom Icon
+                        options,  //the titles of buttons
+                        options[0]); //default button title
+            }
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+        }
+
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        try{
+            int selectedIndex= jTable1.getSelectedRow();
+            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
+
+            Musicgroup a = musicgroupList.get(selectedIndex);
+            System.out.println(a.getName());
+            controller.hidePanel(this);
+            controller.showPanel(MainFrameController.Panel.EDIT_GROUP_TABLE);
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+        }
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        controller.hidePanel(this);
+        controller.showPanel(MainFrameController.Panel.EDIT_GROUP_TABLE);
+    }//GEN-LAST:event_newButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private EntityManager RastamanPUEntityManager;
     private List<Album> albumList;
     private Query albumQuery;
-    private JButton jButton1;
+    private JButton deleteButton;
+    private JButton editButton;
+    private JButton exitButton;
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane1;
     private JTable jTable1;
     private List<Musicgroup> musicgroupList;
     private Query musicgroupQuery;
+    private JButton newButton;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
