@@ -63,8 +63,18 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
 
         artistAlbumButton.setText("Αλμπουμ Καλιτεχνών");
+        artistAlbumButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                artistAlbumButtonActionPerformed(evt);
+            }
+        });
 
         groupAlbumButton.setText("Άλμπουμ Συγκροτημάτων");
+        groupAlbumButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                groupAlbumButtonActionPerformed(evt);
+            }
+        });
 
         playlistButton.setText("Λίστες");
 
@@ -119,6 +129,14 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         controller.shutdown();
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void artistAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistAlbumButtonActionPerformed
+        controller.showPanel(MainFrameController.Panel.ARTIST_ALBUM_TABLE);
+    }//GEN-LAST:event_artistAlbumButtonActionPerformed
+
+    private void groupAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_groupAlbumButtonActionPerformed
+        controller.showPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
+    }//GEN-LAST:event_groupAlbumButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -27,7 +27,11 @@ public class MainFrameController implements Runnable {
         ARTIST_TABLE,
         EDIT_ARTIST_TABLE,   //********* Προσθήκη Αποστόλης
         GROUP_TABLE,
-        EDIT_GROUP_TABLE
+        EDIT_GROUP_TABLE,
+        ARTIST_ALBUM_TABLE,
+        GROUP_ALBUM_TABLE,
+        EDIT_GROUP_ALBUM
+        
     }
    
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
@@ -61,6 +65,9 @@ public class MainFrameController implements Runnable {
         EditArtistPanel eatp = new EditArtistPanel();   //********* Προσθήκη Αποστόλης
         GroupTablePanel gtp = new GroupTablePanel();
         EditGroupPanel egtp = new EditGroupPanel();
+        ArtistAlbumTablePanel aatp = new ArtistAlbumTablePanel();
+        GroupAlbumTablePanel gatp = new GroupAlbumTablePanel();
+        EditGroupAlbumPanel egatp = new EditGroupAlbumPanel();       
 
         rmp.setBackground(new Color(255, 255, 204));
         rmp.setController(this);
@@ -73,12 +80,18 @@ public class MainFrameController implements Runnable {
         gtp.setController(this);
         eatp.setController(this);    //********* Προσθήκη Αποστόλης
         egtp.setController(this);    //********* Προσθήκη Αποστόλης
+        aatp.setController(this);    //********* Προσθήκη Αποστόλης
+        gatp.setController(this);    //********* Προσθήκη Αποστόλης
+        egatp.setController(this);    //********* Προσθήκη Αποστόλης        
         
         panels.put(Panel.ROOT_MENU, rmp);
         panels.put(Panel.ARTIST_TABLE, atp);
         panels.put(Panel.EDIT_ARTIST_TABLE, eatp); //********* Προσθήκη Αποστόλης
         panels.put(Panel.GROUP_TABLE, gtp);
         panels.put(Panel.EDIT_GROUP_TABLE, egtp); //********* Προσθήκη Αποστόλης        
+        panels.put(Panel.ARTIST_ALBUM_TABLE, aatp); //********* Προσθήκη Αποστόλης 
+        panels.put(Panel.GROUP_ALBUM_TABLE, gatp); //********* Προσθήκη Αποστόλης 
+        panels.put(Panel.EDIT_GROUP_ALBUM, egatp); //********* Προσθήκη Αποστόλης
     }
 
     private void initMainFrame() {
