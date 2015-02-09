@@ -7,24 +7,6 @@
         <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
       </Properties>
     </Component>
-    <Component class="javax.persistence.Query" name="musicgroupQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT m FROM Musicgroup m"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="RastamanPUEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="musicgroupList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="musicgroupQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Musicgroup&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.persistence.Query" name="labelquery">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT a FROM Label a"/>
@@ -58,24 +40,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Album&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="musicgroupNameQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT m.name FROM Musicgroup m"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="RastamanPUEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="musicgroupNameList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="musicgroupNameQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Musicgroup&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.persistence.Query" name="labelNamequery">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT a.name FROM Label a"/>
@@ -107,6 +71,24 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Song&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.persistence.Query" name="artistQuery">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT  CONCAT(a.artisticname, &apos; &apos;,  a.firstname,&apos; &apos;,   a.lastname) AS ArtistName FROM Artist a"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="RastamanPUEntityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="artistList">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="artistQuery"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Artist&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>
@@ -185,7 +167,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="&#x386;&#x3bb;&#x3bc;&#x3c0;&#x3bf;&#x3c5;&#x3bc; &#x3a3;&#x3c5;&#x3b3;&#x3ba;&#x3c1;&#x3bf;&#x3c4;&#x3ae;&#x3bc;&#x3b1;&#x3c4;&#x3bf;&#x3c2;"/>
+        <Property name="text" type="java.lang.String" value="&#x386;&#x3bb;&#x3bc;&#x3c0;&#x3bf;&#x3c5;&#x3bc; &#x39a;&#x3b1;&#x3bb;&#x3bb;&#x3b9;&#x3c4;&#x3ad;&#x3c7;&#x3bd;&#x3b7;"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
@@ -215,10 +197,12 @@
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="titleField" max="32767" attributes="0"/>
-                              <Component id="MusicGroupComboBox" max="32767" attributes="0"/>
-                              <Component id="labelComboBox" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="titleField" max="32767" attributes="0"/>
+                                  <Component id="labelComboBox" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="MusicGroupComboBox" min="-2" pref="301" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -380,8 +364,7 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="MusicGroupComboBox">
           <BindingProperties>
-            <BindingProperty name="elements" source="musicgroupNameList" target="MusicGroupComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="musicgroupList" target="MusicGroupComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="elements" source="artistList" target="MusicGroupComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="titleField">
@@ -397,7 +380,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x3a3;&#x3c5;&#x3b3;&#x3ba;&#x3c1;&#x3cc;&#x3c4;&#x3b7;&#x3bc;&#x3b1;:"/>
+            <Property name="text" type="java.lang.String" value="&#x39a;&#x3b1;&#x3bb;&#x3b9;&#x3c4;&#x3ad;&#x3c7;&#x3bd;&#x3b7;&#x3c2;:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">

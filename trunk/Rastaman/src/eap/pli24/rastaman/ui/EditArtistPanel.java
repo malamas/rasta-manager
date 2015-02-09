@@ -34,7 +34,11 @@ public class EditArtistPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        RastamanPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
+        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m.name FROM Musicgenre m");
+        musicgenreNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgenreNameQuery.getResultList();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -107,6 +111,9 @@ public class EditArtistPanel extends javax.swing.JPanel {
                 birthPlaceFieldActionPerformed(evt);
             }
         });
+
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgenreNameList, genreComboBox);
+        bindingGroup.addBinding(jComboBoxBinding);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -217,6 +224,8 @@ public class EditArtistPanel extends javax.swing.JPanel {
                     .addComponent(cancelButton))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
     private void birthPlaceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthPlaceFieldActionPerformed
@@ -230,6 +239,7 @@ public class EditArtistPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.persistence.EntityManager RastamanPUEntityManager;
     private javax.swing.JTextField artisticNameField;
     private javax.swing.JTextField birthPlaceField;
     private javax.swing.JFormattedTextField birthdayField;
@@ -246,8 +256,11 @@ public class EditArtistPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField lastNameField;
+    private java.util.List<eap.pli24.rastaman.entities.Musicgenre> musicgenreNameList;
+    private javax.persistence.Query musicgenreNameQuery;
     private javax.swing.JButton saveButton;
     private javax.swing.JComboBox sexComboBox;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι

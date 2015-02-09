@@ -5,6 +5,8 @@
  */
 package eap.pli24.rastaman.entities;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,6 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Artist.findByBirthday", query = "SELECT a FROM Artist a WHERE a.birthday = :birthday"),
     @NamedQuery(name = "Artist.findByBirthplace", query = "SELECT a FROM Artist a WHERE a.birthplace = :birthplace")})
 public class Artist implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,7 +99,9 @@ public class Artist implements Serializable {
     }
 
     public void setArtistid(Long artistid) {
+        Long oldArtistid = this.artistid;
         this.artistid = artistid;
+        changeSupport.firePropertyChange("artistid", oldArtistid, artistid);
     }
 
     public String getFirstname() {
@@ -102,7 +109,9 @@ public class Artist implements Serializable {
     }
 
     public void setFirstname(String firstname) {
+        String oldFirstname = this.firstname;
         this.firstname = firstname;
+        changeSupport.firePropertyChange("firstname", oldFirstname, firstname);
     }
 
     public String getLastname() {
@@ -110,7 +119,9 @@ public class Artist implements Serializable {
     }
 
     public void setLastname(String lastname) {
+        String oldLastname = this.lastname;
         this.lastname = lastname;
+        changeSupport.firePropertyChange("lastname", oldLastname, lastname);
     }
 
     public String getArtisticname() {
@@ -118,7 +129,9 @@ public class Artist implements Serializable {
     }
 
     public void setArtisticname(String artisticname) {
+        String oldArtisticname = this.artisticname;
         this.artisticname = artisticname;
+        changeSupport.firePropertyChange("artisticname", oldArtisticname, artisticname);
     }
 
     public String getSex() {
@@ -126,7 +139,9 @@ public class Artist implements Serializable {
     }
 
     public void setSex(String sex) {
+        String oldSex = this.sex;
         this.sex = sex;
+        changeSupport.firePropertyChange("sex", oldSex, sex);
     }
    // Κώδικας δικός μας
     public String getGreekSex(){
@@ -139,7 +154,9 @@ public class Artist implements Serializable {
     }
 
     public void setBirthday(Date birthday) {
+        Date oldBirthday = this.birthday;
         this.birthday = birthday;
+        changeSupport.firePropertyChange("birthday", oldBirthday, birthday);
     }
 
     public String getBirthplace() {
@@ -147,7 +164,9 @@ public class Artist implements Serializable {
     }
 
     public void setBirthplace(String birthplace) {
+        String oldBirthplace = this.birthplace;
         this.birthplace = birthplace;
+        changeSupport.firePropertyChange("birthplace", oldBirthplace, birthplace);
     }
 
     @XmlTransient
@@ -164,7 +183,9 @@ public class Artist implements Serializable {
     }
 
     public void setMuscigenreid(Musicgenre muscigenreid) {
+        Musicgenre oldMuscigenreid = this.muscigenreid;
         this.muscigenreid = muscigenreid;
+        changeSupport.firePropertyChange("muscigenreid", oldMuscigenreid, muscigenreid);
     }
 
     @XmlTransient
@@ -199,6 +220,14 @@ public class Artist implements Serializable {
     @Override
     public String toString() {
         return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
  
