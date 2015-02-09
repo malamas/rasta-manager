@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
@@ -76,6 +77,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
+        jTable2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jTable2.getTableHeader().setReorderingAllowed(false);
 
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, albumList, jTable2);
@@ -120,7 +122,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new Dimension(0, 30));
         add(jLabel1, BorderLayout.PAGE_START);
 
-        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
         newButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -136,7 +138,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
             }
         });
 
-        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -184,14 +186,14 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     
-    //Νέα εγγραφή Καλλιτέχνη  ***********************
+    //Νέα εγγραφή Αλμπουμ Καλλιτέχνη  ***********************
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
        
         controller.hidePanel(this);
-        controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);
+        controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_ALBUM);
     }//GEN-LAST:event_newButtonActionPerformed
     
-    //Επεξεργασία Εγγραφής Καλιτέχνη  ****************
+    //Επεξεργασία Εγγραφής Αλμπουμ Καλιτέχνη  ****************
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         try{
             int selectedIndex= jTable2.getSelectedRow();
@@ -200,7 +202,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
             Artist a = artistList.get(selectedIndex);
             System.out.println(a.getLastname());
             controller.hidePanel(this);
-            controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);         
+            controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_ALBUM);         
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage());

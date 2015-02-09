@@ -77,7 +77,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
-        jTable2.setColumnSelectionAllowed(true);
+        jTable2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jTable2.getTableHeader().setReorderingAllowed(false);
 
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, albumList, jTable2);
@@ -117,7 +117,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new Dimension(0, 30));
         add(jLabel1, BorderLayout.PAGE_START);
 
-        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
         newButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -133,7 +133,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
             }
         });
 
-        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

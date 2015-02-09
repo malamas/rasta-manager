@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
 /*
  * @author apostolis
  */
-public class EditGroupAlbumPanel extends javax.swing.JPanel {
+public class EditArtistAlbumPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form EditGroupPanel
      */
-    public EditGroupAlbumPanel() {
+    public EditArtistAlbumPanel() {
         initComponents();
 
       
@@ -36,18 +36,16 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         RastamanPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        musicgroupQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m FROM Musicgroup m");
-        musicgroupList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgroupQuery.getResultList();
         labelquery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Label a");
         labellist = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelquery.getResultList();
         albumQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Album a");
         albumList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : albumQuery.getResultList();
-        musicgroupNameQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m.name FROM Musicgroup m");
-        musicgroupNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgroupNameQuery.getResultList();
         labelNamequery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a.name FROM Label a");
         labelNamelist = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelNamequery.getResultList();
         songQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT s FROM Song s");
         songList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : songQuery.getResultList();
+        artistQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT  CONCAT(a.artisticname, ' ',  a.firstname,' ',   a.lastname) AS ArtistName FROM Artist a");
+        artistList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : artistQuery.getResultList();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -81,7 +79,7 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Άλμπουμ Συγκροτήματος");
+        jLabel1.setText("Άλμπουμ Καλλιτέχνη");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -128,16 +126,14 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labellist, org.jdesktop.beansbinding.ObjectProperty.create(), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgroupNameList, MusicGroupComboBox);
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, artistList, MusicGroupComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, org.jdesktop.beansbinding.ObjectProperty.create(), MusicGroupComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Τίτλος :");
 
-        jLabel4.setText("Συγκρότημα:");
+        jLabel4.setText("Καλιτέχνης:");
 
         jLabel3.setText("Εταιρία:");
 
@@ -170,10 +166,11 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(titleField)
-                            .addComponent(MusicGroupComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(titleField)
+                                .addComponent(labelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(MusicGroupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -260,7 +257,7 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         controller.hidePanel(this);
-        controller.showPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
+        controller.showPanel(MainFrameController.Panel.ARTIST_ALBUM_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -357,6 +354,8 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
     private javax.persistence.EntityManager RastamanPUEntityManager;
     private java.util.List<eap.pli24.rastaman.entities.Album> albumList;
     private javax.persistence.Query albumQuery;
+    private java.util.List<eap.pli24.rastaman.entities.Artist> artistList;
+    private javax.persistence.Query artistQuery;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField disknumberTextField;
@@ -375,10 +374,6 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
     private javax.persistence.Query labelNamequery;
     private java.util.List labellist;
     private javax.persistence.Query labelquery;
-    private java.util.List<eap.pli24.rastaman.entities.Musicgroup> musicgroupList;
-    private java.util.List<eap.pli24.rastaman.entities.Musicgroup> musicgroupNameList;
-    private javax.persistence.Query musicgroupNameQuery;
-    private javax.persistence.Query musicgroupQuery;
     private javax.swing.JButton newButton;
     private javax.swing.JFormattedTextField releasedateField;
     private javax.swing.JButton saveButton;

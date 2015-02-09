@@ -5,6 +5,8 @@
  */
 package eap.pli24.rastaman.entities;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -20,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -37,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Song.findByDuration", query = "SELECT s FROM Song s WHERE s.duration = :duration"),
     @NamedQuery(name = "Song.findByTracknr", query = "SELECT s FROM Song s WHERE s.tracknr = :tracknr")})
 public class Song implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,7 +85,9 @@ public class Song implements Serializable {
     }
 
     public void setSongid(Long songid) {
+        Long oldSongid = this.songid;
         this.songid = songid;
+        changeSupport.firePropertyChange("songid", oldSongid, songid);
     }
 
     public String getTitle() {
@@ -88,7 +95,9 @@ public class Song implements Serializable {
     }
 
     public void setTitle(String title) {
+        String oldTitle = this.title;
         this.title = title;
+        changeSupport.firePropertyChange("title", oldTitle, title);
     }
 
     public int getDuration() {
@@ -96,7 +105,9 @@ public class Song implements Serializable {
     }
 
     public void setDuration(int duration) {
+        int oldDuration = this.duration;
         this.duration = duration;
+        changeSupport.firePropertyChange("duration", oldDuration, duration);
     }
 
     public int getTracknr() {
@@ -104,7 +115,9 @@ public class Song implements Serializable {
     }
 
     public void setTracknr(int tracknr) {
+        int oldTracknr = this.tracknr;
         this.tracknr = tracknr;
+        changeSupport.firePropertyChange("tracknr", oldTracknr, tracknr);
     }
 
     @XmlTransient
@@ -121,7 +134,9 @@ public class Song implements Serializable {
     }
 
     public void setAlbumid(Album albumid) {
+        Album oldAlbumid = this.albumid;
         this.albumid = albumid;
+        changeSupport.firePropertyChange("albumid", oldAlbumid, albumid);
     }
 
     @Override
@@ -147,6 +162,14 @@ public class Song implements Serializable {
     @Override
     public String toString() {
         return "eap.pli24.rastaman.entities.Song[ songid=" + songid + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

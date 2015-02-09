@@ -30,7 +30,8 @@ public class MainFrameController implements Runnable {
         EDIT_GROUP_TABLE,
         ARTIST_ALBUM_TABLE,
         GROUP_ALBUM_TABLE,
-        EDIT_GROUP_ALBUM
+        EDIT_GROUP_ALBUM,
+        EDIT_ARTIST_ALBUM
         
     }
    
@@ -67,7 +68,8 @@ public class MainFrameController implements Runnable {
         EditGroupPanel egtp = new EditGroupPanel();
         ArtistAlbumTablePanel aatp = new ArtistAlbumTablePanel();
         GroupAlbumTablePanel gatp = new GroupAlbumTablePanel();
-        EditGroupAlbumPanel egatp = new EditGroupAlbumPanel();       
+        EditGroupAlbumPanel egatp = new EditGroupAlbumPanel();     
+        EditArtistAlbumPanel eaatp = new EditArtistAlbumPanel();           
 
         rmp.setBackground(new Color(255, 255, 204));
         rmp.setController(this);
@@ -82,7 +84,8 @@ public class MainFrameController implements Runnable {
         egtp.setController(this);    //********* Προσθήκη Αποστόλης
         aatp.setController(this);    //********* Προσθήκη Αποστόλης
         gatp.setController(this);    //********* Προσθήκη Αποστόλης
-        egatp.setController(this);    //********* Προσθήκη Αποστόλης        
+        egatp.setController(this);    //********* Προσθήκη Αποστόλης  
+        eaatp.setController(this);    //********* Προσθήκη Αποστόλης  
         
         panels.put(Panel.ROOT_MENU, rmp);
         panels.put(Panel.ARTIST_TABLE, atp);
@@ -92,6 +95,7 @@ public class MainFrameController implements Runnable {
         panels.put(Panel.ARTIST_ALBUM_TABLE, aatp); //********* Προσθήκη Αποστόλης 
         panels.put(Panel.GROUP_ALBUM_TABLE, gatp); //********* Προσθήκη Αποστόλης 
         panels.put(Panel.EDIT_GROUP_ALBUM, egatp); //********* Προσθήκη Αποστόλης
+        panels.put(Panel.EDIT_ARTIST_ALBUM, eaatp); //********* Προσθήκη Αποστόλης
     }
 
     private void initMainFrame() {
