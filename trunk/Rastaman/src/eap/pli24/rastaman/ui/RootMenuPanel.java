@@ -128,6 +128,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
 
     private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         controller.shutdown();
+        System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void artistAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistAlbumButtonActionPerformed

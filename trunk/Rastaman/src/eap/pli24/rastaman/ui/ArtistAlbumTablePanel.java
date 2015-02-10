@@ -205,7 +205,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
             controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_ALBUM);         
         }
         catch(Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());            
         }
 
     }//GEN-LAST:event_editButtonActionPerformed
@@ -254,15 +254,15 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                        jTable2.updateUI();
                     } catch (Exception e){
                        e.printStackTrace();
-                       RastamanPUEntityManager.getTransaction().rollback();   
+                       RastamanPUEntityManager.getTransaction().rollback(); 
                     }
                 
                 }
             }
             } catch(Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());           
         }
-        
+    
     }//GEN-LAST:event_deleteButtonActionPerformed
 
 
