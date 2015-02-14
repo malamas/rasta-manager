@@ -1,30 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.ui;
+
 import eap.pli24.rastaman.entities.Artist;
 
-
 /*
- * @author apostolis
+ * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
-public class EditArtistPanel extends javax.swing.JPanel {
+public class ArtistEditorPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form EditArtistPanel
+     * Creates new form ArtistEditorPanel
      */
-    public EditArtistPanel() {
-        //this.artist= new Artist();
+    public ArtistEditorPanel() {
         initComponents();
-        /*firstNameField.setText(artist.getFirstname());
-        lastNameField.setText(artist.getLastname());
-        birthdayField.setText(artist.getBirthday().toString() );
-        birthPlaceField.setText(artist.getBirthplace());*/
-      
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,6 +28,7 @@ public class EditArtistPanel extends javax.swing.JPanel {
         RastamanPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
         musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m.name FROM Musicgenre m");
         musicgenreNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgenreNameQuery.getResultList();
+        boundArtist = artist;
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -102,15 +92,15 @@ public class EditArtistPanel extends javax.swing.JPanel {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Είδος Μουσικής :");
 
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${firstname}"), firstNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${lastname}"), lastNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         sexComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Άνδρας", "Γυναίκα" }));
 
         birthdayField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-
-        birthPlaceField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                birthPlaceFieldActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgenreNameList, genreComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
@@ -228,13 +218,8 @@ public class EditArtistPanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void birthPlaceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthPlaceFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_birthPlaceFieldActionPerformed
-
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        controller.hidePanel(this);
-        controller.showPanel(MainFrameController.Panel.ARTIST_TABLE);
+        controller.switchToPanel(MainFrameController.Panel.ARTIST_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
 
@@ -243,6 +228,7 @@ public class EditArtistPanel extends javax.swing.JPanel {
     private javax.swing.JTextField artisticNameField;
     private javax.swing.JTextField birthPlaceField;
     private javax.swing.JFormattedTextField birthdayField;
+    private eap.pli24.rastaman.entities.Artist boundArtist;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JComboBox genreComboBox;
@@ -262,23 +248,23 @@ public class EditArtistPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox sexComboBox;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-
+    //
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
     private Artist artist;
 
-    public void setController(MainFrameController controller) {
+    /**
+     * Δημιουργεί ένα {@code ArtistEditorPanel} για την επεξεργασία ενός
+     * {@code Artist}, και με ορισμένο {@code MainFrameController}
+     *
+     * @param controller ο ελεγκτής
+     * @param artist ο καλλιτέχνης προς επεξεργασία
+     */
+    public ArtistEditorPanel(MainFrameController controller, Artist artist) {
         this.controller = controller;
+        this.artist = artist;
+        initComponents();
     }
-
-    public void setArtist(Artist A){
-        this.artist=A;
-    }
-    public Artist getArtist(){
-        return artist;
-    }
-
-
 }

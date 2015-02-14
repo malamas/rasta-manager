@@ -10,7 +10,8 @@ import javax.swing.LayoutStyle;
 
 /**
  *
- * @author malamas
+ * @author Malamas Malamidis
+ * @author Apostolis Iakovakis
  */
 public class RootMenuPanel extends javax.swing.JPanel {
 
@@ -119,24 +120,23 @@ public class RootMenuPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void musicgroupButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_musicgroupButtonActionPerformed
-        controller.showPanel(MainFrameController.Panel.GROUP_TABLE);
+        controller.switchToPanel(MainFrameController.Panel.GROUP_TABLE);
     }//GEN-LAST:event_musicgroupButtonActionPerformed
 
     private void artistButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistButtonActionPerformed
-        controller.showPanel(MainFrameController.Panel.ARTIST_TABLE);
+        controller.switchToPanel(MainFrameController.Panel.ARTIST_TABLE);
     }//GEN-LAST:event_artistButtonActionPerformed
 
     private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         controller.shutdown();
-        System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void artistAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistAlbumButtonActionPerformed
-        controller.showPanel(MainFrameController.Panel.ARTIST_ALBUM_TABLE);
+        controller.switchToPanel(MainFrameController.Panel.ARTIST_ALBUM_TABLE);
     }//GEN-LAST:event_artistAlbumButtonActionPerformed
 
     private void groupAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_groupAlbumButtonActionPerformed
-        controller.showPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
+        controller.switchToPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
     }//GEN-LAST:event_groupAlbumButtonActionPerformed
 
 
@@ -154,9 +154,9 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
-    
 
-    public void setController(MainFrameController controller) {
+    public RootMenuPanel(MainFrameController controller) {
         this.controller = controller;
+        initComponents();
     }
 }
