@@ -1,7 +1,7 @@
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.entities.Artist;
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 /**
  *
  * @author Malamas Malamidis
+ * @author Apostolis Iakovakis
  */
 public class MainFrameController implements Runnable {
 
@@ -25,19 +26,16 @@ public class MainFrameController implements Runnable {
 
         ROOT_MENU,
         ARTIST_TABLE,
-        EDIT_ARTIST_TABLE,   //********* Προσθήκη Αποστόλης
         GROUP_TABLE,
-        EDIT_GROUP_TABLE,
         ARTIST_ALBUM_TABLE,
         GROUP_ALBUM_TABLE,
-        EDIT_GROUP_ALBUM,
-        EDIT_ARTIST_ALBUM
-        
     }
-   
+
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
     private MainFrame mainFrame;
+    private RootMenuPanel rootMenuPanel;
     private SideBarPanel sbp;
+    private JPanel activePanel;
     private final EnumMap<Panel, JPanel> panels = new EnumMap(Panel.class);
 
     @Override
@@ -61,41 +59,23 @@ public class MainFrameController implements Runnable {
     }
 
     private void initPanels() {
-        RootMenuPanel rmp = new RootMenuPanel();
-        ArtistTablePanel atp = new ArtistTablePanel();
-        EditArtistPanel eatp = new EditArtistPanel();   //********* Προσθήκη Αποστόλης
-        GroupTablePanel gtp = new GroupTablePanel();
-        EditGroupPanel egtp = new EditGroupPanel();
-        ArtistAlbumTablePanel aatp = new ArtistAlbumTablePanel();
-        GroupAlbumTablePanel gatp = new GroupAlbumTablePanel();
-        EditGroupAlbumPanel egatp = new EditGroupAlbumPanel();     
-        EditArtistAlbumPanel eaatp = new EditArtistAlbumPanel();           
+        rootMenuPanel = new RootMenuPanel(this);
+        ArtistTablePanel atp = new ArtistTablePanel(this);
+        GroupTablePanel gtp = new GroupTablePanel(this);
+        ArtistAlbumTablePanel aatp = new ArtistAlbumTablePanel(this);
+        GroupAlbumTablePanel gatp = new GroupAlbumTablePanel(this);
 
-        rmp.setBackground(new Color(255, 255, 204));
-        rmp.setController(this);
+        rootMenuPanel.setBackground(new Color(255, 255, 204));
 
         sbp = new SideBarPanel();
         sbp.setPreferredSize(new Dimension(224, 0));
         sbp.setBackground(new Color(102, 102, 0));
 
-        atp.setController(this);
-        gtp.setController(this);
-        eatp.setController(this);    //********* Προσθήκη Αποστόλης
-        egtp.setController(this);    //********* Προσθήκη Αποστόλης
-        aatp.setController(this);    //********* Προσθήκη Αποστόλης
-        gatp.setController(this);    //********* Προσθήκη Αποστόλης
-        egatp.setController(this);    //********* Προσθήκη Αποστόλης  
-        eaatp.setController(this);    //********* Προσθήκη Αποστόλης  
-        
-        panels.put(Panel.ROOT_MENU, rmp);
+        panels.put(Panel.ROOT_MENU, rootMenuPanel);
         panels.put(Panel.ARTIST_TABLE, atp);
-        panels.put(Panel.EDIT_ARTIST_TABLE, eatp); //********* Προσθήκη Αποστόλης
         panels.put(Panel.GROUP_TABLE, gtp);
-        panels.put(Panel.EDIT_GROUP_TABLE, egtp); //********* Προσθήκη Αποστόλης        
-        panels.put(Panel.ARTIST_ALBUM_TABLE, aatp); //********* Προσθήκη Αποστόλης 
-        panels.put(Panel.GROUP_ALBUM_TABLE, gatp); //********* Προσθήκη Αποστόλης 
-        panels.put(Panel.EDIT_GROUP_ALBUM, egatp); //********* Προσθήκη Αποστόλης
-        panels.put(Panel.EDIT_ARTIST_ALBUM, eaatp); //********* Προσθήκη Αποστόλης
+        panels.put(Panel.ARTIST_ALBUM_TABLE, aatp);
+        panels.put(Panel.GROUP_ALBUM_TABLE, gatp);
     }
 
     private void initMainFrame() {
@@ -127,11 +107,9 @@ public class MainFrameController implements Runnable {
 
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(sbp, BorderLayout.LINE_START);
-        mainFrame.add(panels.get(Panel.ROOT_MENU), BorderLayout.CENTER);
+        mainFrame.add(rootMenuPanel, BorderLayout.CENTER);
+        activePanel = rootMenuPanel;
 
-        //clt.addLayoutComponent(rmp, "RootMenuPanel");
-        //mainFrame.add(rmp, "RootMenuPanel");
-        //mainFrame.add(gtp, "GroupTablePanel");
         // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
 
@@ -141,18 +119,20 @@ public class MainFrameController implements Runnable {
         mainFrame.dispose();
     }
 
-    public void hidePanel(JPanel panel) {
-        panel.setVisible(false);
-        JPanel p = panels.get(Panel.ROOT_MENU);
-        mainFrame.add(p, BorderLayout.CENTER);
-        p.setVisible(true);
+    public void switchToPanel(Panel p) {
+        JPanel panel = panels.get(p);
+        switchTo(panel);
     }
 
-    public void showPanel(Panel p) {
-        JPanel r = panels.get(Panel.ROOT_MENU);
-        r.setVisible(false);
-        JPanel pn = panels.get(p);
-        mainFrame.add(pn, BorderLayout.CENTER);
-        pn.setVisible(true);
+    private void switchTo(JPanel panel) {
+        activePanel.setVisible(false);
+        mainFrame.add(panel, BorderLayout.CENTER);
+        panel.setVisible(true);
+        activePanel = panel;
+    }
+
+    public void showArtistEditor(Artist artist) {
+        ArtistEditorPanel editor = new ArtistEditorPanel(this, artist);
+        switchTo(editor);
     }
 }

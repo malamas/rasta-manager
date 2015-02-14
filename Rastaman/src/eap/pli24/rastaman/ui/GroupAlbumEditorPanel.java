@@ -1,29 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.ui;
-import eap.pli24.rastaman.entities.Artist;
-import eap.pli24.rastaman.entities.Musicgroup;
-import javax.swing.ComboBoxModel;
-import javax.swing.JOptionPane;
-
 
 /*
- * @author apostolis
+ * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
-public class EditGroupAlbumPanel extends javax.swing.JPanel {
+public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form EditGroupPanel
      */
-    public EditGroupAlbumPanel() {
+    public GroupAlbumEditorPanel() {
         initComponents();
-
-      
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -259,96 +247,94 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        controller.hidePanel(this);
-        controller.showPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
+        controller.switchToPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-     /*
-        try{
-            int selectedIndex= jTable1.getSelectedRow();
-            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
-            Artist a = artistList.get(selectedIndex);
-            if (a.getAlbumList().isEmpty()){
-                if (a.getMusicgroupList().isEmpty()){
-                    Object[] options = {"Ναι",
-                        "Όχι"};
-                    int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Να διαγραφεί ο Καλλιτέχνης" + a.getLastname() + " " + a.getFirstname() + ";",
-                        "Επιβεβαίωση Διαγραφής",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,     //do not use a custom Icon
-                        options,  //the titles of buttons
-                        options[1]); //default button title
-                    if (n==0) {
-                        RastamanPUEntityManager.getTransaction().begin();
-                        try{
-                            Query q=RastamanPUEntityManager.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
-                                Artist.class).setParameter("artistID", a.getArtistid());
-                            q.executeUpdate();
-                            RastamanPUEntityManager.getTransaction().commit();
-                            artistList.remove(selectedIndex);
-                            jTable1.updateUI();
-                        } catch (Exception e){
-                            e.printStackTrace();
-                            RastamanPUEntityManager.getTransaction().rollback();
-                        }
-                    }
-                }
-                else{
-                    Object[] options = {"ΟΚ"};
-                    int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Ο καλλιτέχνης συμμετέχει σε συγκρότημα \n"
-                        + "πρέπει πρώτα να διαγραφεί απο αυτό",
-                        "Διαγραφή Καλλιτέχνη",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null,     //do not use a custom Icon
-                        options,  //the titles of buttons
-                        options[0]); //default button title
-                }
-            }
-            else {
-                if (a.getMusicgroupList().isEmpty()){
-                    Object[] options = {"ΟΚ"};
-                    int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
-                        + "πρέπει πρώτα να διαγραφεί αυτό",
-                        "Διαγραφή Καλλιτέχνη",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null,     //do not use a custom Icon
-                        options,  //the titles of buttons
-                        options[0]); //default button title
-                }
-                else{
-                    Object[] options = {"ΟΚ"};
-                    int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Ο καλλιτέχνης συμμετέχει σε συγκρότημα  και\n"
-                        +"υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
-                        + "πρέπει πρώτα να διαγραφεί το άλμπουμ και να διαγραφεί απο το συγκρότημα",
-                        "Διαγραφή Καλλιτέχνη",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null,     //do not use a custom Icon
-                        options,  //the titles of buttons
-                        options[0]); //default button title
-                }
+        /*
+         try{
+         int selectedIndex= jTable1.getSelectedRow();
+         if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
+         Artist a = artistList.get(selectedIndex);
+         if (a.getAlbumList().isEmpty()){
+         if (a.getMusicgroupList().isEmpty()){
+         Object[] options = {"Ναι",
+         "Όχι"};
+         int n = JOptionPane.showOptionDialog(new JFrame(),
+         "Να διαγραφεί ο Καλλιτέχνης" + a.getLastname() + " " + a.getFirstname() + ";",
+         "Επιβεβαίωση Διαγραφής",
+         JOptionPane.YES_NO_OPTION,
+         JOptionPane.QUESTION_MESSAGE,
+         null,     //do not use a custom Icon
+         options,  //the titles of buttons
+         options[1]); //default button title
+         if (n==0) {
+         RastamanPUEntityManager.getTransaction().begin();
+         try{
+         Query q=RastamanPUEntityManager.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
+         Artist.class).setParameter("artistID", a.getArtistid());
+         q.executeUpdate();
+         RastamanPUEntityManager.getTransaction().commit();
+         artistList.remove(selectedIndex);
+         jTable1.updateUI();
+         } catch (Exception e){
+         e.printStackTrace();
+         RastamanPUEntityManager.getTransaction().rollback();
+         }
+         }
+         }
+         else{
+         Object[] options = {"ΟΚ"};
+         int n = JOptionPane.showOptionDialog(new JFrame(),
+         "Ο καλλιτέχνης συμμετέχει σε συγκρότημα \n"
+         + "πρέπει πρώτα να διαγραφεί απο αυτό",
+         "Διαγραφή Καλλιτέχνη",
+         JOptionPane.NO_OPTION,
+         JOptionPane.INFORMATION_MESSAGE,
+         null,     //do not use a custom Icon
+         options,  //the titles of buttons
+         options[0]); //default button title
+         }
+         }
+         else {
+         if (a.getMusicgroupList().isEmpty()){
+         Object[] options = {"ΟΚ"};
+         int n = JOptionPane.showOptionDialog(new JFrame(),
+         "Υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
+         + "πρέπει πρώτα να διαγραφεί αυτό",
+         "Διαγραφή Καλλιτέχνη",
+         JOptionPane.NO_OPTION,
+         JOptionPane.INFORMATION_MESSAGE,
+         null,     //do not use a custom Icon
+         options,  //the titles of buttons
+         options[0]); //default button title
+         }
+         else{
+         Object[] options = {"ΟΚ"};
+         int n = JOptionPane.showOptionDialog(new JFrame(),
+         "Ο καλλιτέχνης συμμετέχει σε συγκρότημα  και\n"
+         +"υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
+         + "πρέπει πρώτα να διαγραφεί το άλμπουμ και να διαγραφεί απο το συγκρότημα",
+         "Διαγραφή Καλλιτέχνη",
+         JOptionPane.NO_OPTION,
+         JOptionPane.INFORMATION_MESSAGE,
+         null,     //do not use a custom Icon
+         options,  //the titles of buttons
+         options[0]); //default button title
+         }
 
-            }
+         }
 
-        }
-        catch(Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
-        }
-           */
+         }
+         catch(Exception e) {
+         JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+         }
+         */
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
 
-        controller.hidePanel(this);
-        controller.showPanel(MainFrameController.Panel.EDIT_ARTIST_TABLE);
+        //controller.switchToPanel(MainFrameController.Panel.ARTIST_EDITOR);
     }//GEN-LAST:event_newButtonActionPerformed
 
 
@@ -393,13 +379,9 @@ public class EditGroupAlbumPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
-    
 
     public void setController(MainFrameController controller) {
         this.controller = controller;
     }
-
-
-
 
 }

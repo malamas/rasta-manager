@@ -25,6 +25,11 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Musicgenre&gt;"/>
       </AuxValues>
     </Component>
+    <Component class="eap.pli24.rastaman.entities.Artist" name="boundArtist">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="artist"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -281,8 +286,18 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="firstNameField">
+          <BindingProperties>
+            <BindingProperty name="text" source="boundArtist" sourcePath="${firstname}" target="firstNameField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="lastNameField">
+          <BindingProperties>
+            <BindingProperty name="text" source="boundArtist" sourcePath="${lastname}" target="lastNameField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="artisticNameField">
         </Component>
@@ -304,9 +319,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="birthPlaceField">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="birthPlaceFieldActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="genreComboBox">
           <BindingProperties>

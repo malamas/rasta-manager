@@ -8,12 +8,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.beans.Beans;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +24,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
 import org.jdesktop.beansbinding.AutoBinding;
@@ -40,7 +34,8 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
- * @author malamas
+ * @author Malamas Malamidis
+ * @author Apostolis Iakovakis
  */
 public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
@@ -73,7 +68,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         newButton = new JButton();
         editButton = new JButton();
         deleteButton = new JButton();
-        exitButton = new JButton();
+        backButton = new JButton();
 
         setLayout(new BorderLayout());
 
@@ -141,11 +136,11 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
             }
         });
 
-        exitButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
-        exitButton.setPreferredSize(new Dimension(80, 23));
-        exitButton.addActionListener(new ActionListener() {
+        backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
+        backButton.setPreferredSize(new Dimension(80, 23));
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                exitButtonActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -159,7 +154,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 437, Short.MAX_VALUE)
-                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -168,7 +163,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                     .addComponent(newButton)
                     .addComponent(editButton)
                     .addComponent(deleteButton)
-                    .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
         );
 
         add(jPanel1, BorderLayout.PAGE_END);
@@ -176,42 +171,42 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        controller.hidePanel(this);
-    }//GEN-LAST:event_exitButtonActionPerformed
+    private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        controller.switchToPanel(MainFrameController.Panel.ROOT_MENU);
+    }//GEN-LAST:event_backButtonActionPerformed
 
-    
-    //Νέα εγγραφή Αλμπουμ Συγκροτήματος  ***********************
+    //Νέα εγγραφή Αλμπουμ Συγκροτήματος
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-       
-        controller.hidePanel(this);
-        controller.showPanel(MainFrameController.Panel.EDIT_GROUP_ALBUM);
+
+        //controller.switchToPanel(MainFrameController.Panel.GROUP_ALBUM_EDITOR);
     }//GEN-LAST:event_newButtonActionPerformed
-    
-    //Επεξεργασία Αλμπουμ Συγκροτήματος  ****************
+
+    //Επεξεργασία Αλμπουμ Συγκροτήματος
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        try{
-            int selectedIndex= jTable2.getSelectedRow();
-            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
-          
+        try {
+            int selectedIndex = jTable2.getSelectedRow();
+            if (selectedIndex == -1) {
+                throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
+            }
+
             Artist a = artistList.get(selectedIndex);
             System.out.println(a.getLastname());
-            controller.hidePanel(this);
-            controller.showPanel(MainFrameController.Panel.EDIT_GROUP_ALBUM);         
-        }
-        catch(Exception e) {
+            //controller.switchToPanel(MainFrameController.Panel.GROUP_ALBUM_EDITOR);
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
         }
 
     }//GEN-LAST:event_editButtonActionPerformed
-    //Διαγραφή Εγγραφής Άλμπουμ Καλιτέχνη  ****************
+    //Διαγραφή Εγγραφής Άλμπουμ Καλιτέχνη
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        try{
-            int selectedIndex= jTable2.getSelectedRow();
-            if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
+        try {
+            int selectedIndex = jTable2.getSelectedRow();
+            if (selectedIndex == -1) {
+                throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
+            }
             Album a = albumList.get(selectedIndex);
             boolean isInPlaylist = false;
-            for (Song s: a.getSongList()){
+            for (Song s : a.getSongList()) {
                 if (!s.getPlaylistList().isEmpty()) {
                     isInPlaylist = true;
                     break;
@@ -220,44 +215,44 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
             if (isInPlaylist) {
                 Object[] options = {"ΟΚ"};
                 int n = JOptionPane.showOptionDialog(new JFrame(),
-                     "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
-                     + "πρέπει πρώτα να διαγραφεί απο αυτή",
-                     "Διαγραφή Άλμπουμ",
-                     JOptionPane.NO_OPTION,
-                     JOptionPane.INFORMATION_MESSAGE,
-                     null,     //do not use a custom Icon
-                     options,  //the titles of buttons
-                     options[0]); //default button title                
-            } else{
-                Object[] options = {"Ναι","Όχι"};
+                        "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
+                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                        "Διαγραφή Άλμπουμ",
+                        JOptionPane.NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null, //do not use a custom Icon
+                        options, //the titles of buttons
+                        options[0]); //default button title                
+            } else {
+                Object[] options = {"Ναι", "Όχι"};
                 int n = JOptionPane.showOptionDialog(new JFrame(),
-                     "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
-                     "Επιβεβαίωση Διαγραφής",
-                     JOptionPane.YES_NO_OPTION,
-                     JOptionPane.QUESTION_MESSAGE,
-                     null,     //do not use a custom Icon
-                     options,  //the titles of buttons
-                     options[1]); //default button title
-                if (n==0) {
+                        "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
+                        "Επιβεβαίωση Διαγραφής",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, //do not use a custom Icon
+                        options, //the titles of buttons
+                        options[1]); //default button title
+                if (n == 0) {
                     RastamanPUEntityManager.getTransaction().begin();
-                    try{
-                       Query q=RastamanPUEntityManager.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ", 
-                                                               Album.class).setParameter("albumID", a.getAlbumid());
-                       q.executeUpdate();  
-                       RastamanPUEntityManager.getTransaction().commit();
-                       albumList.remove(selectedIndex);
-                       jTable2.updateUI();
-                    } catch (Exception e){
-                       e.printStackTrace();
-                       RastamanPUEntityManager.getTransaction().rollback();   
+                    try {
+                        Query q = RastamanPUEntityManager.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
+                                Album.class).setParameter("albumID", a.getAlbumid());
+                        q.executeUpdate();
+                        RastamanPUEntityManager.getTransaction().commit();
+                        albumList.remove(selectedIndex);
+                        jTable2.updateUI();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        RastamanPUEntityManager.getTransaction().rollback();
                     }
-                
+
                 }
             }
-            } catch(Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
         }
-        
+
     }//GEN-LAST:event_deleteButtonActionPerformed
 
 
@@ -267,9 +262,9 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     private Query albumQuery;
     private List<Artist> artistList;
     private Query artistQuery;
+    private JButton backButton;
     private JButton deleteButton;
     private JButton editButton;
-    private JButton exitButton;
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane2;
@@ -283,7 +278,8 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
 
-    public void setController(MainFrameController controller) {
+    public GroupAlbumTablePanel(MainFrameController controller) {
         this.controller = controller;
+        initComponents();
     }
 }
