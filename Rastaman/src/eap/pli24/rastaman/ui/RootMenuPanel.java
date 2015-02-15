@@ -63,7 +63,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
             }
         });
 
-        artistAlbumButton.setText("Αλμπουμ Καλιτεχνών");
+        artistAlbumButton.setText("Αλμπουμ Καλλιτεχνών");
         artistAlbumButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 artistAlbumButtonActionPerformed(evt);
@@ -87,35 +87,31 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                            .addComponent(artistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(musicgroupButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(exitButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                            .addComponent(artistAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(groupAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(groupAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(artistAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(musicgroupButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(artistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(playlistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exitButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(233, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(81, 81, 81)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(artistButton)
-                    .addComponent(artistAlbumButton))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(musicgroupButton)
-                    .addComponent(groupAlbumButton))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
+                .addComponent(artistButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(musicgroupButton)
+                .addGap(18, 18, 18)
+                .addComponent(artistAlbumButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(groupAlbumButton)
+                .addGap(18, 18, 18)
                 .addComponent(playlistButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(exitButton)
-                .addGap(40, 40, 40))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

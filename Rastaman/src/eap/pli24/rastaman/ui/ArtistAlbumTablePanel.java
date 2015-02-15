@@ -18,7 +18,6 @@ import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -143,6 +142,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         });
 
         backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
+        backButton.setText("Επιστροφή");
         backButton.setPreferredSize(new Dimension(80, 23));
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -159,8 +159,8 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                 .addComponent(editButton)
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 437, Short.MAX_VALUE)
-                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 374, Short.MAX_VALUE)
+                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -182,76 +182,15 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        try {
-            int selectedIndex = artistAlbumTable.getSelectedRow();
-            if (selectedIndex == -1) {
-                throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
-            }
-
+        int selectedIndex = artistAlbumTable.getSelectedRow();
+        if (selectedIndex != -1) {
             Artist a = artistList.get(selectedIndex);
-            System.out.println(a.getLastname());
             //controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_EDITOR);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
         }
-
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        try {
-            int selectedIndex = artistAlbumTable.getSelectedRow();
-            if (selectedIndex == -1) {
-                throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
-            }
-            Album a = albumList.get(selectedIndex);
-            boolean isInPlaylist = false;
-            for (Song s : a.getSongList()) {
-                if (!s.getPlaylistList().isEmpty()) {
-                    isInPlaylist = true;
-                    break;
-                }
-            }
-            if (isInPlaylist) {
-                Object[] options = {"ΟΚ"};
-                int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
-                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
-                        "Διαγραφή Άλμπουμ",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null, //do not use a custom Icon
-                        options, //the titles of buttons
-                        options[0]); //default button title                
-            } else {
-                Object[] options = {"Ναι", "Όχι"};
-                int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
-                        "Επιβεβαίωση Διαγραφής",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null, //do not use a custom Icon
-                        options, //the titles of buttons
-                        options[1]); //default button title
-                if (n == 0) {
-                    localEm.getTransaction().begin();
-                    try {
-                        Query q = localEm.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
-                                Album.class).setParameter("albumID", a.getAlbumid());
-                        q.executeUpdate();
-                        localEm.getTransaction().commit();
-                        albumList.remove(selectedIndex);
-                        artistAlbumTable.updateUI();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        localEm.getTransaction().rollback();
-                    }
-
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
-        }
-
+        deleteArtistAlbum();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -300,6 +239,51 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                 default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
+            }
+        }
+    }
+
+    private void deleteArtistAlbum() {
+        int selectedIndex = artistAlbumTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            Album a = albumList.get(selectedIndex);
+            boolean isInPlaylist = false;
+            for (Song s : a.getSongList()) {
+                if (!s.getPlaylistList().isEmpty()) {
+                    isInPlaylist = true;
+                    break;
+                }
+            }
+            if (isInPlaylist) {
+                Object[] options = {"ΟΚ"};
+                int n = JOptionPane.showOptionDialog(this,
+                        "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
+                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                        "Διαγραφή Άλμπουμ",
+                        JOptionPane.NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null, //do not use a custom Icon
+                        options, //the titles of buttons
+                        options[0]); //default button title                
+            } else {
+                Object[] options = {"Ναι", "Όχι"};
+                int n = JOptionPane.showOptionDialog(this,
+                        "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
+                        "Επιβεβαίωση Διαγραφής",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, //do not use a custom Icon
+                        options, //the titles of buttons
+                        options[1]); //default button title
+                if (n == 0) {
+                    localEm.getTransaction().begin();
+                    Query q = localEm.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
+                            Album.class).setParameter("albumID", a.getAlbumid());
+                    q.executeUpdate();
+                    localEm.getTransaction().commit();
+                    albumList.remove(selectedIndex);
+                    artistAlbumTable.updateUI();
+                }
             }
         }
     }

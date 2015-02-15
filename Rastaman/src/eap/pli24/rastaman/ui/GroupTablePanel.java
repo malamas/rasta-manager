@@ -78,6 +78,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         add(jLabel1, BorderLayout.PAGE_START);
 
         backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
+        backButton.setText("Επιστροφή");
         backButton.setPreferredSize(new Dimension(80, 23));
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -118,8 +119,8 @@ public class GroupTablePanel extends javax.swing.JPanel {
                 .addComponent(editButton)
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -155,68 +156,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        try {
-            int selectedIndex = groupTable.getSelectedRow();
-            if (selectedIndex == -1) {
-                throw new Exception("Δεν Επιλέχθηκε Συγκρότημα");
-            }
-            Musicgroup a = musicgroupList.get(selectedIndex);
-            if (a.getAlbumList().isEmpty()) {
-                Object[] options = {"Ναι", "Όχι"};
-                int n;
-                if (a.getArtistList().isEmpty()) {
-                    n = JOptionPane.showOptionDialog(new JFrame(),
-                            "Να διαγραφεί το συγκρότημα " + a.getName() + ";",
-                            "Επιβεβαίωση Διαγραφής",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, //do not use a custom Icon
-                            options, //the titles of buttons
-                            options[1]); //default button title
-                } else {
-
-                    n = JOptionPane.showOptionDialog(new JFrame(),
-                            "To συγκρότημα " + a.getName() + "\n"
-                            + "έχει καλλιτέχνες οι οποίοι δεν θα  διαγραφούν."
-                            + "Να διαγραφεί το Συγκρότημα;",
-                            "Διαγραφή Συγκροτήματος",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, //do not use a custom Icon
-                            options, //the titles of buttons
-                            options[1]); //default button title
-                }
-                if (n == 0) {
-                    localEm.getTransaction().begin();
-                    try {
-                        Query q = localEm.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
-                                Musicgroup.class).setParameter("musicgroupID", a.getMusicgroupid());
-                        q.executeUpdate();
-                        localEm.getTransaction().commit();
-                        musicgroupList.remove(selectedIndex);
-                        groupTable.updateUI();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        localEm.getTransaction().rollback();
-                    }
-                }
-            } else {
-
-                Object[] options = {"ΟΚ"};
-                int n = JOptionPane.showOptionDialog(new JFrame(),
-                        "Υπάρχει άλμπουμ για το συγκεκριμένο Συγκρότημα \n"
-                        + "πρέπει πρώτα να διαγραφεί αυτό",
-                        "Διαγραφή Συγκροτήματος",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null, //do not use a custom Icon
-                        options, //the titles of buttons
-                        options[0]); //default button title
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
-        }
-
+        deleteGroup();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -281,6 +221,50 @@ public class GroupTablePanel extends javax.swing.JPanel {
                 default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
+            }
+        }
+    }
+
+    private void deleteGroup() {
+        int selectedIndex = groupTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            Musicgroup a = musicgroupList.get(selectedIndex);
+            if (a.getAlbumList().isEmpty()) {
+                Object[] options = {"Ναι", "Όχι"};
+                int n;
+                if (a.getArtistList().isEmpty()) {
+                    n = JOptionPane.showOptionDialog(this,
+                            "Να διαγραφεί το συγκρότημα " + a.getName() + ";",
+                            "Επιβεβαίωση Διαγραφής",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null, //do not use a custom Icon
+                            options, //the titles of buttons
+                            options[1]); //default button title
+                } else {
+
+                    n = JOptionPane.showOptionDialog(this,
+                            "To συγκρότημα " + a.getName() + "\n"
+                            + "έχει καλλιτέχνες οι οποίοι δεν θα  διαγραφούν."
+                            + "Να διαγραφεί το Συγκρότημα;",
+                            "Διαγραφή Συγκροτήματος",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null, //do not use a custom Icon
+                            options, //the titles of buttons
+                            options[1]); //default button title
+                }
+                if (n == 0) {
+                    localEm.getTransaction().begin();
+                    Query q = localEm.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
+                            Musicgroup.class).setParameter("musicgroupID", a.getMusicgroupid());
+                    q.executeUpdate();
+                    localEm.getTransaction().commit();
+                    musicgroupList.remove(selectedIndex);
+                    groupTable.updateUI();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Το συγκρότημα δεν μπορεί να διαγραφεί, γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
