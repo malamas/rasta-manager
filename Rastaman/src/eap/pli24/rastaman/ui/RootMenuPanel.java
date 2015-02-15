@@ -120,11 +120,11 @@ public class RootMenuPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void musicgroupButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_musicgroupButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.GROUP_TABLE);
+        controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
     }//GEN-LAST:event_musicgroupButtonActionPerformed
 
     private void artistButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.ARTIST_TABLE);
+        controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
     }//GEN-LAST:event_artistButtonActionPerformed
 
     private void exitButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
@@ -132,11 +132,11 @@ public class RootMenuPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void artistAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_artistAlbumButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.ARTIST_ALBUM_TABLE);
+        controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
     }//GEN-LAST:event_artistAlbumButtonActionPerformed
 
     private void groupAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_groupAlbumButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
+        controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);
     }//GEN-LAST:event_groupAlbumButtonActionPerformed
 
 

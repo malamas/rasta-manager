@@ -2,6 +2,7 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Musicgroup;
+import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,7 +13,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
@@ -55,10 +56,10 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        musicgroupQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m FROM Musicgroup m");
+        localEm = em;
+        musicgroupQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgroup m");
         musicgroupList = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Album a");
+        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         jLabel1 = new JLabel();
         jPanel1 = new JPanel();
@@ -67,7 +68,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         editButton = new JButton();
         newButton = new JButton();
         jScrollPane1 = new JScrollPane();
-        jTable1 = new JTable();
+        groupTable = new JTable();
 
         setLayout(new BorderLayout());
 
@@ -132,10 +133,10 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
         add(jPanel1, BorderLayout.PAGE_END);
 
-        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jTable1.getTableHeader().setReorderingAllowed(false);
+        groupTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        groupTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, jTable1);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, groupTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
@@ -146,7 +147,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(groupTable);
 
         add(jScrollPane1, BorderLayout.CENTER);
 
@@ -155,7 +156,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int selectedIndex = jTable1.getSelectedRow();
+            int selectedIndex = groupTable.getSelectedRow();
             if (selectedIndex == -1) {
                 throw new Exception("Δεν Επιλέχθηκε Συγκρότημα");
             }
@@ -186,17 +187,17 @@ public class GroupTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                 }
                 if (n == 0) {
-                    RastamanPUEntityManager.getTransaction().begin();
+                    localEm.getTransaction().begin();
                     try {
-                        Query q = RastamanPUEntityManager.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
+                        Query q = localEm.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
                                 Musicgroup.class).setParameter("musicgroupID", a.getMusicgroupid());
                         q.executeUpdate();
-                        RastamanPUEntityManager.getTransaction().commit();
+                        localEm.getTransaction().commit();
                         musicgroupList.remove(selectedIndex);
-                        jTable1.updateUI();
+                        groupTable.updateUI();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        RastamanPUEntityManager.getTransaction().rollback();
+                        localEm.getTransaction().rollback();
                     }
                 }
             } else {
@@ -220,39 +221,39 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         try {
-            int selectedIndex = jTable1.getSelectedRow();
+            int selectedIndex = groupTable.getSelectedRow();
             if (selectedIndex == -1) {
                 throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
             }
 
             Musicgroup a = musicgroupList.get(selectedIndex);
             System.out.println(a.getName());
-            //controller.switchToPanel(MainFrameController.Panel.GROUP_EDITOR);
+            //controller.switchToPanel(MainFrameController.PanelType.GROUP_EDITOR);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        //controller.switchToPanel(MainFrameController.Panel.GROUP_EDITOR);
+        //controller.switchToPanel(MainFrameController.PanelType.GROUP_EDITOR);
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.ROOT_MENU);
+        controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private EntityManager RastamanPUEntityManager;
     private List<Album> albumList;
     private Query albumQuery;
     private JButton backButton;
     private JButton deleteButton;
     private JButton editButton;
+    private JTable groupTable;
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane1;
-    private JTable jTable1;
+    private EntityManager localEm;
     private List<Musicgroup> musicgroupList;
     private Query musicgroupQuery;
     private JButton newButton;
@@ -263,9 +264,24 @@ public class GroupTablePanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
+    private EntityManager em;
 
-    public GroupTablePanel(MainFrameController controller) {
+    public GroupTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
+        this.em = em;
         initComponents();
+
+        // Καθορισμός εμφάνισης πίνακα
+        TableColumnModel tcm = groupTable.getColumnModel();
+        for (int i = 0; i < tcm.getColumnCount(); i++) {
+            switch (i) {
+                case 1:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
+                    break;
+                default:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
     }
 }

@@ -2,16 +2,19 @@
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="RastamanPUEntityManager">
+    <Component class="javax.persistence.EntityManager" name="localEm">
       <Properties>
         <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
+      </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="artistQuery">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT a FROM Artist a"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="RastamanPUEntityManager"/>
+          <ComponentRef name="localEm"/>
         </Property>
       </Properties>
     </Component>
@@ -29,7 +32,7 @@
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT a FROM Album a where a.musicgroupmusicgroupid is not null"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="RastamanPUEntityManager"/>
+          <ComponentRef name="localEm"/>
         </Property>
       </Properties>
     </Component>
@@ -71,7 +74,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable2">
+        <Component class="javax.swing.JTable" name="groupAlbumTable">
           <Properties>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="1">
@@ -115,7 +118,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="albumList" target="jTable2" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="albumList" target="groupAlbumTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${title}">
                 <BindingParameter name="NAME" value="&#x3a4;&#x3af;&#x3c4;&#x3bb;&#x3bf;&#x3c2;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

@@ -3,6 +3,7 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Song;
+import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,7 +14,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
@@ -56,13 +57,13 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        artistQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Artist a");
+        localEm = em;
+        artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Album a where a.artistartistid is not null");
+        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.artistartistid is not null");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         jScrollPane2 = new JScrollPane();
-        jTable2 = new JTable();
+        artistAlbumTable = new JTable();
         jLabel1 = new JLabel();
         jPanel1 = new JPanel();
         newButton = new JButton();
@@ -72,10 +73,10 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
-        jTable2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jTable2.getTableHeader().setReorderingAllowed(false);
+        artistAlbumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        artistAlbumTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, albumList, jTable2);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, albumList, artistAlbumTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${title}"));
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
@@ -108,7 +109,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnClass(Date.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(artistAlbumTable);
 
         add(jScrollPane2, BorderLayout.CENTER);
 
@@ -176,31 +177,29 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Νέα εγγραφή Αλμπουμ Καλλιτέχνη
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        //controller.switchToPanel(MainFrameController.Panel.ARTIST_ALBUM_EDITOR);
+        //controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_EDITOR);
     }//GEN-LAST:event_newButtonActionPerformed
 
-    //Επεξεργασία Εγγραφής Αλμπουμ Καλιτέχνη  ****************
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         try {
-            int selectedIndex = jTable2.getSelectedRow();
+            int selectedIndex = artistAlbumTable.getSelectedRow();
             if (selectedIndex == -1) {
                 throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
             }
 
             Artist a = artistList.get(selectedIndex);
             System.out.println(a.getLastname());
-            //controller.switchToPanel(MainFrameController.Panel.ARTIST_ALBUM_EDITOR);
+            //controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_EDITOR);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
         }
 
     }//GEN-LAST:event_editButtonActionPerformed
-    //Διαγραφή Εγγραφής Άλμπουμ Καλιτέχνη
+
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int selectedIndex = jTable2.getSelectedRow();
+            int selectedIndex = artistAlbumTable.getSelectedRow();
             if (selectedIndex == -1) {
                 throw new Exception("Δεν Επιλέχθηκε Άλμπουμ");
             }
@@ -234,17 +233,17 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                         options, //the titles of buttons
                         options[1]); //default button title
                 if (n == 0) {
-                    RastamanPUEntityManager.getTransaction().begin();
+                    localEm.getTransaction().begin();
                     try {
-                        Query q = RastamanPUEntityManager.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
+                        Query q = localEm.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
                                 Album.class).setParameter("albumID", a.getAlbumid());
                         q.executeUpdate();
-                        RastamanPUEntityManager.getTransaction().commit();
+                        localEm.getTransaction().commit();
                         albumList.remove(selectedIndex);
-                        jTable2.updateUI();
+                        artistAlbumTable.updateUI();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        RastamanPUEntityManager.getTransaction().rollback();
+                        localEm.getTransaction().rollback();
                     }
 
                 }
@@ -256,14 +255,14 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.ROOT_MENU);
+        controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private EntityManager RastamanPUEntityManager;
     private List<Album> albumList;
     private Query albumQuery;
+    private JTable artistAlbumTable;
     private List<Artist> artistList;
     private Query artistQuery;
     private JButton backButton;
@@ -272,7 +271,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     private JLabel jLabel1;
     private JPanel jPanel1;
     private JScrollPane jScrollPane2;
-    private JTable jTable2;
+    private EntityManager localEm;
     private JButton newButton;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -281,9 +280,27 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
+    private EntityManager em;
 
-    public ArtistAlbumTablePanel(MainFrameController controller) {
+    public ArtistAlbumTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
+        this.em = em;
         initComponents();
+
+        // Καθορισμός εμφάνισης πίνακα
+        TableColumnModel tcm = artistAlbumTable.getColumnModel();
+        for (int i = 0; i < tcm.getColumnCount(); i++) {
+            switch (i) {
+                case 5:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
+                    break;
+                case 7:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
+                    break;
+                default:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
     }
 }

@@ -247,7 +247,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.GROUP_ALBUM_TABLE);
+        controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -334,7 +334,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
 
-        //controller.switchToPanel(MainFrameController.Panel.ARTIST_EDITOR);
+        //controller.switchToPanel(MainFrameController.PanelType.ARTIST_EDITOR);
     }//GEN-LAST:event_newButtonActionPerformed
 
 
