@@ -9,6 +9,7 @@ INSERT INTO MusicGenre VALUES (7, 'Latin');
 INSERT INTO MusicGenre VALUES (8, 'Classical');
 INSERT INTO MusicGenre VALUES (9, 'Reggae');
 INSERT INTO MusicGenre VALUES (10, 'Blues');
+ALTER TABLE MusicGenre ALTER COLUMN musicGenreID RESTART WITH 11;
 
 -- labels
 INSERT INTO Label VALUES (1, 'Harvest', NULL, NULL);
@@ -17,10 +18,12 @@ INSERT INTO Label VALUES (3, 'Atlantic', NULL, NULL);
 INSERT INTO Label VALUES (4, 'Sony Music', '550 Madison Ave., New York, NY 10022, USA', NULL);
 INSERT INTO Label VALUES (5, 'Universal Music', '2220 Colorado Avenue, Santa Monica, CA 90404, USA', NULL);
 INSERT INTO Label VALUES (6, 'Warner Music', '75 Rockefeller Plaza, New York, NY 10019, USA', NULL);
+ALTER TABLE Label ALTER COLUMN labelID RESTART WITH 7;
 
 -- groups
 INSERT INTO MusicGroup VALUES (1, 'Pink Floyd', '1965-01-01');
 INSERT INTO MusicGroup VALUES (2, 'Led Zeppelin', '1968-01-01');
+ALTER TABLE MusicGroup ALTER COLUMN musicGroupID RESTART WITH 3;
 
 -- artists
 INSERT INTO Artist VALUES (1, 'Roger','Waters',  '', 'm', NULL, NULL, 1);
@@ -33,6 +36,7 @@ INSERT INTO Artist VALUES (7, 'Robert','Plant',  '', 'm', NULL, NULL, 1);
 INSERT INTO Artist VALUES (8, 'John','Bonham',  '', 'm', NULL, NULL, 1);
 INSERT INTO Artist VALUES (9, 'John Paul','Jones',  '', 'm', NULL, NULL, 1);
 INSERT INTO Artist VALUES (10, 'Μάνος','Χατζηδάκις',  '', 'm', NULL, NULL, 4);
+ALTER TABLE Artist ALTER COLUMN ArtistID RESTART WITH 11;
 
 -- group artists
 -- Pink Floyd members
@@ -54,6 +58,7 @@ INSERT INTO Album VALUES (1, 'The Dark Side Of The Moon', 1, '1973-03-01', 'lp',
 INSERT INTO Album VALUES (2, 'Celebration Day', 2, '2012-11-16', 'lp', 1, NULL, 2);
 INSERT INTO Album VALUES (3, 'Celebration Day', 2, '2012-11-16', 'lp', 2, NULL, 2);
 INSERT INTO Album VALUES (4, 'Reflections', 3, '1970-01-01', 'lp', 1, 10, NULL);
+ALTER TABLE Album ALTER COLUMN albumID RESTART WITH 5;
 
 -- songs
 INSERT INTO Song VALUES (1, 'Speak To Me', 90, 1, 1);
@@ -92,11 +97,13 @@ INSERT INTO Song VALUES (33, 'The Three Answers', 228, 7, 4);
 INSERT INTO Song VALUES (34, 'Street Song', 206, 8, 4);
 INSERT INTO Song VALUES (35, 'Bitter Way', 255, 9, 4);
 INSERT INTO Song VALUES (36, 'Noble Dame', 191, 10, 4);
+ALTER TABLE Song ALTER COLUMN songID RESTART WITH 37;
 
 -- playlists
 INSERT INTO PlayList VALUES (1, 'Afternoon classics', '2015-02-01');
 INSERT INTO PlayList VALUES (2, 'Evening energy', '2015-02-02');
 INSERT INTO PlayList VALUES (3, 'Midnight mood', '2015-02-03');
+ALTER TABLE PlayList ALTER COLUMN playListID RESTART WITH 4;
 
 -- playlist songs
 -- playlist #1 contents
