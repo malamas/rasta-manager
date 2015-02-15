@@ -241,12 +241,13 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        localEm.getTransaction().rollback();
         controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        localEm.getTransaction().begin();
-        localEm.persist(boundArtist);
+    //    localEm.getTransaction().begin();
+    //    localEm.persist(boundArtist);
         localEm.getTransaction().commit();
         controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -300,6 +301,9 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         this.artist = artist;
         initialize();
         initComponents();
+        localEm.getTransaction().begin();
+        localEm.persist(boundArtist);
+
     }
 
     private void initialize() {
