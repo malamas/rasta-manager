@@ -1,6 +1,8 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
+import javax.persistence.EntityManager;
+import org.jdesktop.beansbinding.Converter;
 
 /*
  * @author Apostolis Iakovakis
@@ -25,8 +27,8 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        RastamanPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT m.name FROM Musicgenre m");
+        localEm = em;
+        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m.name FROM Musicgenre m");
         musicgenreNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgenreNameQuery.getResultList();
         boundArtist = artist;
         saveButton = new javax.swing.JButton();
@@ -50,6 +52,11 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
         saveButton.setText("Αποθήκευση");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
         cancelButton.setText("Ακύρωση");
@@ -98,12 +105,27 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${lastname}"), lastNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${artisticname}"), artisticNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         sexComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Άνδρας", "Γυναίκα" }));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${sex}"), sexComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding.setConverter(conv);
+        bindingGroup.addBinding(binding);
 
         birthdayField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${birthday}"), birthdayField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${birthplace}"), birthPlaceField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgenreNameList, genreComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${muscigenreid.name}"), genreComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -219,12 +241,18 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.ARTIST_TABLE);
+        controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        localEm.getTransaction().begin();
+        localEm.persist(boundArtist);
+        localEm.getTransaction().commit();
+        controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
+    }//GEN-LAST:event_saveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.persistence.EntityManager RastamanPUEntityManager;
     private javax.swing.JTextField artisticNameField;
     private javax.swing.JTextField birthPlaceField;
     private javax.swing.JFormattedTextField birthdayField;
@@ -242,6 +270,7 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField lastNameField;
+    private javax.persistence.EntityManager localEm;
     private java.util.List<eap.pli24.rastaman.entities.Musicgenre> musicgenreNameList;
     private javax.persistence.Query musicgenreNameQuery;
     private javax.swing.JButton saveButton;
@@ -253,18 +282,38 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
+    private EntityManager em;
     private Artist artist;
+    private Converter<String, String> conv;
 
     /**
      * Δημιουργεί ένα {@code ArtistEditorPanel} για την επεξεργασία ενός
      * {@code Artist}, και με ορισμένο {@code MainFrameController}
      *
      * @param controller ο ελεγκτής
+     * @param em
      * @param artist ο καλλιτέχνης προς επεξεργασία
      */
-    public ArtistEditorPanel(MainFrameController controller, Artist artist) {
+    public ArtistEditorPanel(MainFrameController controller, EntityManager em, Artist artist) {
         this.controller = controller;
+        this.em = em;
         this.artist = artist;
+        initialize();
         initComponents();
+    }
+
+    private void initialize() {
+        conv = new Converter<String, String>() {
+
+            @Override
+            public String convertForward(String value) {
+                return ((value.equals("m")) ? "Άνδρας" : "Γυναίκα");
+            }
+
+            @Override
+            public String convertReverse(String value) {
+                return ((value.equals("Άνδρας")) ? "m" : "f");
+            }
+        };
     }
 }

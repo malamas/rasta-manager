@@ -1,6 +1,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
+import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,7 +12,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.ELProperty;
@@ -54,13 +55,13 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        artistQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Artist a");
+        localEm = em;
+        artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
         jScrollPane2 = new JScrollPane();
-        jTable2 = new JTable();
-        jLabel1 = new JLabel();
-        jPanel1 = new JPanel();
+        artistTable = new JTable();
+        headerLabel = new JLabel();
+        buttonPanel = new JPanel();
         newButton = new JButton();
         editButton = new JButton();
         deleteButton = new JButton();
@@ -68,10 +69,10 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
-        jTable2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jTable2.getTableHeader().setReorderingAllowed(false);
+        artistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        artistTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, jTable2);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstname}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
@@ -84,7 +85,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${greekSex}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${sex}"));
         columnBinding.setColumnName("Φύλο");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
@@ -102,14 +103,14 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(artistTable);
 
         add(jScrollPane2, BorderLayout.CENTER);
 
-        jLabel1.setFont(new Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Καλλιτέχνες");
-        jLabel1.setPreferredSize(new Dimension(0, 30));
-        add(jLabel1, BorderLayout.PAGE_START);
+        headerLabel.setFont(new Font("Tahoma", 1, 11)); // NOI18N
+        headerLabel.setText("Καλλιτέχνες");
+        headerLabel.setPreferredSize(new Dimension(0, 30));
+        add(headerLabel, BorderLayout.PAGE_START);
 
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
@@ -143,10 +144,10 @@ public class ArtistTablePanel extends javax.swing.JPanel {
             }
         });
 
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addComponent(newButton)
                 .addGap(5, 5, 5)
                 .addComponent(editButton)
@@ -155,46 +156,36 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 437, Short.MAX_VALUE)
                 .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
         );
-        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(newButton)
                     .addComponent(editButton)
                     .addComponent(deleteButton)
                     .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
         );
 
-        add(jPanel1, BorderLayout.PAGE_END);
+        add(buttonPanel, BorderLayout.PAGE_END);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Νέα εγγραφή Καλλιτέχνη  ***********************
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        //controller.switchToPanel(MainFrameController.Panel.ARTIST_EDITOR);
+        controller.showArtistEditor(new Artist());
     }//GEN-LAST:event_newButtonActionPerformed
 
-    //Επεξεργασία Εγγραφής Καλιτέχνη  ****************
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        try {
-            int selectedIndex = jTable2.getSelectedRow();
-            if (selectedIndex == -1) {
-                throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
-            }
-
-            Artist a = artistList.get(selectedIndex);
-            System.out.println(a.getLastname());
-            controller.showArtistEditor(a);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+        int selectedIndex = artistTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            Artist selectedArtist = artistList.get(selectedIndex);
+            controller.showArtistEditor(selectedArtist);
         }
-
     }//GEN-LAST:event_editButtonActionPerformed
-    //Διαγραφή Εγγραφής Καλιτέχνη  ****************
+
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int selectedIndex = jTable2.getSelectedRow();
+            int selectedIndex = artistTable.getSelectedRow();
             if (selectedIndex == -1) {
                 throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
             }
@@ -212,17 +203,17 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                             options, //the titles of buttons
                             options[1]); //default button title
                     if (n == 0) {
-                        RastamanPUEntityManager.getTransaction().begin();
+                        localEm.getTransaction().begin();
                         try {
-                            Query q = RastamanPUEntityManager.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
+                            Query q = localEm.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
                                     Artist.class).setParameter("artistID", a.getArtistid());
                             q.executeUpdate();
-                            RastamanPUEntityManager.getTransaction().commit();
+                            localEm.getTransaction().commit();
                             artistList.remove(selectedIndex);
-                            jTable2.updateUI();
+                            artistTable.updateUI();
                         } catch (Exception e) {
                             e.printStackTrace();
-                            RastamanPUEntityManager.getTransaction().rollback();
+                            localEm.getTransaction().rollback();
                         }
                     }
                 } else {
@@ -272,21 +263,21 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        controller.switchToPanel(MainFrameController.Panel.ROOT_MENU);
+        controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private EntityManager RastamanPUEntityManager;
     private List<Artist> artistList;
     private Query artistQuery;
+    private JTable artistTable;
     private JButton backButton;
+    private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
-    private JLabel jLabel1;
-    private JPanel jPanel1;
+    private JLabel headerLabel;
     private JScrollPane jScrollPane2;
-    private JTable jTable2;
+    private EntityManager localEm;
     private JButton newButton;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -295,9 +286,24 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
+    private EntityManager em;
 
-    public ArtistTablePanel(MainFrameController controller) {
+    public ArtistTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
+        this.em = em;
         initComponents();
+
+        // Καθορισμός εμφάνισης πίνακα
+        TableColumnModel tcm = artistTable.getColumnModel();
+        for (int i = 0; i < tcm.getColumnCount(); i++) {
+            switch (i) {
+                case 3:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.SEX));
+                    break;
+                default:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
     }
 }

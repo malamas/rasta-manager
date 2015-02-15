@@ -2,16 +2,19 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="RastamanPUEntityManager">
+    <Component class="javax.persistence.EntityManager" name="localEm">
       <Properties>
         <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
+      </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="musicgenreNameQuery">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT m.name FROM Musicgenre m"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="RastamanPUEntityManager"/>
+          <ComponentRef name="localEm"/>
         </Property>
       </Properties>
     </Component>
@@ -90,6 +93,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x391;&#x3c0;&#x3bf;&#x3b8;&#x3ae;&#x3ba;&#x3b5;&#x3c5;&#x3c3;&#x3b7;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="cancelButton">
       <Properties>
@@ -300,6 +306,11 @@
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="artisticNameField">
+          <BindingProperties>
+            <BindingProperty name="text" source="boundArtist" sourcePath="${artisticname}" target="artisticNameField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="sexComboBox">
           <Properties>
@@ -310,6 +321,13 @@
               </StringArray>
             </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${sex}" target="sexComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false">
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="conv" type="code"/>
+              </Property>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="birthdayField">
           <Properties>
@@ -317,12 +335,21 @@
               <Format subtype="1" type="1"/>
             </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="value" source="boundArtist" sourcePath="${birthday}" target="birthdayField" targetPath="value" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="birthPlaceField">
+          <BindingProperties>
+            <BindingProperty name="text" source="boundArtist" sourcePath="${birthplace}" target="birthPlaceField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="genreComboBox">
           <BindingProperties>
             <BindingProperty name="elements" source="musicgenreNameList" target="genreComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${muscigenreid.name}" target="genreComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
       </SubComponents>

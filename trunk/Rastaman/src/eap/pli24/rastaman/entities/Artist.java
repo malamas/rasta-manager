@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Artist.findByBirthday", query = "SELECT a FROM Artist a WHERE a.birthday = :birthday"),
     @NamedQuery(name = "Artist.findByBirthplace", query = "SELECT a FROM Artist a WHERE a.birthplace = :birthplace")})
 public class Artist implements Serializable {
+
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -143,12 +144,7 @@ public class Artist implements Serializable {
         this.sex = sex;
         changeSupport.firePropertyChange("sex", oldSex, sex);
     }
-   // Κώδικας δικός μας
-    public String getGreekSex(){
-        if (sex.equals("m")) return "Άνδρας";
-        else   return "Γυναίκα";
-    }
-    
+
     public Date getBirthday() {
         return birthday;
     }
@@ -229,7 +225,5 @@ public class Artist implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-    
- 
-    
+
 }

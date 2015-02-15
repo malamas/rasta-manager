@@ -6,9 +6,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -22,26 +23,26 @@ import javax.swing.WindowConstants;
  */
 public class MainFrameController implements Runnable {
 
-    public enum Panel {
+    public enum PanelType {
 
         ROOT_MENU,
         ARTIST_TABLE,
         GROUP_TABLE,
         ARTIST_ALBUM_TABLE,
-        GROUP_ALBUM_TABLE,
+        GROUP_ALBUM_TABLE
     }
 
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
+    private EntityManager em;
     private MainFrame mainFrame;
-    private RootMenuPanel rootMenuPanel;
     private SideBarPanel sbp;
     private JPanel activePanel;
-    private final EnumMap<Panel, JPanel> panels = new EnumMap(Panel.class);
 
     @Override
     public void run() {
         initLookAndFeel();
         initPanels();
+        initDatabase();
         initMainFrame();
     }
 
@@ -58,24 +59,14 @@ public class MainFrameController implements Runnable {
         }
     }
 
+    private void initDatabase() {
+        em = Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
+    }
+
     private void initPanels() {
-        rootMenuPanel = new RootMenuPanel(this);
-        ArtistTablePanel atp = new ArtistTablePanel(this);
-        GroupTablePanel gtp = new GroupTablePanel(this);
-        ArtistAlbumTablePanel aatp = new ArtistAlbumTablePanel(this);
-        GroupAlbumTablePanel gatp = new GroupAlbumTablePanel(this);
-
-        rootMenuPanel.setBackground(new Color(255, 255, 204));
-
         sbp = new SideBarPanel();
         sbp.setPreferredSize(new Dimension(224, 0));
         sbp.setBackground(new Color(102, 102, 0));
-
-        panels.put(Panel.ROOT_MENU, rootMenuPanel);
-        panels.put(Panel.ARTIST_TABLE, atp);
-        panels.put(Panel.GROUP_TABLE, gtp);
-        panels.put(Panel.ARTIST_ALBUM_TABLE, aatp);
-        panels.put(Panel.GROUP_ALBUM_TABLE, gatp);
     }
 
     private void initMainFrame() {
@@ -107,8 +98,10 @@ public class MainFrameController implements Runnable {
 
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(sbp, BorderLayout.LINE_START);
-        mainFrame.add(rootMenuPanel, BorderLayout.CENTER);
-        activePanel = rootMenuPanel;
+
+        JPanel startPanel = createPanel(PanelType.ROOT_MENU);
+        mainFrame.add(startPanel, BorderLayout.CENTER);
+        activePanel = startPanel;
 
         // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
@@ -119,20 +112,44 @@ public class MainFrameController implements Runnable {
         mainFrame.dispose();
     }
 
-    public void switchToPanel(Panel p) {
-        JPanel panel = panels.get(p);
-        switchTo(panel);
-    }
-
-    private void switchTo(JPanel panel) {
-        activePanel.setVisible(false);
-        mainFrame.add(panel, BorderLayout.CENTER);
-        panel.setVisible(true);
-        activePanel = panel;
+    public void switchToPanel(PanelType p) {
+        displayPanel(createPanel(p));
     }
 
     public void showArtistEditor(Artist artist) {
-        ArtistEditorPanel editor = new ArtistEditorPanel(this, artist);
-        switchTo(editor);
+        ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
+        displayPanel(editor);
+    }
+
+    private void displayPanel(JPanel panel) {
+        mainFrame.remove(activePanel);
+        mainFrame.add(panel, BorderLayout.CENTER);
+        panel.setVisible(true);
+        mainFrame.validate();
+        activePanel = panel;
+    }
+
+    private JPanel createPanel(PanelType type) {
+        JPanel p;
+        switch (type) {
+            case ARTIST_TABLE:
+                p = new ArtistTablePanel(this, em);
+                break;
+            case GROUP_TABLE:
+                p = new GroupTablePanel(this, em);
+                break;
+            case ARTIST_ALBUM_TABLE:
+                p = new ArtistAlbumTablePanel(this, em);
+                break;
+            case GROUP_ALBUM_TABLE:
+                p = new GroupAlbumTablePanel(this, em);
+                break;
+            case ROOT_MENU:
+            default:
+                p = new RootMenuPanel(this);
+                p.setBackground(new Color(255, 255, 204));
+                break;
+        }
+        return p;
     }
 }
