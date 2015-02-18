@@ -1,6 +1,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
+import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,6 +17,7 @@ import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -57,6 +59,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         localEm = em;
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
+        dateTableCellRenderer1 = new DateTableCellRenderer();
         jScrollPane2 = new JScrollPane();
         artistTable = new JTable();
         headerLabel = new JLabel();
@@ -65,6 +68,8 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         editButton = new JButton();
         deleteButton = new JButton();
         backButton = new JButton();
+
+        dateTableCellRenderer1.setText("dateTableCellRenderer1");
 
         setLayout(new BorderLayout());
 
@@ -94,7 +99,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthplace}"));
         columnBinding.setColumnName("Τόπος Γέννησης");
-        columnBinding.setColumnClass(Date.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${muscigenreid.name}"));
         columnBinding.setColumnName("Είδος Μουσικής");
@@ -103,6 +108,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane2.setViewportView(artistTable);
+        if (artistTable.getColumnModel().getColumnCount() > 0) {
+            artistTable.getColumnModel().getColumn(4).setCellRenderer(null);
+        }
 
         add(jScrollPane2, BorderLayout.CENTER);
 
@@ -181,6 +189,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
             Artist selectedArtist = artistList.get(selectedIndex);
             controller.showArtistEditor(selectedArtist);
         }
+        else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -198,6 +207,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private JTable artistTable;
     private JButton backButton;
     private JPanel buttonPanel;
+    private DateTableCellRenderer dateTableCellRenderer1;
     private JButton deleteButton;
     private JButton editButton;
     private JLabel headerLabel;
@@ -257,25 +267,16 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                         artistTable.updateUI();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί, γιατί συμμετέχει σε συγκρότημα.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί,\n γιατί συμμετέχει σε συγκρότημα.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
                 if (selectedArtist.getMusicgroupList().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί, γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί,\n γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    Object[] options = {"ΟΚ"};
-                    int n = JOptionPane.showOptionDialog(this,
-                            "Ο καλλιτέχνης συμμετέχει σε συγκρότημα  και\n"
-                            + "υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
-                            + "πρέπει πρώτα να διαγραφεί το άλμπουμ και να διαγραφεί απο το συγκρότημα",
-                            "Διαγραφή Καλλιτέχνη",
-                            JOptionPane.NO_OPTION,
-                            JOptionPane.INFORMATION_MESSAGE,
-                            null, //do not use a custom Icon
-                            options, //the titles of buttons
-                            options[0]); //default button title
+                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί, \n γιατί συμμετέχει σε συγκρότημα και υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-        }
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+
     }
 }

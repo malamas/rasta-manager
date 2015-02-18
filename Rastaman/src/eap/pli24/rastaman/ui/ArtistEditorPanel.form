@@ -33,6 +33,24 @@
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="artist"/>
       </AuxValues>
     </Component>
+    <Component class="javax.persistence.Query" name="musicGenreQuery">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT m FROM Musicgenre m"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="localEm"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="musicGenreList">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="musicGenreQuery"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Musicgenre&gt;"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -347,9 +365,14 @@
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="genreComboBox">
+          <Properties>
+            <Property name="actionCommand" type="java.lang.String" value=""/>
+          </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="musicgenreNameList" target="genreComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${muscigenreid.name}" target="genreComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="elements" source="musicgenreNameList" target="genreComboBox" targetPath="elements" updateStrategy="1" immediately="false"/>
+            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${muscigenreid.name}" target="genreComboBox" targetPath="selectedItem" updateStrategy="1" immediately="false">
+              <Property name="nullValue" type="java.lang.Object" value="null"/>
+            </BindingProperty>
           </BindingProperties>
         </Component>
       </SubComponents>
