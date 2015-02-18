@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
  */
 public class DateTableCellRenderer extends GenericTableCellRenderer {
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("en", "US"));
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
 
     public DateTableCellRenderer() {
         super();
@@ -20,6 +20,6 @@ public class DateTableCellRenderer extends GenericTableCellRenderer {
 
     @Override
     protected void setValue(Object value) {
-        setText(sdf.format((Date) value));
+        setText(value == null? null:sdf.format((Date) value));
     }
 }

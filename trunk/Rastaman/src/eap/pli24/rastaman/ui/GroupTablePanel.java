@@ -160,22 +160,17 @@ public class GroupTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        try {
-            int selectedIndex = groupTable.getSelectedRow();
-            if (selectedIndex == -1) {
-                throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
-            }
-
-            Musicgroup a = musicgroupList.get(selectedIndex);
-            System.out.println(a.getName());
-            //controller.switchToPanel(MainFrameController.PanelType.GROUP_EDITOR);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
-        }
+        
+        int selectedIndex = groupTable.getSelectedRow();
+        if (selectedIndex != -1) {
+        
+            Musicgroup selectedMusicgroup = musicgroupList.get(selectedIndex);
+            controller.showGroupEditor(selectedMusicgroup);
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Συγκρότημα","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        //controller.switchToPanel(MainFrameController.PanelType.GROUP_EDITOR);
+        controller.showGroupEditor(new Musicgroup());
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -247,7 +242,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
                             "To συγκρότημα " + a.getName() + "\n"
                             + "έχει καλλιτέχνες οι οποίοι δεν θα  διαγραφούν."
                             + "Να διαγραφεί το Συγκρότημα;",
-                            "Διαγραφή Συγκροτήματος",
+                            "Επιβεβαίωση Διαγραφής",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
                             null, //do not use a custom Icon
@@ -266,6 +261,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "Το συγκρότημα δεν μπορεί να διαγραφεί, γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
             }
-        }
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Συγκρότημα","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }
 }
