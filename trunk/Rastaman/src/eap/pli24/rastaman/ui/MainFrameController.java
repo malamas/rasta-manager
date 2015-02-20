@@ -1,5 +1,6 @@
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Musicgroup;
 import java.awt.BorderLayout;
@@ -122,10 +123,15 @@ public class MainFrameController implements Runnable {
         displayPanel(editor);
     }
 
-        public void showGroupEditor(Musicgroup group) {
+    public void showGroupEditor(Musicgroup group) {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
     }
+    
+    public void showArtistAlbumEditor(Album album) {
+        ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
+        displayPanel(editor);
+    }    
     
     private void displayPanel(JPanel panel) {
         mainFrame.remove(activePanel);

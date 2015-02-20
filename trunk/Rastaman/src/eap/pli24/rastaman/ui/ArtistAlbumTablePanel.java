@@ -178,15 +178,16 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        //controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_EDITOR);
+        controller.showArtistAlbumEditor(new Album());
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         int selectedIndex = artistAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Artist a = artistList.get(selectedIndex);
-            //controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_EDITOR);
-        }
+            Album selectedAlbum = albumList.get(selectedIndex);
+
+            controller.showArtistAlbumEditor(selectedAlbum);
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Άλμπουμ","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -254,18 +255,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (isInPlaylist) {
-                Object[] options = {"ΟΚ"};
-                int n = JOptionPane.showOptionDialog(this,
-                        "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
-                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
-                        "Διαγραφή Άλμπουμ",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null, //do not use a custom Icon
-                        options, //the titles of buttons
-                        options[0]); //default button title                
-            } else {
+            if (!isInPlaylist) {
                 Object[] options = {"Ναι", "Όχι"};
                 int n = JOptionPane.showOptionDialog(this,
                         "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
@@ -284,7 +274,10 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                     albumList.remove(selectedIndex);
                     artistAlbumTable.updateUI();
                 }
-            }
-        }
+            } else JOptionPane.showMessageDialog(this, "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
+                            + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                              "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                 
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Αλμπουμ","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }
 }

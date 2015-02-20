@@ -1,5 +1,15 @@
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.entities.Album;
+import eap.pli24.rastaman.entities.Label;
+import eap.pli24.rastaman.entities.Song;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 
 /*
  * @author Apostolis Iakovakis
@@ -10,10 +20,6 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     /**
      * Creates new form EditGroupPanel
      */
-    public ArtistAlbumEditorPanel() {
-        initComponents();
-
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -25,28 +31,27 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        RastamanPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        labelquery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Label a");
-        labellist = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelquery.getResultList();
-        albumQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a FROM Album a");
+        localEm = em;
+        labelquery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Label a");
+        labelList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelquery.getResultList();
+        albumQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a");
         albumList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : albumQuery.getResultList();
-        labelNamequery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT a.name FROM Label a");
+        labelNamequery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT a.name FROM Label a");
         labelNamelist = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelNamequery.getResultList();
-        songQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT s FROM Song s");
+        songQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT s FROM Song s");
         songList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : songQuery.getResultList();
-        artistQuery = java.beans.Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT  CONCAT(a.artisticname, ' ',  a.firstname,' ',   a.lastname) AS ArtistName FROM Artist a");
+        artistQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT  CONCAT(a.artisticname, ' ',  a.firstname,' ',   a.lastname) AS ArtistName FROM Artist a");
         artistList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : artistQuery.getResultList();
+        boundAlbum = album;
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         releasedateField = new javax.swing.JFormattedTextField();
         labelComboBox = new javax.swing.JComboBox();
-        MusicGroupComboBox = new javax.swing.JComboBox();
+        artistComboBox = new javax.swing.JComboBox();
         titleField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -56,9 +61,16 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         typeComboBox = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         disknumberTextField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        songTable = new javax.swing.JTable();
 
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
         saveButton.setText("Αποθήκευση");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
         cancelButton.setText("Ακύρωση");
@@ -72,26 +84,6 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         jLabel1.setText("Άλμπουμ Καλλιτέχνη");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, songList, jTable1);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tracknr}"));
-        columnBinding.setColumnName("Track");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${title}"));
-        columnBinding.setColumnName("Τίτλος");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${duration}"));
-        columnBinding.setColumnName("Διάρκεια");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
@@ -111,13 +103,19 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
 
         releasedateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labelNamelist, labelComboBox);
-        bindingGroup.addBinding(jComboBoxBinding);
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labellist, org.jdesktop.beansbinding.ObjectProperty.create(), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${releasedate}"), releasedateField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, artistList, MusicGroupComboBox);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labelNamelist, labelComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${labelid.name}"), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistComboBox);
+        bindingGroup.addBinding(jComboBoxBinding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${title}"), titleField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -135,9 +133,31 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
 
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cs", "ep", "lp" }));
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${type}"), typeComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
         jLabel7.setText("Νο Δίσκου:");
 
-        disknumberTextField.setText("jTextField2");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${disknumber}"), disknumberTextField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        songTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(songTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -146,10 +166,6 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(newButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
@@ -160,7 +176,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(titleField)
                                 .addComponent(labelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(MusicGroupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(artistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -175,8 +191,13 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(disknumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(222, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(newButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteButton)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +207,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(MusicGroupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(artistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -203,12 +224,12 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     .addComponent(jLabel7)
                     .addComponent(disknumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, Short.MAX_VALUE)
-                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -221,8 +242,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(111, 111, 111)
                 .addComponent(cancelButton)
@@ -235,115 +255,80 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
-                    .addComponent(cancelButton)))
+                    .addComponent(cancelButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        localEm.getTransaction().rollback();
         controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        /*
-         try{
-         int selectedIndex= jTable1.getSelectedRow();
-         if (selectedIndex == -1 ) throw new Exception("Δεν Επιλέχθηκε Καλλιτέχνης");
-         Artist a = artistList.get(selectedIndex);
-         if (a.getAlbumList().isEmpty()){
-         if (a.getMusicgroupList().isEmpty()){
-         Object[] options = {"Ναι",
-         "Όχι"};
-         int n = JOptionPane.showOptionDialog(new JFrame(),
-         "Να διαγραφεί ο Καλλιτέχνης" + a.getLastname() + " " + a.getFirstname() + ";",
-         "Επιβεβαίωση Διαγραφής",
-         JOptionPane.YES_NO_OPTION,
-         JOptionPane.QUESTION_MESSAGE,
-         null,     //do not use a custom Icon
-         options,  //the titles of buttons
-         options[1]); //default button title
-         if (n==0) {
-         RastamanPUEntityManager.getTransaction().begin();
-         try{
-         Query q=RastamanPUEntityManager.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
-         Artist.class).setParameter("artistID", a.getArtistid());
-         q.executeUpdate();
-         RastamanPUEntityManager.getTransaction().commit();
-         artistList.remove(selectedIndex);
-         jTable1.updateUI();
-         } catch (Exception e){
-         e.printStackTrace();
-         RastamanPUEntityManager.getTransaction().rollback();
-         }
-         }
-         }
-         else{
-         Object[] options = {"ΟΚ"};
-         int n = JOptionPane.showOptionDialog(new JFrame(),
-         "Ο καλλιτέχνης συμμετέχει σε συγκρότημα \n"
-         + "πρέπει πρώτα να διαγραφεί απο αυτό",
-         "Διαγραφή Καλλιτέχνη",
-         JOptionPane.NO_OPTION,
-         JOptionPane.INFORMATION_MESSAGE,
-         null,     //do not use a custom Icon
-         options,  //the titles of buttons
-         options[0]); //default button title
-         }
-         }
-         else {
-         if (a.getMusicgroupList().isEmpty()){
-         Object[] options = {"ΟΚ"};
-         int n = JOptionPane.showOptionDialog(new JFrame(),
-         "Υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
-         + "πρέπει πρώτα να διαγραφεί αυτό",
-         "Διαγραφή Καλλιτέχνη",
-         JOptionPane.NO_OPTION,
-         JOptionPane.INFORMATION_MESSAGE,
-         null,     //do not use a custom Icon
-         options,  //the titles of buttons
-         options[0]); //default button title
-         }
-         else{
-         Object[] options = {"ΟΚ"};
-         int n = JOptionPane.showOptionDialog(new JFrame(),
-         "Ο καλλιτέχνης συμμετέχει σε συγκρότημα  και\n"
-         +"υπάρχει άλμπουμ για τον συγκεκριμένο καλλιτέχνη \n"
-         + "πρέπει πρώτα να διαγραφεί το άλμπουμ και να διαγραφεί απο το συγκρότημα",
-         "Διαγραφή Καλλιτέχνη",
-         JOptionPane.NO_OPTION,
-         JOptionPane.INFORMATION_MESSAGE,
-         null,     //do not use a custom Icon
-         options,  //the titles of buttons
-         options[0]); //default button title
-         }
-
-         }
-
-         }
-         catch(Exception e) {
-         JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
-         }
-         */
+        // TODO add your handling code here:
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-
-        //controller.switchToPanel(MainFrameController.PanelType.ARTIST_EDITOR);
+        model.addRow(new Object[] {null,null,null,0});
     }//GEN-LAST:event_newButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        try {
+            if (titleField.getText().isEmpty()) throw new Exception("Συμπληρώστε Τίτλο"); 
+            if (artistComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Καλλιτέχνη");  
+            if (labelComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Εταιρία");           
+            if (typeComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Τύπο Άλμπουμ"); 
+            List<Song> albumSongList = new ArrayList<>();
+            albumSongList = boundAlbum.getSongList();
+            for (Song s : albumSongList){
+                for ( int i = 0 ; i < model.getRowCount(); i++ ){
+                    if (s.getSongid().equals(model.getValueAt(i, 0))){
+                        s.setTracknr((int)model.getValueAt(i, 1));
+                        s.setTitle((String)model.getValueAt(i, 2));
+                        s.setDuration((int)model.getValueAt(i, 3));
+                    }
+                }
+            }
+            for ( int i = 0 ; i < model.getRowCount(); i++ ){
+                if (model.getValueAt(i, 0) == null){
+                    Song newSong = new Song(null,(String)model.getValueAt(i, 2),(Integer)model.getValueAt(i, 3),(Integer)model.getValueAt(i, 1));
+
+                    newSong.setAlbumid(boundAlbum);
+                    albumSongList.add(newSong);
+                }
+            }                        
+            boundAlbum.setSongList(albumSongList);
+           
+            String selectetLabelName= labelComboBox.getSelectedItem().toString();
+            for (Label g: labelList) {
+                if (g.getName().equals(selectetLabelName)){
+                    boundAlbum.setLabelid(g); 
+                    break;
+                }
+            } 
+            localEm.getTransaction().commit();
+            controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());  
+        }
+
+    }//GEN-LAST:event_saveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox MusicGroupComboBox;
-    private javax.persistence.EntityManager RastamanPUEntityManager;
     private java.util.List<eap.pli24.rastaman.entities.Album> albumList;
     private javax.persistence.Query albumQuery;
+    private javax.swing.JComboBox artistComboBox;
     private java.util.List<eap.pli24.rastaman.entities.Artist> artistList;
     private javax.persistence.Query artistQuery;
+    private eap.pli24.rastaman.entities.Album boundAlbum;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField disknumberTextField;
@@ -355,18 +340,19 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox labelComboBox;
+    private java.util.List<Label> labelList;
     private java.util.List labelNamelist;
     private javax.persistence.Query labelNamequery;
-    private java.util.List labellist;
     private javax.persistence.Query labelquery;
+    private javax.persistence.EntityManager localEm;
     private javax.swing.JButton newButton;
     private javax.swing.JFormattedTextField releasedateField;
     private javax.swing.JButton saveButton;
     private java.util.List<eap.pli24.rastaman.entities.Song> songList;
     private javax.persistence.Query songQuery;
+    private javax.swing.JTable songTable;
     private javax.swing.JTextField titleField;
     private javax.swing.JComboBox typeComboBox;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
@@ -376,7 +362,30 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
+    private EntityManager em;
+    private Album album;
+    private String artistName;
+    private DefaultTableModel model ;
+    
+    public ArtistAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
+        this.controller = controller;
+        this.em = em;
+        this.album = album;
+        initComponents();
 
+        this.artistName = album.getArtistartistid().getArtisticname() + " "
+                        + album.getArtistartistid().getFirstname() + " "
+                        + album.getArtistartistid().getLastname();
+        model =  (DefaultTableModel) songTable.getModel();   
+        for (Song s: boundAlbum.getSongList()){
+            model.addRow(new Object[] {s.getSongid(),s.getTracknr(),s.getTitle(),s.getDuration()});
+        }
+        
+        localEm.getTransaction().begin();
+        localEm.persist(boundAlbum);
+    }
+
+    
     public void setController(MainFrameController controller) {
         this.controller = controller;
     }

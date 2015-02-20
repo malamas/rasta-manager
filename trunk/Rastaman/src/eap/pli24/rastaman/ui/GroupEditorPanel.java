@@ -2,7 +2,7 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Musicgroup;
-import java.awt.Graphics;
+import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.*;
+import javax.swing.table.TableColumnModel;
 import static org.eclipse.persistence.jpa.jpql.utility.CollectionTools.array;
 /*
  * @author Apostolis Iakovakis
@@ -98,7 +98,6 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, org.jdesktop.beansbinding.ELProperty.create("${formationdate}"), formationdateField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        groupArtistTable.setAutoCreateRowSorter(true);
         groupArtistTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         groupArtistTable.getTableHeader().setReorderingAllowed(false);
 
@@ -135,7 +134,6 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             }
         });
 
-        availArtistTable.setAutoCreateRowSorter(true);
         availArtistTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         availArtistTable.getTableHeader().setReorderingAllowed(false);
 
@@ -154,6 +152,11 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        availArtistTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                availArtistTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(availArtistTable);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -211,9 +214,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
                     .addComponent(jLabel6)
                     .addComponent(formationdateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -272,23 +275,11 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int selectedIndex = groupArtistTable.getSelectedRow();
-        if (selectedIndex != -1) {
-            availArtistList.add(groupArtistList.remove(selectedIndex));
-            availArtistTable.updateUI();  availArtistTable.clearSelection();
-            groupArtistTable.updateUI();  groupArtistTable.clearSelection();
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Διαγραφή","Rastaman", JOptionPane.INFORMATION_MESSAGE);
-
+        deleteArtist();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        int selectedIndex = availArtistTable.getSelectedRow();
-        if (selectedIndex != -1) {
-            groupArtistList.add(availArtistList.remove(selectedIndex));
-            groupArtistTable.updateUI(); groupArtistTable.clearSelection();          
-            availArtistTable.updateUI(); availArtistTable.clearSelection();
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Εισαγωγή","Rastaman", JOptionPane.INFORMATION_MESSAGE);  
-
+        addArtist();
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -302,7 +293,12 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
         } catch(Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());  
-        }    }//GEN-LAST:event_saveButtonActionPerformed
+        }    
+	}//GEN-LAST:event_saveButtonActionPerformed
+
+    private void availArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_availArtistTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -347,9 +343,18 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         this.em = em;
         this.group = group;
         initComponents();
+        // Καθορισμός εμφάνισης των πινακων
+        TableColumnModel tcmg = groupArtistTable.getColumnModel();
+        for (int i = 0; i < tcmg.getColumnCount(); i++) {
+            tcmg.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+        }
+        
+        TableColumnModel tcma = availArtistTable.getColumnModel();
+        for (int i = 0; i < tcma.getColumnCount(); i++) {
+            tcma.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+        }
+        
         groupArtistList.clear();
-        
-        
         if (group.getName() != null){
             for (Artist a: group.getArtistList()){
                 groupArtistList.add(a);
@@ -367,6 +372,23 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         localEm.persist(boundGroup);
     }
     
+    private void addArtist(){
+        int selectedIndex = availArtistTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            groupArtistList.add(availArtistList.remove(selectedIndex));
+            groupArtistTable.updateUI(); groupArtistTable.clearSelection();          
+            availArtistTable.updateUI(); availArtistTable.clearSelection();
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Εισαγωγή","Rastaman", JOptionPane.INFORMATION_MESSAGE);  
+    }
+
+    private void deleteArtist(){
+        int selectedIndex = groupArtistTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            availArtistList.add(groupArtistList.remove(selectedIndex));
+            availArtistTable.updateUI();  availArtistTable.clearSelection();
+            groupArtistTable.updateUI();  groupArtistTable.clearSelection();
+        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Διαγραφή","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+    }
     
 
     public void setController(MainFrameController controller) {
