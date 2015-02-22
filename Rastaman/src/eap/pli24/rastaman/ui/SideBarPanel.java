@@ -1,15 +1,17 @@
 package eap.pli24.rastaman.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.GroupLayout;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
  *
- * @author malamas
+ * @author Malamas Malamidis
  */
 public class SideBarPanel extends javax.swing.JPanel {
 
@@ -18,6 +20,7 @@ public class SideBarPanel extends javax.swing.JPanel {
      */
     public SideBarPanel() {
         initComponents();
+        initFurther();
     }
 
     /**
@@ -29,33 +32,40 @@ public class SideBarPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new JLabel();
+        filler1 = new Box.Filler(new Dimension(10, 20), new Dimension(10, 20), new Dimension(10, 20));
+        rastamanLabel = new JLabel();
 
-        jLabel1.setFont(new Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setForeground(new Color(255, 255, 255));
-        jLabel1.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_200x200.png"))); // NOI18N
-        jLabel1.setText("Rastaman!");
-        jLabel1.setHorizontalTextPosition(SwingConstants.CENTER);
-        jLabel1.setVerticalTextPosition(SwingConstants.BOTTOM);
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        add(filler1);
 
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(51, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
+        rastamanLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        rastamanLabel.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_200x200.png"))); // NOI18N
+        rastamanLabel.setVerticalAlignment(SwingConstants.TOP);
+        rastamanLabel.setAlignmentX(0.5F);
+        rastamanLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        rastamanLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+        add(rastamanLabel);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JLabel jLabel1;
+    private Box.Filler filler1;
+    private JLabel rastamanLabel;
     // End of variables declaration//GEN-END:variables
+    //
+    // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
+    // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
+    //
+    private static final int PANEL_WIDTH = 240;
+
+    private void initFurther() {
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
+        this.setBackground(new Color(102, 102, 0));
+
+        rastamanLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
+
+        rastamanLabel.setFont(new Font("Tahoma", 1, 14));
+        rastamanLabel.setForeground(new Color(240, 213, 44));
+        rastamanLabel.setText("Rastaman!");
+    }
 }

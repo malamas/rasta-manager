@@ -4,8 +4,6 @@ import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Musicgroup;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.util.logging.Level;
@@ -38,13 +36,11 @@ public class MainFrameController implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
     private EntityManager em;
     private MainFrame mainFrame;
-    private SideBarPanel sbp;
     private JPanel activePanel;
 
     @Override
     public void run() {
         initLookAndFeel();
-        initPanels();
         initDatabase();
         initMainFrame();
     }
@@ -64,12 +60,6 @@ public class MainFrameController implements Runnable {
 
     private void initDatabase() {
         em = Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-    }
-
-    private void initPanels() {
-        sbp = new SideBarPanel();
-        sbp.setPreferredSize(new Dimension(224, 0));
-        sbp.setBackground(new Color(102, 102, 0));
     }
 
     private void initMainFrame() {
@@ -100,7 +90,7 @@ public class MainFrameController implements Runnable {
         }
 
         mainFrame.setLayout(new BorderLayout());
-        mainFrame.add(sbp, BorderLayout.LINE_START);
+        mainFrame.add(new SideBarPanel(), BorderLayout.LINE_START);
 
         JPanel startPanel = createPanel(PanelType.ROOT_MENU);
         mainFrame.add(startPanel, BorderLayout.CENTER);
@@ -163,7 +153,6 @@ public class MainFrameController implements Runnable {
             case ROOT_MENU:
             default:
                 p = new RootMenuPanel(this);
-                p.setBackground(new Color(255, 255, 204));
                 break;
         }
         return p;
