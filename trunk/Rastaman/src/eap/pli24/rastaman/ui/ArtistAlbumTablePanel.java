@@ -187,7 +187,9 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
             Album selectedAlbum = albumList.get(selectedIndex);
 
             controller.showArtistAlbumEditor(selectedAlbum);
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Άλμπουμ","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Άλμπουμ", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -226,7 +228,10 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         this.controller = controller;
         this.em = em;
         initComponents();
+        initFurther();
+    }
 
+    private void initFurther() {
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = artistAlbumTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
@@ -274,10 +279,14 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                     albumList.remove(selectedIndex);
                     artistAlbumTable.updateUI();
                 }
-            } else JOptionPane.showMessageDialog(this, "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
-                            + "πρέπει πρώτα να διαγραφεί απο αυτή",
-                              "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
-                 
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Αλμπουμ","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
+                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                        "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Αλμπουμ", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

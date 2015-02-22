@@ -108,6 +108,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x39b;&#x3af;&#x3c3;&#x3c4;&#x3b5;&#x3c2;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playlistButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

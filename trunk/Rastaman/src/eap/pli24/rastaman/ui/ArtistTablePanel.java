@@ -17,7 +17,6 @@ import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -188,8 +187,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         if (selectedIndex != -1) {
             Artist selectedArtist = artistList.get(selectedIndex);
             controller.showArtistEditor(selectedArtist);
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
         }
-        else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -227,7 +227,10 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         this.controller = controller;
         this.em = em;
         initComponents();
+        initFurther();
+    }
 
+    private void initFurther() {
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = artistTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
@@ -279,7 +282,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί, \n γιατί συμμετέχει σε συγκρότημα και υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
 
     }
 }

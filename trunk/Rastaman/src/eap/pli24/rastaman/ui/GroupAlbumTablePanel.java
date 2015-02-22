@@ -220,7 +220,10 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         this.controller = controller;
         this.em = em;
         initComponents();
+        initFurther();
+    }
 
+    private void initFurther() {
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = groupAlbumTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
