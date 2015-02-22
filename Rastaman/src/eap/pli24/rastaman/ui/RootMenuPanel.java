@@ -78,6 +78,11 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
 
         playlistButton.setText("Λίστες");
+        playlistButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                playlistButtonActionPerformed(evt);
+            }
+        });
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -134,6 +139,10 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private void groupAlbumButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_groupAlbumButtonActionPerformed
         controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);
     }//GEN-LAST:event_groupAlbumButtonActionPerformed
+
+    private void playlistButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_playlistButtonActionPerformed
+        controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
+    }//GEN-LAST:event_playlistButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

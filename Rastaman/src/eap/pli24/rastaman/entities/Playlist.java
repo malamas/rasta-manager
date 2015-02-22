@@ -5,6 +5,8 @@
  */
 package eap.pli24.rastaman.entities;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Playlist.findByName", query = "SELECT p FROM Playlist p WHERE p.name = :name"),
     @NamedQuery(name = "Playlist.findByCreationdate", query = "SELECT p FROM Playlist p WHERE p.creationdate = :creationdate")})
 public class Playlist implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,7 +75,9 @@ public class Playlist implements Serializable {
     }
 
     public void setPlaylistid(Long playlistid) {
+        Long oldPlaylistid = this.playlistid;
         this.playlistid = playlistid;
+        changeSupport.firePropertyChange("playlistid", oldPlaylistid, playlistid);
     }
 
     public String getName() {
@@ -78,7 +85,9 @@ public class Playlist implements Serializable {
     }
 
     public void setName(String name) {
+        String oldName = this.name;
         this.name = name;
+        changeSupport.firePropertyChange("name", oldName, name);
     }
 
     public Date getCreationdate() {
@@ -86,7 +95,9 @@ public class Playlist implements Serializable {
     }
 
     public void setCreationdate(Date creationdate) {
+        Date oldCreationdate = this.creationdate;
         this.creationdate = creationdate;
+        changeSupport.firePropertyChange("creationdate", oldCreationdate, creationdate);
     }
 
     @XmlTransient
@@ -121,6 +132,14 @@ public class Playlist implements Serializable {
     @Override
     public String toString() {
         return "eap.pli24.rastaman.entities.Playlist[ playlistid=" + playlistid + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

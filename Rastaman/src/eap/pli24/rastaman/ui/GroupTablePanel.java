@@ -17,7 +17,6 @@ import javax.persistence.Query;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -160,13 +159,15 @@ public class GroupTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        
+
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {
-        
+
             Musicgroup selectedMusicgroup = musicgroupList.get(selectedIndex);
             controller.showGroupEditor(selectedMusicgroup);
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Συγκρότημα","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Συγκρότημα", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
@@ -205,7 +206,10 @@ public class GroupTablePanel extends javax.swing.JPanel {
         this.controller = controller;
         this.em = em;
         initComponents();
+        initFurther();
+    }
 
+    private void initFurther() {
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = groupTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
@@ -261,6 +265,8 @@ public class GroupTablePanel extends javax.swing.JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "Το συγκρότημα δεν μπορεί να διαγραφεί, γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
             }
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Συγκρότημα","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Συγκρότημα", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

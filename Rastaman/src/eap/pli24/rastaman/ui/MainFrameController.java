@@ -31,7 +31,8 @@ public class MainFrameController implements Runnable {
         ARTIST_TABLE,
         GROUP_TABLE,
         ARTIST_ALBUM_TABLE,
-        GROUP_ALBUM_TABLE
+        GROUP_ALBUM_TABLE,
+        PLAYLIST_TABLE
     }
 
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
@@ -127,12 +128,12 @@ public class MainFrameController implements Runnable {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
     }
-    
+
     public void showArtistAlbumEditor(Album album) {
         ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
         displayPanel(editor);
-    }    
-    
+    }
+
     private void displayPanel(JPanel panel) {
         mainFrame.remove(activePanel);
         mainFrame.add(panel, BorderLayout.CENTER);
@@ -155,6 +156,9 @@ public class MainFrameController implements Runnable {
                 break;
             case GROUP_ALBUM_TABLE:
                 p = new GroupAlbumTablePanel(this, em);
+                break;
+            case PLAYLIST_TABLE:
+                p = new PlaylistTablePanel(this, em);
                 break;
             case ROOT_MENU:
             default:
