@@ -1,11 +1,17 @@
 package eap.pli24.rastaman.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
 /**
@@ -31,13 +37,18 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonPanel = new JPanel();
         musicgroupButton = new JButton();
-        jLabel1 = new JLabel();
         artistButton = new JButton();
         exitButton = new JButton();
         artistAlbumButton = new JButton();
         groupAlbumButton = new JButton();
         playlistButton = new JButton();
+        headerPanel = new JPanel();
+        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
+        headerLabel = new JLabel();
+
+        setLayout(new BorderLayout());
 
         musicgroupButton.setText("Συγκροτήματα");
         musicgroupButton.addActionListener(new ActionListener() {
@@ -45,9 +56,6 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 musicgroupButtonActionPerformed(evt);
             }
         });
-
-        jLabel1.setFont(new Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Αρχικό Μενού");
 
         artistButton.setText("Καλλιτέχνες");
         artistButton.addActionListener(new ActionListener() {
@@ -84,27 +92,23 @@ public class RootMenuPanel extends javax.swing.JPanel {
             }
         });
 
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+        GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                     .addComponent(groupAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(artistAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(musicgroupButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(artistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(playlistButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exitButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(233, Short.MAX_VALUE))
+                    .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+        buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(artistButton)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(musicgroupButton)
@@ -116,8 +120,18 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addComponent(playlistButton)
                 .addGap(18, 18, 18)
                 .addComponent(exitButton)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(244, Short.MAX_VALUE))
         );
+
+        add(buttonPanel, BorderLayout.CENTER);
+
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
+        headerPanel.add(filler1);
+
+        headerLabel.setPreferredSize(new Dimension(0, 30));
+        headerPanel.add(headerLabel);
+
+        add(headerPanel, BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     private void musicgroupButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_musicgroupButtonActionPerformed
@@ -148,9 +162,12 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton artistAlbumButton;
     private JButton artistButton;
+    private JPanel buttonPanel;
     private JButton exitButton;
+    private Box.Filler filler1;
     private JButton groupAlbumButton;
-    private JLabel jLabel1;
+    private JLabel headerLabel;
+    private JPanel headerPanel;
     private JButton musicgroupButton;
     private JButton playlistButton;
     // End of variables declaration//GEN-END:variables
@@ -163,5 +180,14 @@ public class RootMenuPanel extends javax.swing.JPanel {
     public RootMenuPanel(MainFrameController controller) {
         this.controller = controller;
         initComponents();
+        initFurther();
+    }
+
+    private void initFurther() {
+        headerPanel.setPreferredSize(new Dimension(0, 50));
+        headerPanel.setBackground(new Color(168, 198, 12));
+
+        headerLabel.setFont(new Font("Tahoma", 0, 14));
+        headerLabel.setText("Αρχικό Μενού");
     }
 }
