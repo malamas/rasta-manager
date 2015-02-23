@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
@@ -35,9 +32,6 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        headerPanel = new JPanel();
-        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
-        headerLabel = new JLabel();
         menuPanel = new JPanel();
         artistButton = new JButton();
         musicgroupButton = new JButton();
@@ -47,15 +41,6 @@ public class RootMenuPanel extends javax.swing.JPanel {
         exitButton = new JButton();
 
         setLayout(new BorderLayout());
-
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
-        headerPanel.add(filler1);
-
-        headerLabel.setText("Βασικό μενού");
-        headerLabel.setPreferredSize(new Dimension(0, 30));
-        headerPanel.add(headerLabel);
-
-        add(headerPanel, BorderLayout.PAGE_START);
 
         artistButton.setText("Καλλιτέχνες");
         artistButton.addActionListener(new ActionListener() {
@@ -127,7 +112,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addComponent(playlistButton)
                 .addGap(18, 18, 18)
                 .addComponent(exitButton)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         add(menuPanel, BorderLayout.CENTER);
@@ -162,10 +147,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private JButton artistAlbumButton;
     private JButton artistButton;
     private JButton exitButton;
-    private Box.Filler filler1;
     private JButton groupAlbumButton;
-    private JLabel headerLabel;
-    private JPanel headerPanel;
     private JPanel menuPanel;
     private JButton musicgroupButton;
     private JButton playlistButton;
@@ -183,8 +165,5 @@ public class RootMenuPanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        headerPanel.setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
-        headerPanel.setBackground(UIProperties.HEADER_BACKGROUND);
-        headerLabel.setFont(UIProperties.HEADER_FONT);
     }
 }

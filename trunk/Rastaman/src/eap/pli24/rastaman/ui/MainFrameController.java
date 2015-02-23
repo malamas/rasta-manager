@@ -25,17 +25,25 @@ public class MainFrameController implements Runnable {
 
     public enum PanelType {
 
-        ROOT_MENU,
-        ARTIST_TABLE,
-        GROUP_TABLE,
-        ARTIST_ALBUM_TABLE,
-        GROUP_ALBUM_TABLE,
-        PLAYLIST_TABLE
+        ROOT_MENU("Βασικό μενού"),
+        ARTIST_TABLE("Καλλιτέχνες"),
+        GROUP_TABLE("Συγκροτήματα"),
+        ARTIST_ALBUM_TABLE("Άλμπουμ καλλιτεχνών"),
+        GROUP_ALBUM_TABLE("Άλμπουμ συγκροτημάτων"),
+        PLAYLIST_TABLE("Λίστες τραγουδιών");
+
+        private final String headerText;
+
+        PanelType(String headerText) {
+            this.headerText = headerText;
+        }
     }
 
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
     private EntityManager em;
     private MainFrame mainFrame;
+    private HeaderPanel headerPanel;
+    private JPanel centerPanel;
     private JPanel activePanel;
 
     @Override
@@ -81,7 +89,7 @@ public class MainFrameController implements Runnable {
         // ώστε να καλείται η μέθοδος shutdown() του ελεγκτή (για ελέγχους κλπ.)
         mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        mainFrame.setTitle("Rastaman!");
+        mainFrame.setTitle("Rastaman");
 
         // Φόρτωση και ορισμός εικονιδίου 
         java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_32x32.png");
@@ -90,11 +98,19 @@ public class MainFrameController implements Runnable {
             mainFrame.setIconImage(icon.getImage());
         }
 
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BorderLayout());
+
+        headerPanel = new HeaderPanel();
+
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(new SideBarPanel(), BorderLayout.LINE_START);
+        mainFrame.add(centerPanel, BorderLayout.CENTER);
 
+        centerPanel.add(headerPanel, BorderLayout.PAGE_START);
         JPanel startPanel = createPanel(PanelType.ROOT_MENU);
-        mainFrame.add(startPanel, BorderLayout.CENTER);
+        centerPanel.add(startPanel, BorderLayout.CENTER);
+        headerPanel.setHeaderLabel("Βασικό μενού");
         activePanel = startPanel;
 
         // Εμφάνιση παραθύρου
@@ -108,6 +124,7 @@ public class MainFrameController implements Runnable {
 
     public void switchToPanel(PanelType p) {
         displayPanel(createPanel(p));
+        headerPanel.setHeaderLabel(p.headerText);
     }
 
     public void showArtistEditor(Artist artist) {
@@ -126,10 +143,10 @@ public class MainFrameController implements Runnable {
     }
 
     private void displayPanel(JPanel panel) {
-        mainFrame.remove(activePanel);
-        mainFrame.add(panel, BorderLayout.CENTER);
+        centerPanel.remove(activePanel);
+        centerPanel.add(panel, BorderLayout.CENTER);
         panel.setVisible(true);
-        mainFrame.validate();
+        centerPanel.validate();
         activePanel = panel;
     }
 
