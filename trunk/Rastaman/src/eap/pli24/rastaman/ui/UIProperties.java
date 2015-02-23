@@ -5,10 +5,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 /**
+ * Η κλάση {@code UIProperties} παρέχει μια σειρά από σταθερές {@code public
+ * static final} που ορίζουν ιδιότητες του user interface. Είναι {@code final}
+ * ώστε να μην μπορεί να κληρονομηθεί, και έχει {@code private} δημιουργό, ώστε
+ * να μη μπορούν να δημιουργηθούν στιγμιότυπά της.
  *
  * @author Malamas Malamidis
  */
-public class UIProperties {
+public final class UIProperties {
 
     public static final Dimension MAIN_FRAME_INIT_SIZE = new Dimension(1000, 700);
     public static final Dimension MAIN_FRAME_MIN_SIZE = new Dimension(900, 600);
@@ -32,4 +36,10 @@ public class UIProperties {
     public static final Color TABLE_ODD_ROW_BACKGROUND = new Color(255, 255, 255);
     public static final Color TABLE_EVEN_ROW_BACKGROUND = new Color(224, 232, 216);
     public static final Color TABLE_SELECTED_ROW_BACKGROUND = new Color(104, 104, 0);
+
+    /*
+     * {@code private} δημιουργός, ώστε να μη μπορούν να δημιουργηθούν στιγμιότυπα της κλάσης.
+     */
+    private UIProperties() {
+    }
 }

@@ -3,6 +3,7 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Musicgroup;
+import eap.pli24.rastaman.entities.Playlist;
 import java.awt.BorderLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -45,6 +47,7 @@ public class MainFrameController implements Runnable {
     private HeaderPanel headerPanel;
     private JPanel centerPanel;
     private JPanel activePanel;
+    private ImageIcon optionPaneIcon;
 
     @Override
     public void run() {
@@ -119,7 +122,16 @@ public class MainFrameController implements Runnable {
     }
 
     public void shutdown() {
-        mainFrame.dispose();
+        // lazy init of the dialog icon
+        if (optionPaneIcon == null) {
+            java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
+            optionPaneIcon = new ImageIcon(imageURL);
+        }
+        Object[] options = {"Έξοδος", "Επιστροφή"};
+        int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Είστε σίγουροι;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, optionPaneIcon, options, options[0]);
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            mainFrame.dispose();
+        }
     }
 
     public void switchToPanel(PanelType p) {
@@ -130,16 +142,24 @@ public class MainFrameController implements Runnable {
     public void showArtistEditor(Artist artist) {
         ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
         displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + artist.getFirstname() + " " + artist.getLastname());
     }
 
     public void showGroupEditor(Musicgroup group) {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + group.getName());
     }
 
     public void showArtistAlbumEditor(Album album) {
         ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
         displayPanel(editor);
+    }
+
+    public void showPlaylistEditor(Playlist playlist) {
+        PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
+        displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + playlist.getName());
     }
 
     private void displayPanel(JPanel panel) {
