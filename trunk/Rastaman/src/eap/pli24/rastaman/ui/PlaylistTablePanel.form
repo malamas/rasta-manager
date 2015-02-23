@@ -73,7 +73,7 @@
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
           <BindingProperties>
@@ -81,10 +81,12 @@
               <Subbinding sourcePath="${name}">
                 <BindingParameter name="NAME" value="&#x38c;&#x3bd;&#x3bf;&#x3bc;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${creationdate}">
                 <BindingParameter name="NAME" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1; &#x3b4;&#x3b7;&#x3bc;&#x3b9;&#x3bf;&#x3c5;&#x3c1;&#x3b3;&#x3af;&#x3b1;&#x3c2;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>
@@ -182,6 +184,9 @@
               <Dimension value="[120, 36]"/>
             </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="enabled" source="playlistTable" sourcePath="${selectedElement!=null}" target="editButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler5">
           <Properties>
@@ -209,6 +214,9 @@
               <Dimension value="[120, 36]"/>
             </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="enabled" source="playlistTable" sourcePath="${selectedElement!=null}" target="deleteButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler6">
           <Properties>

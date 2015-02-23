@@ -16,12 +16,17 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
+import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
@@ -67,13 +72,17 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
+        playlistTable.getTableHeader().setReorderingAllowed(false);
+
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistList, playlistTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${creationdate}"));
         columnBinding.setColumnName("Ημερομηνία δημιουργίας");
         columnBinding.setColumnClass(Date.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         scrollPane1.setViewportView(playlistTable);
@@ -104,12 +113,20 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
         editButton.setText("Επεξεργασία");
         editButton.setPreferredSize(new Dimension(120, 36));
+
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), editButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         buttonPanel.add(editButton);
         buttonPanel.add(filler5);
 
         deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
         deleteButton.setPreferredSize(new Dimension(120, 36));
+
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), deleteButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         buttonPanel.add(deleteButton);
         buttonPanel.add(filler6);
 
