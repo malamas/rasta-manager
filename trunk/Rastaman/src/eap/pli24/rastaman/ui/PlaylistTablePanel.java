@@ -3,6 +3,7 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -54,6 +57,8 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         localEm = em;
         playlistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT p FROM Playlist p");
         playlistList = Beans.isDesignTime() ? Collections.emptyList() : playlistQuery.getResultList();
+        headerPanel = new JPanel();
+        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
         headerLabel = new JLabel();
         buttonPanel = new JPanel();
         newButton = new JButton();
@@ -65,18 +70,22 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
-        headerLabel.setFont(new Font("Tahoma", 1, 11)); // NOI18N
-        headerLabel.setText("Λίστες τραγουδιών");
-        headerLabel.setPreferredSize(new Dimension(0, 30));
-        add(headerLabel, BorderLayout.PAGE_START);
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
+        headerPanel.add(filler1);
 
-        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
+        headerLabel.setText("Λίστες αναπαραγωγής");
+        headerLabel.setPreferredSize(new Dimension(20, 30));
+        headerPanel.add(headerLabel);
+
+        add(headerPanel, BorderLayout.PAGE_START);
+
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
 
         editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
         editButton.setText("Επεξεργασία");
 
-        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
 
         backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
@@ -97,7 +106,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                 .addComponent(editButton)
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 385, Short.MAX_VALUE)
                 .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
         );
         buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -138,7 +147,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
+    private Box.Filler filler1;
     private JLabel headerLabel;
+    private JPanel headerPanel;
     private JScrollPane jScrollPane1;
     private EntityManager localEm;
     private JButton newButton;
@@ -162,6 +173,12 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
+        headerPanel.setPreferredSize(new Dimension(0, 50));
+        headerPanel.setBackground(new Color(204, 208, 204));
+
+        headerLabel.setFont(new Font("Tahoma", 1, 14));
+        headerLabel.setText("Λίστες αναπαραγωγής");
+        
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
