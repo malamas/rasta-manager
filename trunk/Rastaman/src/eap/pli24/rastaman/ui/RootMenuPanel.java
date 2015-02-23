@@ -1,9 +1,7 @@
 package eap.pli24.rastaman.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
@@ -185,9 +183,8 @@ public class RootMenuPanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        headerPanel.setPreferredSize(new Dimension(0, 50));
-        headerPanel.setBackground(new Color(204, 208, 204));
-
-        headerLabel.setFont(new Font("Tahoma", 1, 14));
+        headerPanel.setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
+        headerPanel.setBackground(UIProperties.HEADER_BACKGROUND);
+        headerLabel.setFont(UIProperties.HEADER_FONT);
     }
 }

@@ -3,9 +3,7 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
@@ -16,14 +14,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.LayoutStyle;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
@@ -60,13 +56,18 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         headerPanel = new JPanel();
         filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
         headerLabel = new JLabel();
-        buttonPanel = new JPanel();
-        newButton = new JButton();
-        editButton = new JButton();
-        deleteButton = new JButton();
-        backButton = new JButton();
-        jScrollPane1 = new JScrollPane();
+        scrollPane1 = new JScrollPane();
         playlistTable = new JTable();
+        buttonPanel = new JPanel();
+        filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        backButton = new JButton();
+        filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        newButton = new JButton();
+        filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        editButton = new JButton();
+        filler5 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        deleteButton = new JButton();
+        filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
 
         setLayout(new BorderLayout());
 
@@ -79,48 +80,6 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
         add(headerPanel, BorderLayout.PAGE_START);
 
-        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
-        newButton.setText("Εισαγωγή");
-
-        editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
-        editButton.setText("Επεξεργασία");
-
-        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
-        deleteButton.setText("Διαγραφή");
-
-        backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
-        backButton.setText("Επιστροφή");
-        backButton.setPreferredSize(new Dimension(80, 23));
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
-        GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
-        buttonPanel.setLayout(buttonPanelLayout);
-        buttonPanelLayout.setHorizontalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addComponent(newButton)
-                .addGap(5, 5, 5)
-                .addComponent(editButton)
-                .addGap(5, 5, 5)
-                .addComponent(deleteButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 385, Short.MAX_VALUE)
-                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
-        );
-        buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(newButton)
-                    .addComponent(editButton)
-                    .addComponent(deleteButton)
-                    .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
-        );
-
-        add(buttonPanel, BorderLayout.PAGE_END);
-
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistList, playlistTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
@@ -130,9 +89,44 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnClass(Date.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(playlistTable);
+        scrollPane1.setViewportView(playlistTable);
 
-        add(jScrollPane1, BorderLayout.CENTER);
+        add(scrollPane1, BorderLayout.CENTER);
+
+        buttonPanel.setPreferredSize(new Dimension(0, 50));
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        buttonPanel.add(filler3);
+
+        backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
+        backButton.setText("Επιστροφή");
+        backButton.setPreferredSize(new Dimension(120, 36));
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(backButton);
+        buttonPanel.add(filler2);
+
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
+        newButton.setText("Εισαγωγή");
+        newButton.setPreferredSize(new Dimension(120, 36));
+        buttonPanel.add(newButton);
+        buttonPanel.add(filler4);
+
+        editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
+        editButton.setText("Επεξεργασία");
+        editButton.setPreferredSize(new Dimension(120, 36));
+        buttonPanel.add(editButton);
+        buttonPanel.add(filler5);
+
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
+        deleteButton.setText("Διαγραφή");
+        deleteButton.setPreferredSize(new Dimension(120, 36));
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(filler6);
+
+        add(buttonPanel, BorderLayout.PAGE_END);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
@@ -148,14 +142,19 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private JButton deleteButton;
     private JButton editButton;
     private Box.Filler filler1;
+    private Box.Filler filler2;
+    private Box.Filler filler3;
+    private Box.Filler filler4;
+    private Box.Filler filler5;
+    private Box.Filler filler6;
     private JLabel headerLabel;
     private JPanel headerPanel;
-    private JScrollPane jScrollPane1;
     private EntityManager localEm;
     private JButton newButton;
     private List<Playlist> playlistList;
     private Query playlistQuery;
     private JTable playlistTable;
+    private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
@@ -173,12 +172,11 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        headerPanel.setPreferredSize(new Dimension(0, 50));
-        headerPanel.setBackground(new Color(204, 208, 204));
+        headerPanel.setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
+        headerPanel.setBackground(UIProperties.HEADER_BACKGROUND);
+        headerLabel.setFont(UIProperties.HEADER_FONT);
+        buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
 
-        headerLabel.setFont(new Font("Tahoma", 1, 14));
-        headerLabel.setText("Λίστες αναπαραγωγής");
-        
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {

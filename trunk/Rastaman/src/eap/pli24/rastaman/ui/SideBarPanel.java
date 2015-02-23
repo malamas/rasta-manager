@@ -1,8 +1,6 @@
 package eap.pli24.rastaman.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -68,11 +66,11 @@ public class SideBarPanel extends javax.swing.JPanel {
     //
 
     private void initFurther() {
-        this.setPreferredSize(new Dimension(240, 0));
-        this.setBackground(new Color(104, 104, 0));
+        this.setPreferredSize(new Dimension(UIProperties.SIDEBAR_WIDTH, 0));
+        this.setBackground(UIProperties.SIDEBAR_BACKGROUND);
 
-        rastamanLabel.setFont(new Font("Tahoma", 1, 14));
-        rastamanLabel.setForeground(new Color(240, 213, 44));
+        rastamanLabel.setFont(UIProperties.RASTAMAN_FONT);
+        rastamanLabel.setForeground(UIProperties.RASTAMAN_FOREGROUND);
         rastamanLabel.setText("Rastaman!");
 
         String credits = "<html>a RAdio STAtion MANager application<br>"
@@ -82,9 +80,9 @@ public class SideBarPanel extends javax.swing.JPanel {
                 + "Νίκος Καραγιάννης<br>"
                 + "Νίκος Κρομμύδας<br>"
                 + "Μάλαμας Μαλαμίδης";
-        creditsLabel.setMaximumSize(new Dimension(200, 100));
-        creditsLabel.setFont(new Font("Tahoma", 0, 11));
-        creditsLabel.setForeground(new Color(240, 240, 240));
+        creditsLabel.setMaximumSize(UIProperties.CREDITS_SIZE);
+        creditsLabel.setFont(UIProperties.CREDITS_FONT);
+        creditsLabel.setForeground(UIProperties.CREDITS_FOREGROUND);
         creditsLabel.setText(credits);
     }
 }

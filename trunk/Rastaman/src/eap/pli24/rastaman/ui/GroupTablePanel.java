@@ -4,9 +4,7 @@ import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
@@ -17,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
@@ -69,10 +65,15 @@ public class GroupTablePanel extends javax.swing.JPanel {
         scrollPane1 = new JScrollPane();
         groupTable = new JTable();
         buttonPanel = new JPanel();
-        newButton = new JButton();
-        editButton = new JButton();
-        deleteButton = new JButton();
+        filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         backButton = new JButton();
+        filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        newButton = new JButton();
+        filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        editButton = new JButton();
+        filler5 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        deleteButton = new JButton();
+        filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
 
         setLayout(new BorderLayout());
 
@@ -103,65 +104,62 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
         add(scrollPane1, BorderLayout.CENTER);
 
-        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
-        newButton.setText("Εισαγωγή");
-        newButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                newButtonActionPerformed(evt);
-            }
-        });
-
-        editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
-        editButton.setText("Επεξεργασία");
-        editButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                editButtonActionPerformed(evt);
-            }
-        });
-
-        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
-        deleteButton.setText("Διαγραφή");
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
+        buttonPanel.setPreferredSize(new Dimension(0, 50));
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        buttonPanel.add(filler3);
 
         backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
         backButton.setText("Επιστροφή");
-        backButton.setPreferredSize(new Dimension(80, 23));
+        backButton.setPreferredSize(new Dimension(120, 36));
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 backButtonActionPerformed(evt);
             }
         });
+        buttonPanel.add(backButton);
+        buttonPanel.add(filler2);
 
-        GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
-        buttonPanel.setLayout(buttonPanelLayout);
-        buttonPanelLayout.setHorizontalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addComponent(newButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editButton)
-                .addGap(5, 5, 5)
-                .addComponent(deleteButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
-        );
-        buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addGap(0, 11, Short.MAX_VALUE)
-                .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(backButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(editButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(deleteButton)))
-        );
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
+        newButton.setText("Εισαγωγή");
+        newButton.setPreferredSize(new Dimension(120, 36));
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(newButton);
+        buttonPanel.add(filler4);
+
+        editButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/edit22.png"))); // NOI18N
+        editButton.setText("Επεξεργασία");
+        editButton.setPreferredSize(new Dimension(120, 36));
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(editButton);
+        buttonPanel.add(filler5);
+
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/delete22.png"))); // NOI18N
+        deleteButton.setText("Διαγραφή");
+        deleteButton.setPreferredSize(new Dimension(120, 36));
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(filler6);
 
         add(buttonPanel, BorderLayout.PAGE_END);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
+    }//GEN-LAST:event_backButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteGroup();
@@ -183,10 +181,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
         controller.showGroupEditor(new Musicgroup());
     }//GEN-LAST:event_newButtonActionPerformed
 
-    private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
-    }//GEN-LAST:event_backButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private List<Album> albumList;
@@ -196,6 +190,11 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private JButton deleteButton;
     private JButton editButton;
     private Box.Filler filler1;
+    private Box.Filler filler2;
+    private Box.Filler filler3;
+    private Box.Filler filler4;
+    private Box.Filler filler5;
+    private Box.Filler filler6;
     private JTable groupTable;
     private JLabel headerLabel;
     private JPanel headerPanel;
@@ -221,10 +220,11 @@ public class GroupTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        headerPanel.setPreferredSize(new Dimension(0, 50));
-        headerPanel.setBackground(new Color(204, 208, 204));
-        headerLabel.setFont(new Font("Tahoma", 1, 14));
-        
+        headerPanel.setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
+        headerPanel.setBackground(UIProperties.HEADER_BACKGROUND);
+        headerLabel.setFont(UIProperties.HEADER_FONT);
+        buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = groupTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
