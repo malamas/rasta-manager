@@ -245,6 +245,9 @@
               <Dimension value="[120, 36]"/>
             </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="enabled" source="artistTable" sourcePath="${selectedElement!=null}" target="editButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editButtonActionPerformed"/>
           </Events>
@@ -275,6 +278,9 @@
               <Dimension value="[120, 36]"/>
             </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="enabled" source="artistTable" sourcePath="${selectedElement!=null}" target="deleteButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
           </Events>
