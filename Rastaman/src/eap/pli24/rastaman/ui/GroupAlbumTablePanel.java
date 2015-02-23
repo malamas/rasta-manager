@@ -5,6 +5,7 @@ import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -61,16 +64,27 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
         albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.musicgroupmusicgroupid is not null");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
-        jScrollPane2 = new JScrollPane();
+        headerPanel = new JPanel();
+        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
+        headerLabel = new JLabel();
+        scrollPane1 = new JScrollPane();
         groupAlbumTable = new JTable();
-        jLabel1 = new JLabel();
-        jPanel1 = new JPanel();
+        buttonPanel = new JPanel();
         newButton = new JButton();
         editButton = new JButton();
         deleteButton = new JButton();
         backButton = new JButton();
 
         setLayout(new BorderLayout());
+
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
+        headerPanel.add(filler1);
+
+        headerLabel.setText("Άλμπουμ συγκροτημάτων");
+        headerLabel.setPreferredSize(new Dimension(0, 30));
+        headerPanel.add(headerLabel);
+
+        add(headerPanel, BorderLayout.PAGE_START);
 
         groupAlbumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupAlbumTable.getTableHeader().setReorderingAllowed(false);
@@ -102,15 +116,10 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane2.setViewportView(groupAlbumTable);
+        scrollPane1.setViewportView(groupAlbumTable);
         groupAlbumTable.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        add(jScrollPane2, BorderLayout.CENTER);
-
-        jLabel1.setFont(new Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Άλμπουμ Καλλιτεχνών");
-        jLabel1.setPreferredSize(new Dimension(0, 30));
-        add(jLabel1, BorderLayout.PAGE_START);
+        add(scrollPane1, BorderLayout.CENTER);
 
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
@@ -145,10 +154,10 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
             }
         });
 
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        GroupLayout buttonPanelLayout = new GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addComponent(newButton)
                 .addGap(5, 5, 5)
                 .addComponent(editButton)
@@ -157,17 +166,17 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 377, Short.MAX_VALUE)
                 .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
         );
-        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(newButton)
                     .addComponent(editButton)
                     .addComponent(deleteButton)
                     .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
         );
 
-        add(jPanel1, BorderLayout.PAGE_END);
+        add(buttonPanel, BorderLayout.PAGE_END);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
@@ -199,14 +208,16 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     private List<Artist> artistList;
     private Query artistQuery;
     private JButton backButton;
+    private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
+    private Box.Filler filler1;
     private JTable groupAlbumTable;
-    private JLabel jLabel1;
-    private JPanel jPanel1;
-    private JScrollPane jScrollPane2;
+    private JLabel headerLabel;
+    private JPanel headerPanel;
     private EntityManager localEm;
     private JButton newButton;
+    private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
@@ -224,6 +235,10 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
+        headerPanel.setPreferredSize(new Dimension(0, 50));
+        headerPanel.setBackground(new Color(204, 208, 204));
+        headerLabel.setFont(new Font("Tahoma", 1, 14));
+        
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = groupAlbumTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {

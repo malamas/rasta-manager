@@ -32,8 +32,10 @@ public class SideBarPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        filler1 = new Box.Filler(new Dimension(10, 20), new Dimension(10, 20), new Dimension(10, 20));
+        filler1 = new Box.Filler(new Dimension(20, 20), new Dimension(20, 20), new Dimension(20, 20));
         rastamanLabel = new JLabel();
+        filler2 = new Box.Filler(new Dimension(20, 20), new Dimension(20, 20), new Dimension(20, 20));
+        creditsLabel = new JLabel();
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(filler1);
@@ -45,27 +47,44 @@ public class SideBarPanel extends javax.swing.JPanel {
         rastamanLabel.setHorizontalTextPosition(SwingConstants.CENTER);
         rastamanLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
         add(rastamanLabel);
+        add(filler2);
+
+        creditsLabel.setAlignmentX(0.5F);
+        creditsLabel.setMaximumSize(new Dimension(20, 20));
+        creditsLabel.setVerticalTextPosition(SwingConstants.TOP);
+        add(creditsLabel);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private JLabel creditsLabel;
     private Box.Filler filler1;
+    private Box.Filler filler2;
     private JLabel rastamanLabel;
     // End of variables declaration//GEN-END:variables
     //
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
-    private static final int PANEL_WIDTH = 240;
 
     private void initFurther() {
-        this.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
-        this.setBackground(new Color(102, 102, 0));
-
-        rastamanLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
+        this.setPreferredSize(new Dimension(240, 0));
+        this.setBackground(new Color(104, 104, 0));
 
         rastamanLabel.setFont(new Font("Tahoma", 1, 14));
         rastamanLabel.setForeground(new Color(240, 213, 44));
         rastamanLabel.setText("Rastaman!");
+
+        String credits = "<html>a RAdio STAtion MANager application<br>"
+                + "<br>"
+                + "© 2015<br>"
+                + "Αποστόλης Ιακωβάκης<br>"
+                + "Νίκος Καραγιάννης<br>"
+                + "Νίκος Κρομμύδας<br>"
+                + "Μάλαμας Μαλαμίδης";
+        creditsLabel.setMaximumSize(new Dimension(200, 100));
+        creditsLabel.setFont(new Font("Tahoma", 0, 11));
+        creditsLabel.setForeground(new Color(240, 240, 240));
+        creditsLabel.setText(credits);
     }
 }

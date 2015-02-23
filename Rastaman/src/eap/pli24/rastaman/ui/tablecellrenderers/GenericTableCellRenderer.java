@@ -12,7 +12,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class GenericTableCellRenderer extends DefaultTableCellRenderer {
 
     private static final Color oddRowColor = new Color(255, 255, 255);
-    private static final Color evenRowColor = new Color(216, 224, 232);
+    private static final Color evenRowColor = new Color(224, 232, 216);
+    private static final Color selectedColor = new Color(104, 104, 0);
 
     public GenericTableCellRenderer() {
         super();
@@ -20,8 +21,8 @@ public class GenericTableCellRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        this.setBackground((row % 2 == 0) ? oddRowColor : evenRowColor);
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        this.setBackground((isSelected ? selectedColor : (row % 2 == 0) ? oddRowColor : evenRowColor));
         return this;
     }
 }

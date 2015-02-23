@@ -4,6 +4,7 @@ import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -59,9 +62,11 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
         dateTableCellRenderer1 = new DateTableCellRenderer();
-        jScrollPane2 = new JScrollPane();
-        artistTable = new JTable();
+        headerPanel = new JPanel();
+        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
         headerLabel = new JLabel();
+        scrollPane1 = new JScrollPane();
+        artistTable = new JTable();
         buttonPanel = new JPanel();
         newButton = new JButton();
         editButton = new JButton();
@@ -72,16 +77,25 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
+        headerPanel.add(filler1);
+
+        headerLabel.setText("Καλλιτέχνες");
+        headerLabel.setPreferredSize(new Dimension(0, 30));
+        headerPanel.add(headerLabel);
+
+        add(headerPanel, BorderLayout.PAGE_START);
+
         artistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         artistTable.getTableHeader().setReorderingAllowed(false);
 
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistTable);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstname}"));
-        columnBinding.setColumnName("Όνομα");
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastname}"));
+        columnBinding.setColumnName("Επώνυμο");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastname}"));
-        columnBinding.setColumnName("Επίθετο");
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstname}"));
+        columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artisticname}"));
@@ -106,17 +120,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane2.setViewportView(artistTable);
-        if (artistTable.getColumnModel().getColumnCount() > 0) {
-            artistTable.getColumnModel().getColumn(4).setCellRenderer(null);
-        }
+        scrollPane1.setViewportView(artistTable);
 
-        add(jScrollPane2, BorderLayout.CENTER);
-
-        headerLabel.setFont(new Font("Tahoma", 1, 11)); // NOI18N
-        headerLabel.setText("Καλλιτέχνες");
-        headerLabel.setPreferredSize(new Dimension(0, 30));
-        add(headerLabel, BorderLayout.PAGE_START);
+        add(scrollPane1, BorderLayout.CENTER);
 
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
@@ -160,7 +166,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 .addComponent(editButton)
                 .addGap(5, 5, 5)
                 .addComponent(deleteButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 260, Short.MAX_VALUE)
                 .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
         );
         buttonPanelLayout.setVerticalGroup(buttonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -210,10 +216,12 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private DateTableCellRenderer dateTableCellRenderer1;
     private JButton deleteButton;
     private JButton editButton;
+    private Box.Filler filler1;
     private JLabel headerLabel;
-    private JScrollPane jScrollPane2;
+    private JPanel headerPanel;
     private EntityManager localEm;
     private JButton newButton;
+    private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
@@ -231,6 +239,10 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
+        headerPanel.setPreferredSize(new Dimension(0, 50));
+        headerPanel.setBackground(new Color(204, 208, 204));
+        headerLabel.setFont(new Font("Tahoma", 1, 14));
+
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = artistTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
