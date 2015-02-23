@@ -4,7 +4,6 @@ import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Musicgroup;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.util.logging.Level;
@@ -70,8 +69,8 @@ public class MainFrameController implements Runnable {
         mainFrame.setController(this);
 
         // Ορισμός διαστάσεων παραθύρου
-        mainFrame.setSize(1000, 700);
-        mainFrame.setMinimumSize(new Dimension(900, 600));
+        mainFrame.setSize(UIProperties.MAIN_FRAME_INIT_SIZE);
+        mainFrame.setMinimumSize(UIProperties.MAIN_FRAME_MIN_SIZE);
 
         // Τοποθέτηση του παραθύρου στο κέντρο της οθόνης
         Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();

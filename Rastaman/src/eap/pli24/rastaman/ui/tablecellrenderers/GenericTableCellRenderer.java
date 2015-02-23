@@ -1,5 +1,6 @@
 package eap.pli24.rastaman.ui.tablecellrenderers;
 
+import eap.pli24.rastaman.ui.UIProperties;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
@@ -11,9 +12,9 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class GenericTableCellRenderer extends DefaultTableCellRenderer {
 
-    private static final Color oddRowColor = new Color(255, 255, 255);
-    private static final Color evenRowColor = new Color(224, 232, 216);
-    private static final Color selectedColor = new Color(104, 104, 0);
+    private static final Color oddRowColor = UIProperties.TABLE_ODD_ROW_BACKGROUND;
+    private static final Color evenRowColor = UIProperties.TABLE_EVEN_ROW_BACKGROUND;
+    private static final Color selectedColor = UIProperties.TABLE_SELECTED_ROW_BACKGROUND;
 
     public GenericTableCellRenderer() {
         super();
