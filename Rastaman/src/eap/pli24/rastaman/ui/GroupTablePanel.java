@@ -17,7 +17,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -59,9 +58,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
         musicgroupList = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery.getResultList();
         albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
-        headerPanel = new JPanel();
-        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
-        headerLabel = new JLabel();
         scrollPane1 = new JScrollPane();
         groupTable = new JTable();
         buttonPanel = new JPanel();
@@ -76,15 +72,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
         filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
 
         setLayout(new BorderLayout());
-
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
-        headerPanel.add(filler1);
-
-        headerLabel.setText("Συγκροτήματα");
-        headerLabel.setPreferredSize(new Dimension(0, 30));
-        headerPanel.add(headerLabel);
-
-        add(headerPanel, BorderLayout.PAGE_START);
 
         groupTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupTable.getTableHeader().setReorderingAllowed(false);
@@ -189,15 +176,12 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
-    private Box.Filler filler1;
     private Box.Filler filler2;
     private Box.Filler filler3;
     private Box.Filler filler4;
     private Box.Filler filler5;
     private Box.Filler filler6;
     private JTable groupTable;
-    private JLabel headerLabel;
-    private JPanel headerPanel;
     private EntityManager localEm;
     private List<Musicgroup> musicgroupList;
     private Query musicgroupQuery;
@@ -220,9 +204,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        headerPanel.setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
-        headerPanel.setBackground(UIProperties.HEADER_BACKGROUND);
-        headerLabel.setFont(UIProperties.HEADER_FONT);
         buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
 
         // Καθορισμός εμφάνισης πίνακα

@@ -16,7 +16,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -53,9 +52,6 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         localEm = em;
         playlistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT p FROM Playlist p");
         playlistList = Beans.isDesignTime() ? Collections.emptyList() : playlistQuery.getResultList();
-        headerPanel = new JPanel();
-        filler1 = new Box.Filler(new Dimension(15, 5), new Dimension(15, 5), new Dimension(15, 5));
-        headerLabel = new JLabel();
         scrollPane1 = new JScrollPane();
         playlistTable = new JTable();
         buttonPanel = new JPanel();
@@ -70,15 +66,6 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
 
         setLayout(new BorderLayout());
-
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
-        headerPanel.add(filler1);
-
-        headerLabel.setText("Λίστες αναπαραγωγής");
-        headerLabel.setPreferredSize(new Dimension(20, 30));
-        headerPanel.add(headerLabel);
-
-        add(headerPanel, BorderLayout.PAGE_START);
 
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistList, playlistTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
@@ -141,14 +128,11 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
-    private Box.Filler filler1;
     private Box.Filler filler2;
     private Box.Filler filler3;
     private Box.Filler filler4;
     private Box.Filler filler5;
     private Box.Filler filler6;
-    private JLabel headerLabel;
-    private JPanel headerPanel;
     private EntityManager localEm;
     private JButton newButton;
     private List<Playlist> playlistList;
@@ -172,9 +156,6 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        headerPanel.setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
-        headerPanel.setBackground(UIProperties.HEADER_BACKGROUND);
-        headerLabel.setFont(UIProperties.HEADER_FONT);
         buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
 
         // Καθορισμός εμφάνισης πίνακα

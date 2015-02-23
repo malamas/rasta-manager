@@ -32,7 +32,7 @@ public class SideBarPanel extends javax.swing.JPanel {
 
         filler1 = new Box.Filler(new Dimension(20, 20), new Dimension(20, 20), new Dimension(20, 20));
         rastamanLabel = new JLabel();
-        filler2 = new Box.Filler(new Dimension(20, 20), new Dimension(20, 20), new Dimension(20, 20));
+        filler2 = new Box.Filler(new Dimension(20, 30), new Dimension(20, 30), new Dimension(20, 30));
         creditsLabel = new JLabel();
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -47,6 +47,7 @@ public class SideBarPanel extends javax.swing.JPanel {
         add(rastamanLabel);
         add(filler2);
 
+        creditsLabel.setVerticalAlignment(SwingConstants.TOP);
         creditsLabel.setAlignmentX(0.5F);
         creditsLabel.setMaximumSize(new Dimension(20, 20));
         creditsLabel.setVerticalTextPosition(SwingConstants.TOP);
@@ -71,7 +72,11 @@ public class SideBarPanel extends javax.swing.JPanel {
 
         rastamanLabel.setFont(UIProperties.RASTAMAN_FONT);
         rastamanLabel.setForeground(UIProperties.RASTAMAN_FOREGROUND);
-        rastamanLabel.setText("Rastaman!");
+        String rastaman = "Rastaman!";
+        //String rastaman = "<html><font color=#55a035>Ra</font>"
+        //        + "<font color=#f0d52c>sta</font>"
+        //       + "<font color=#ff8855>man!</font>";
+        rastamanLabel.setText(rastaman);
 
         String credits = "<html>a RAdio STAtion MANager application<br>"
                 + "<br>"
