@@ -43,6 +43,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         setLayout(new BorderLayout());
 
         artistButton.setText("Καλλιτέχνες");
+        artistButton.setPreferredSize(new Dimension(150, 30));
         artistButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 artistButtonActionPerformed(evt);
@@ -50,20 +51,23 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
 
         musicgroupButton.setText("Συγκροτήματα");
+        musicgroupButton.setPreferredSize(new Dimension(150, 30));
         musicgroupButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 musicgroupButtonActionPerformed(evt);
             }
         });
 
-        artistAlbumButton.setText("Αλμπουμ Καλλιτεχνών");
+        artistAlbumButton.setText("Αλμπουμ καλλιτεχνών");
+        artistAlbumButton.setPreferredSize(new Dimension(150, 30));
         artistAlbumButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 artistAlbumButtonActionPerformed(evt);
             }
         });
 
-        groupAlbumButton.setText("Άλμπουμ Συγκροτημάτων");
+        groupAlbumButton.setText("Άλμπουμ συγκροτημάτων");
+        groupAlbumButton.setPreferredSize(new Dimension(150, 30));
         groupAlbumButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 groupAlbumButtonActionPerformed(evt);
@@ -71,6 +75,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
 
         playlistButton.setText("Λίστες");
+        playlistButton.setPreferredSize(new Dimension(150, 30));
         playlistButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 playlistButtonActionPerformed(evt);
@@ -78,6 +83,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
 
         exitButton.setText("Έξοδος");
+        exitButton.setPreferredSize(new Dimension(150, 30));
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -101,18 +107,18 @@ public class RootMenuPanel extends javax.swing.JPanel {
         menuPanelLayout.setVerticalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(artistButton)
+                .addComponent(artistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(musicgroupButton)
+                .addComponent(musicgroupButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(artistAlbumButton)
+                .addComponent(artistAlbumButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(groupAlbumButton)
+                .addComponent(groupAlbumButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(playlistButton)
+                .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(exitButton)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(menuPanel, BorderLayout.CENTER);
