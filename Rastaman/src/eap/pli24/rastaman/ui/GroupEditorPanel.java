@@ -258,8 +258,6 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             if (groupNameField.getText().isEmpty()) throw new Exception("Συμπληρώστε Όνομα"); 
-
-        
             boundGroup.setArtistList(groupArtistList);           
             if (boundGroup.getArtistList().size() < 2 ) throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη"); 
             localEm.getTransaction().commit();

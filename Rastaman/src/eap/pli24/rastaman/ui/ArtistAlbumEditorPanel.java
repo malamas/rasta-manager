@@ -3,11 +3,14 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Label;
 import eap.pli24.rastaman.entities.Song;
+import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 
 
@@ -40,7 +43,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         labelNamelist = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelNamequery.getResultList();
         songQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT s FROM Song s");
         songList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : songQuery.getResultList();
-        artistQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT  CONCAT(a.artisticname, ' ',  a.firstname,' ',   a.lastname) AS ArtistName FROM Artist a");
+        artistQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT  a  FROM Artist a");
         artistList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : artistQuery.getResultList();
         boundAlbum = album;
         saveButton = new javax.swing.JButton();
@@ -109,6 +112,8 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${artistartistid}"), artistComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${title}"), titleField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -153,6 +158,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        songTable.setCellSelectionEnabled(true);
         jScrollPane2.setViewportView(songTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -281,7 +287,13 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             for (Song s : albumSongList){
                 for ( int i = 0 ; i < model.getRowCount(); i++ ){
                     if (s.getSongid().equals(model.getValueAt(i, 0))){
-                        s.setTracknr((int)model.getValueAt(i, 1));
+                        if ((int)model.getValueAt(i, 1) < 1) {
+                            s.setTracknr((int)model.getValueAt(i, 1));
+                        } else { 
+
+                            songTable.setEditingRow(i);songTable.setEditingColumn(1); 
+                            throw new Exception("Δώστε σωστό αριθμό Track"); 
+                        }
                         s.setTitle((String)model.getValueAt(i, 2));
                         s.setDuration((int)model.getValueAt(i, 3));
                     }
@@ -362,10 +374,21 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         this.em = em;
         this.album = album;
         initComponents();
-
-        this.artistName = album.getArtistartistid().getArtisticname() + " "
-                        + album.getArtistartistid().getFirstname() + " "
-                        + album.getArtistartistid().getLastname();
+        TableColumnModel tcm = songTable.getColumnModel();
+        for (int i = 0; i < tcm.getColumnCount(); i++) {
+            switch (i) {
+                case 4:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.SEX));
+                    break;
+                case 5:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
+                    break;
+                default:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
+        this.artistName = album.getArtistartistid().getScreenName();
         model =  (DefaultTableModel) songTable.getModel();   
         for (Song s: boundAlbum.getSongList()){
             model.addRow(new Object[] {s.getSongid(),s.getTracknr(),s.getTitle(),s.getDuration()});
