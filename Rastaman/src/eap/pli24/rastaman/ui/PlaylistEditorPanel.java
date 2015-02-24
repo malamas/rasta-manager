@@ -73,7 +73,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.duration}"));
-        columnBinding.setColumnName("Διάρκεια (sec)");
+        columnBinding.setColumnName("Διάρκεια");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
@@ -141,8 +141,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
                 case 0:
-                case 3:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
+                    break;
+                case 3:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
                     break;
                 default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));

@@ -14,12 +14,14 @@ public class TableCellRendererFactory {
         GENERIC,
         GENERIC_RIGHT_ALIGNED,
         DATE,
-        SEX
+        SEX,
+        DURATION
     }
     private static final TableCellRenderer genericTableCellRenderer = new GenericTableCellRenderer();
     private static final TableCellRenderer rightAlignedTableCellRenderer = new RightAlignedTableCellRenderer();
     private static final TableCellRenderer dateTableCellRenderer = new DateTableCellRenderer();
     private static final TableCellRenderer sexTableCellRenderer = new SexTableCellRenderer();
+    private static final TableCellRenderer durationTableCellRenderer = new DurationTableCellRenderer();
     private static final EnumMap<RendererType, TableCellRenderer> renderers = new EnumMap<>(RendererType.class);
 
     static {
@@ -27,6 +29,7 @@ public class TableCellRendererFactory {
         renderers.put(RendererType.GENERIC_RIGHT_ALIGNED, rightAlignedTableCellRenderer);
         renderers.put(RendererType.DATE, dateTableCellRenderer);
         renderers.put(RendererType.SEX, sexTableCellRenderer);
+        renderers.put(RendererType.DURATION, durationTableCellRenderer);
     }
 
     private TableCellRendererFactory() {
