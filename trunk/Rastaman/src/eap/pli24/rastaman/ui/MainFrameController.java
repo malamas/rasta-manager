@@ -127,8 +127,8 @@ public class MainFrameController implements Runnable {
             java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
             optionPaneIcon = new ImageIcon(imageURL);
         }
-        Object[] options = {"Έξοδος", "Επιστροφή"};
-        int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Είστε σίγουροι;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, optionPaneIcon, options, options[0]);
+        Object[] options = {"Ναι", "Όχι"};
+        int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, optionPaneIcon, options, options[0]);
         if (selectedOption == JOptionPane.YES_OPTION) {
             mainFrame.dispose();
         }
@@ -142,24 +142,25 @@ public class MainFrameController implements Runnable {
     public void showArtistEditor(Artist artist) {
         ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + artist.getFirstname() + " " + artist.getLastname());
+        headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος καλλιτέχνης"));
     }
 
     public void showGroupEditor(Musicgroup group) {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + group.getName());
+        headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο συγκρότημα"));
     }
 
     public void showArtistAlbumEditor(Album album) {
         ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
         displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο άλμπουμ"));
     }
 
     public void showPlaylistEditor(Playlist playlist) {
         PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + playlist.getName());
+        headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
     }
 
     private void displayPanel(JPanel panel) {

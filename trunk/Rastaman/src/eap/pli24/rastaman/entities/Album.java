@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.entities;
 
 import java.beans.PropertyChangeListener;
@@ -31,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author Malamas Malamidis
  */
 @Entity
 @Table(name = "ALBUM")
@@ -44,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Album.findByType", query = "SELECT a FROM Album a WHERE a.type = :type"),
     @NamedQuery(name = "Album.findByDisknumber", query = "SELECT a FROM Album a WHERE a.disknumber = :disknumber")})
 public class Album implements Serializable {
+
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -211,5 +207,8 @@ public class Album implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-    
+
+    public String getPerformerScreenName() {
+        return (artistartistid != null) ? artistartistid.getScreenName() : musicgroupmusicgroupid.getName();
+    }
 }

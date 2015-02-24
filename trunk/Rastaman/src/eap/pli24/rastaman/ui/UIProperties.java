@@ -22,7 +22,7 @@ public final class UIProperties {
     public static final Color RASTAMAN_FOREGROUND = new Color(240, 220, 48);
     public static final Font RASTAMAN_FONT = new Font("Tahoma", 1, 14);
 
-    public static final Dimension CREDITS_SIZE = new Dimension(200, 200);
+    public static final Dimension CREDITS_SIZE = new Dimension(200, 150);
     public static final Color CREDITS_FOREGROUND = new Color(224, 224, 224);
     public static final Font CREDITS_FONT = new Font("Tahoma", 1, 11);
 

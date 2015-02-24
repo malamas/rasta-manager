@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.entities;
 
 import java.beans.PropertyChangeListener;
@@ -31,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author Malamas Malamidis
  */
 @Entity
 @Table(name = "ARTIST")
@@ -55,13 +50,10 @@ public class Artist implements Serializable {
     @Basic(optional = false)
     @Column(name = "ARTISTID")
     private Long artistid;
-    @Basic(optional = false)
-    @Column(name = "FIRSTNAME")
-    private String firstname;
-    @Basic(optional = false)
     @Column(name = "LASTNAME")
     private String lastname;
-    @Basic(optional = false)
+    @Column(name = "FIRSTNAME")
+    private String firstname;
     @Column(name = "ARTISTICNAME")
     private String artisticname;
     @Basic(optional = false)
@@ -226,4 +218,10 @@ public class Artist implements Serializable {
         changeSupport.removePropertyChangeListener(listener);
     }
 
+    public String getScreenName() {
+        if (artisticname == null && lastname == null) {
+            return null;
+        }
+        return (artisticname != null) ? artisticname : (firstname + " " + lastname);
+    }
 }
