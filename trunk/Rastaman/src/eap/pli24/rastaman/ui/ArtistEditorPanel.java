@@ -247,10 +247,9 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     //    localEm.getTransaction().begin();
     //    localEm.persist(boundArtist);
         try {
-            if (firstNameField.getText().isEmpty()) throw new Exception("Συμπληρώστε Όνομα"); 
-            if (lastNameField.getText().isEmpty()) throw new Exception("Συμπληρώστε Επίθετο");   
-            if (artisticNameField.getText().isEmpty() ) throw new Exception("Συμπληρώστε Καλιτεχινκό");
-            if (sexComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Συμπληρώστε φύλο");           
+            if ((firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty()) &&
+                   artisticNameField.getText().isEmpty() ) throw new Exception("Πρέπει να συμπληρώσετε ή Ονοματεπώνυμο ή Καλιτεχινκό Όνομα");
+            if (sexComboBox.getSelectedIndex() == -1 ) throw new Exception("Επιλέξτε φύλο");           
             if (genreComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Είδος Μουσικής"); 
 
             String selectetGenreName= genreComboBox.getSelectedItem().toString();

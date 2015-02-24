@@ -258,7 +258,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 if (selectedArtist.getMusicgroupList().isEmpty()) {
                     Object[] options = {"Ναι", "Όχι"};
                     int n = JOptionPane.showOptionDialog(this,
-                            "Να διαγραφεί ο Καλιτέχνης" + selectedArtist.getLastname() + " " + selectedArtist.getFirstname() + ";",
+                            "Να διαγραφεί ο Καλιτέχνης: " + selectedArtist.getScreenName()+ ";",
                             "Επιβεβαίωση Διαγραφής",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
