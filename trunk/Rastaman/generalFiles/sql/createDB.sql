@@ -83,7 +83,8 @@ CREATE TABLE Song (
 );
 
 CREATE TABLE PlayList_Song (
-  PlayListplayListID bigint NOT NULL, 
+  PlayListplayListID bigint NOT NULL,
+  PlayOrder          integer NOT NULL,    
   SongsongID         bigint NOT NULL, 
   PRIMARY KEY (PlayListplayListID,  SongsongID),
   FOREIGN KEY (SongsongID) REFERENCES Song (songID) ON DELETE Restrict,
