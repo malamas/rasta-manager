@@ -81,7 +81,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="artistQuery">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT  CONCAT(a.artisticname, &apos; &apos;,  a.firstname,&apos; &apos;,   a.lastname) AS ArtistName FROM Artist a"/>
+        <Property name="query" type="java.lang.String" value="SELECT  a  FROM Artist a"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="localEm"/>
         </Property>
@@ -312,6 +312,7 @@
         <Component class="javax.swing.JComboBox" name="artistComboBox">
           <BindingProperties>
             <BindingProperty name="elements" source="artistList" target="artistComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${artistartistid}" target="artistComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
@@ -400,6 +401,7 @@
                     <Column editable="true" title="Title 4" type="java.lang.Integer"/>
                   </Table>
                 </Property>
+                <Property name="cellSelectionEnabled" type="boolean" value="true"/>
               </Properties>
             </Component>
           </SubComponents>

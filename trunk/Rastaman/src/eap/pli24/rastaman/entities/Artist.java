@@ -207,7 +207,8 @@ public class Artist implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
+       return getScreenName(); 
+       // return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
