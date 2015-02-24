@@ -109,20 +109,20 @@ ALTER TABLE PlayList ALTER COLUMN playListID RESTART WITH 4;
 
 -- playlist songs
 -- playlist #1 contents
-INSERT INTO PlayList_Song VALUES (1, 6);
-INSERT INTO PlayList_Song VALUES (1, 2);
-INSERT INTO PlayList_Song VALUES (1, 18);
-INSERT INTO PlayList_Song VALUES (1, 33);
-INSERT INTO PlayList_Song VALUES (1, 21);
-INSERT INTO PlayList_Song VALUES (1, 12);
-INSERT INTO PlayList_Song VALUES (1, 5);
-INSERT INTO PlayList_Song VALUES (1, 9);
+INSERT INTO PlayList_Song VALUES (1, 1, 6);
+INSERT INTO PlayList_Song VALUES (1, 2, 2);
+INSERT INTO PlayList_Song VALUES (1, 3, 18);
+INSERT INTO PlayList_Song VALUES (1, 4, 33);
+INSERT INTO PlayList_Song VALUES (1, 5, 21);
+INSERT INTO PlayList_Song VALUES (1, 6, 12);
+INSERT INTO PlayList_Song VALUES (1, 7, 5);
+INSERT INTO PlayList_Song VALUES (1, 8, 9);
 
 -- playlist #2 contents
-INSERT INTO PlayList_Song VALUES (2, 10);
-INSERT INTO PlayList_Song VALUES (2, 1);
+INSERT INTO PlayList_Song VALUES (2, 1, 10);
+INSERT INTO PlayList_Song VALUES (2, 2, 1);
 
 -- playlist #3 contents
-INSERT INTO PlayList_Song VALUES (3, 8);
-INSERT INTO PlayList_Song VALUES (3, 5);
+INSERT INTO PlayList_Song VALUES (3, 1, 8);
+INSERT INTO PlayList_Song VALUES (3, 2, 5);
 --

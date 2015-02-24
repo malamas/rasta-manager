@@ -58,17 +58,21 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         playlistSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playlistSongTable.getTableHeader().setReorderingAllowed(false);
 
-        ELProperty eLProperty = ELProperty.create("${songList}");
+        ELProperty eLProperty = ELProperty.create("${playlistSongList}");
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundPlaylist, eLProperty, playlistSongTable);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${title}"));
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${playorder}"));
+        columnBinding.setColumnName("Σειρά");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.title}"));
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${albumid.performerScreenName}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.albumid.performerScreenName}"));
         columnBinding.setColumnName("Ερμηνευτής");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${duration}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.duration}"));
         columnBinding.setColumnName("Διάρκεια (sec)");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
@@ -136,7 +140,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         TableColumnModel tcm = playlistSongTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 2:
+                case 0:
+                case 3:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
                     break;
                 default:
