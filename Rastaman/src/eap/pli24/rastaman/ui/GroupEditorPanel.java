@@ -57,8 +57,6 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         availArtistTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
 
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
         saveButton.setText("Αποθήκευση");
@@ -98,21 +96,21 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         groupArtistTable.getTableHeader().setReorderingAllowed(false);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, groupArtistList, groupArtistTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${firstname}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${screenName}"));
         columnBinding.setColumnName("Όνομα");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lastname}"));
-        columnBinding.setColumnName("Επίθετο");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${artisticname}"));
-        columnBinding.setColumnName("Καλλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        groupArtistTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                groupArtistTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(groupArtistTable);
+        if (groupArtistTable.getColumnModel().getColumnCount() > 0) {
+            groupArtistTable.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
@@ -134,16 +132,8 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         availArtistTable.getTableHeader().setReorderingAllowed(false);
 
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, availArtistList, availArtistTable);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${firstname}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${screenName}"));
         columnBinding.setColumnName("Όνομα");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lastname}"));
-        columnBinding.setColumnName("Επίθετο");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${artisticname}"));
-        columnBinding.setColumnName("Καλλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
@@ -154,16 +144,15 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane2.setViewportView(availArtistTable);
+        if (availArtistTable.getColumnModel().getColumnCount() > 0) {
+            availArtistTable.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Μέλη Συγκροτήματος");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Διαθέσιμοι Καλιτέχνες");
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/back22.png"))); // NOI18N
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/next22.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -183,17 +172,12 @@ public class GroupEditorPanel extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(newButton)
-                            .addComponent(deleteButton)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel5))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(deleteButton))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -223,11 +207,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
                         .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(89, 89, 89))))
         );
@@ -290,8 +270,16 @@ public class GroupEditorPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_saveButtonActionPerformed
 
     private void availArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
-        // TODO add your handling code here:
+        newButton.setEnabled(true);
+        deleteButton.setEnabled(false);
+        groupArtistTable.clearSelection();
     }//GEN-LAST:event_availArtistTableMouseClicked
+
+    private void groupArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
+        newButton.setEnabled(false);
+        deleteButton.setEnabled(true);
+        availArtistTable.clearSelection();
+    }//GEN-LAST:event_groupArtistTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -308,9 +296,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -362,6 +348,8 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         }
         localEm.getTransaction().begin();
         localEm.persist(boundGroup);
+        newButton.setEnabled(false);
+        deleteButton.setEnabled(false);
     }
     
     private void addArtist(){
@@ -370,6 +358,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             groupArtistList.add(availArtistList.remove(selectedIndex));
             groupArtistTable.updateUI(); groupArtistTable.clearSelection();          
             availArtistTable.updateUI(); availArtistTable.clearSelection();
+            newButton.setEnabled(false);
         } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Εισαγωγή","Rastaman", JOptionPane.INFORMATION_MESSAGE);  
     }
 
@@ -379,6 +368,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             availArtistList.add(groupArtistList.remove(selectedIndex));
             availArtistTable.updateUI();  availArtistTable.clearSelection();
             groupArtistTable.updateUI();  groupArtistTable.clearSelection();
+            deleteButton.setEnabled(false);
         } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Διαγραφή","Rastaman", JOptionPane.INFORMATION_MESSAGE);
     }
     
