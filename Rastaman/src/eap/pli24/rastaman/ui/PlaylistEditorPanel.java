@@ -1,16 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.persistence.EntityManager;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BindingGroup;
@@ -20,7 +24,7 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
- * @author malamas
+ * @author Malamas Malamidis
  */
 public class PlaylistEditorPanel extends javax.swing.JPanel {
 
@@ -44,15 +48,24 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         boundPlaylist = playlist;
         scrollPane1 = new JScrollPane();
         playlistSongTable = new JTable();
+        buttonPanel = new JPanel();
+        filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        cancelButton = new JButton();
+        filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
 
         setLayout(new BorderLayout());
 
+        playlistSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playlistSongTable.getTableHeader().setReorderingAllowed(false);
 
         ELProperty eLProperty = ELProperty.create("${songList}");
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundPlaylist, eLProperty, playlistSongTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${title}"));
         columnBinding.setColumnName("Τίτλος");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${albumid.performerScreenName}"));
+        columnBinding.setColumnName("Ερμηνευτής");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${duration}"));
@@ -65,12 +78,37 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         add(scrollPane1, BorderLayout.CENTER);
 
+        buttonPanel.setPreferredSize(new Dimension(0, 50));
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        buttonPanel.add(filler3);
+
+        cancelButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
+        cancelButton.setText("Ακύρωση");
+        cancelButton.setPreferredSize(new Dimension(120, 36));
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(filler2);
+
+        add(buttonPanel, BorderLayout.PAGE_END);
+
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cancelButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Playlist boundPlaylist;
+    private JPanel buttonPanel;
+    private JButton cancelButton;
+    private Box.Filler filler2;
+    private Box.Filler filler3;
     private JTable playlistSongTable;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -92,13 +130,13 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        //buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistSongTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 1:
+                case 2:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
                     break;
                 default:

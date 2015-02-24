@@ -9,7 +9,8 @@ INSERT INTO MusicGenre VALUES (7, 'Latin');
 INSERT INTO MusicGenre VALUES (8, 'Classical');
 INSERT INTO MusicGenre VALUES (9, 'Reggae');
 INSERT INTO MusicGenre VALUES (10, 'Blues');
-ALTER TABLE MusicGenre ALTER COLUMN musicGenreID RESTART WITH 11;
+INSERT INTO MusicGenre VALUES (11, 'Hip hop');
+ALTER TABLE MusicGenre ALTER COLUMN musicGenreID RESTART WITH 12;
 
 -- labels
 INSERT INTO Label VALUES (1, 'Harvest', NULL, NULL);
@@ -26,17 +27,18 @@ INSERT INTO MusicGroup VALUES (2, 'Led Zeppelin', '1968-01-01');
 ALTER TABLE MusicGroup ALTER COLUMN musicGroupID RESTART WITH 3;
 
 -- artists
-INSERT INTO Artist VALUES (1, 'Roger','Waters',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (2, 'David','Gilmour',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (3, 'Nick','Mason',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (4, 'Richard','Wright',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (5, 'Syd','Barrett',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (6, 'Jimmy','Page',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (7, 'Robert','Plant',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (8, 'John','Bonham',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (9, 'John Paul','Jones',  '', 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (10, 'Μάνος','Χατζηδάκις',  '', 'm', NULL, NULL, 4);
-ALTER TABLE Artist ALTER COLUMN ArtistID RESTART WITH 11;
+INSERT INTO Artist VALUES (1, 'Waters', 'Roger', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (2, 'Gilmour', 'David', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (3, 'Mason', 'Nick', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (4, 'Wright', 'Richard', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (5, 'Barrett', 'Syd', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (6, 'Page', 'Jimmy', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (7, 'Plant', 'Robert', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (8, 'Bonham', 'John', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (9, 'Jones', 'John Paul', NULL, 'm', NULL, NULL, 1);
+INSERT INTO Artist VALUES (10, 'Χατζηδάκις', 'Μάνος', NULL, 'm', NULL, NULL, 4);
+INSERT INTO Artist VALUES (11, NULL, NULL, 'Eminem', 'm', NULL, NULL, 11);
+ALTER TABLE Artist ALTER COLUMN ArtistID RESTART WITH 12;
 
 -- group artists
 -- Pink Floyd members
@@ -109,6 +111,11 @@ ALTER TABLE PlayList ALTER COLUMN playListID RESTART WITH 4;
 -- playlist #1 contents
 INSERT INTO PlayList_Song VALUES (1, 6);
 INSERT INTO PlayList_Song VALUES (1, 2);
+INSERT INTO PlayList_Song VALUES (1, 18);
+INSERT INTO PlayList_Song VALUES (1, 33);
+INSERT INTO PlayList_Song VALUES (1, 21);
+INSERT INTO PlayList_Song VALUES (1, 12);
+INSERT INTO PlayList_Song VALUES (1, 5);
 INSERT INTO PlayList_Song VALUES (1, 9);
 
 -- playlist #2 contents
