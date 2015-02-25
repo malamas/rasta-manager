@@ -178,14 +178,14 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-
+        controller.showGroupAlbumEditor(new Album());
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         int selectedIndex = groupAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Artist a = artistList.get(selectedIndex);
-            //controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_EDITOR);
+            Album selectedAlbum = albumList.get(selectedIndex);
+            controller.showGroupAlbumEditor(selectedAlbum);
         }
     }//GEN-LAST:event_editButtonActionPerformed
 

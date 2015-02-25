@@ -7,8 +7,8 @@ import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -147,11 +147,11 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Track", "Τίτλος", "Διάρκεια"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -159,7 +159,21 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             }
         });
         songTable.setCellSelectionEnabled(true);
+        songTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                songTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(songTable);
+        songTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (songTable.getColumnModel().getColumnCount() > 0) {
+            songTable.getColumnModel().getColumn(0).setResizable(false);
+            songTable.getColumnModel().getColumn(0).setPreferredWidth(2);
+            songTable.getColumnModel().getColumn(1).setResizable(false);
+            songTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            songTable.getColumnModel().getColumn(2).setResizable(false);
+            songTable.getColumnModel().getColumn(2).setPreferredWidth(10);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -269,60 +283,20 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        deleteSong();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        model.addRow(new Object[] {null,null,null,0});
+        addSong();
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            if (titleField.getText().isEmpty()) throw new Exception("Συμπληρώστε Τίτλο"); 
-            if (artistComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Καλλιτέχνη");  
-            if (labelComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Εταιρία");           
-            if (typeComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Τύπο Άλμπουμ"); 
-            List<Song> albumSongList = new ArrayList<>();
-            albumSongList = boundAlbum.getSongList();
-            for (Song s : albumSongList){
-                for ( int i = 0 ; i < model.getRowCount(); i++ ){
-                    if (s.getSongid().equals(model.getValueAt(i, 0))){
-                        if ((int)model.getValueAt(i, 1) < 1) {
-                            s.setTracknr((int)model.getValueAt(i, 1));
-                        } else { 
-
-                            songTable.setEditingRow(i);songTable.setEditingColumn(1); 
-                            throw new Exception("Δώστε σωστό αριθμό Track"); 
-                        }
-                        s.setTitle((String)model.getValueAt(i, 2));
-                        s.setDuration((int)model.getValueAt(i, 3));
-                    }
-                }
-            }
-            for ( int i = 0 ; i < model.getRowCount(); i++ ){
-                if (model.getValueAt(i, 0) == null){
-                    Song newSong = new Song(null,(String)model.getValueAt(i, 2),(Integer)model.getValueAt(i, 3),(Integer)model.getValueAt(i, 1));
-
-                    newSong.setAlbumid(boundAlbum);
-                    albumSongList.add(newSong);
-                }
-            }                        
-            boundAlbum.setSongList(albumSongList);
-           
-            String selectetLabelName= labelComboBox.getSelectedItem().toString();
-            for (Label g: labelList) {
-                if (g.getName().equals(selectetLabelName)){
-                    boundAlbum.setLabelid(g); 
-                    break;
-                }
-            } 
-            localEm.getTransaction().commit();
-            controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
-        } catch(Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());  
-        }
-
+        saveAndExit();
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void songTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_songTableMouseClicked
+        deleteButton.setEnabled(true);
+    }//GEN-LAST:event_songTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -369,35 +343,154 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     private String artistName;
     private DefaultTableModel model ;
     
+    
     public ArtistAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
         this.controller = controller;
         this.em = em;
         this.album = album;
         initComponents();
+        deleteButton.setEnabled(false);
         TableColumnModel tcm = songTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 4:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.SEX));
+                case 0:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
-                case 5:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
+                case 2:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
                     break;
                 default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
             }
         }
-        this.artistName = album.getArtistartistid().getScreenName();
-        model =  (DefaultTableModel) songTable.getModel();   
-        for (Song s: boundAlbum.getSongList()){
-            model.addRow(new Object[] {s.getSongid(),s.getTracknr(),s.getTitle(),s.getDuration()});
+        this.artistName =album.getArtistartistid() == null?null:album.getArtistartistid().getScreenName();
+        model =  (DefaultTableModel) songTable.getModel();  
+        
+        if (boundAlbum.getSongList() != null ){
+            for (Song s: boundAlbum.getSongList()){
+                 model.addRow(new Object[] {s.getTracknr(),s.getTitle(),s.getDuration()});
+            }
         }
         
         localEm.getTransaction().begin();
         localEm.persist(boundAlbum);
     }
+    
+    
+    private void addSong(){
+        boolean found ;
+        int i;
+        for ( i = 1; i<model.getRowCount()+2; i++ ){
+            found = false;
+            for (int j = 0; j < model.getRowCount() ; j++){
+                if (i == (int) model.getValueAt(j, 0) ) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found ) break;
+         }
+        model.addRow(new Object[] {i,null,0});        
+    }
+    
+    
+    private void deleteSong(){
+         int selectedRow= songTable.getSelectedRow();
+         if (selectedRow != -1 ){
+             for (Song s: boundAlbum.getSongList()){
+                 if (s.getTracknr() == (int) model.getValueAt(selectedRow, 0)){
+                 
+                    // έλεγχος συμμετοχής τραγουδιού σε playlist
+                    int n=0;
+                    if (!s.getPlaylistList().isEmpty()){
+                         Object[] options = {"Ναι", "Όχι"};
+                         n = JOptionPane.showOptionDialog(this,
+                            "To τραγούδι συμμετέχει σε λίστα. Να διαγραφει? \n (Θα διαγραφεί και απο την λίστα)",
+                            "Επιβεβαίωση Διαγραφής",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null, //do not use a custom Icon
+                            options, //the titles of buttons
+                            options[1]); //default button title
+                    }
+                    if (n == 0) {
+                        boundAlbum.getSongList().remove(s);
+                        Query q = localEm.createQuery("DELETE FROM Song s1 WHERE s1.songid=:songID ",
+                                    Song.class).setParameter("songID", s.getSongid());
+                        q.executeUpdate();
+                        model.removeRow(selectedRow); 
+                        break;
+                    } 
+                 } 
+             }
+             
+         } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Τραγούδι \nπρος Διαγραφή","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+                
+    }
+    
+    
+    private void saveAndExit(){
+        try {
+            if (titleField.getText().isEmpty()) throw new Exception("Συμπληρώστε Τίτλο"); 
+            if (artistComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Καλλιτέχνη");  
+            if (labelComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Εταιρία");           
+            if (typeComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Τύπο Άλμπουμ"); 
+            List<Song> albumSongList = new ArrayList<>();
+            albumSongList = boundAlbum.getSongList();
 
+            if (model.getRowCount() < 1 )throw new Exception("To Αλμπουμ θα πρέπει να έχει \n τουλάχιστον ένα τραγούδι."); 
+            for (int i=0; i < model.getRowCount()-1; i++ ){
+                for (int j= i+1 ; j<model.getRowCount(); j++){
+                    if (model.getValueAt(i, 0).equals(model.getValueAt(j, 0)) ) {
+                        i++;
+                        throw new Exception("Το track " + i + " υπάρχει τουλάχιστον δύο φορές");
+                    }
+                }
+            }
+            boolean found; 
+            for ( int i = 0 ; i < model.getRowCount(); i++ ){
+                if ( model.getValueAt(i, 1).toString().isEmpty())  {
+                    songTable.editCellAt(i, 1);
+                    i++; 
+                    throw new Exception("Ο τίτλος στη " + i + "η γραμμή δεν μπορεί να είναι κενός");
+                }
+                if ( model.getValueAt(i, 2).equals(0) ) {
+                    songTable.editCellAt(i, 2);
+                    i++; 
+                    throw new Exception("Η Διάρκεια στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν");
+                }                 
+                found = false;
+                for (Song s: albumSongList){
+                    if (s.getTracknr() == ((Integer) model.getValueAt(i, 0))){
+                        s.setTitle((String)model.getValueAt(i, 1));
+                        s.setDuration((Integer)model.getValueAt(i, 2)); 
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found){
+                    Song newSong = new Song(null,(String)model.getValueAt(i, 1),(Integer)model.getValueAt(i, 2),(Integer)model.getValueAt(i, 0));
+                    newSong.setAlbumid(boundAlbum);
+                    albumSongList.add(newSong);
+                }
+            } 
+            boundAlbum.setSongList(albumSongList);
+         
+            String selectetLabelName= labelComboBox.getSelectedItem().toString();
+            for (Label g: labelList) {
+                if (g.getName().equals(selectetLabelName)){
+                    boundAlbum.setLabelid(g); 
+                    break;
+                }
+            } 
+            localEm.getTransaction().commit();
+            controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());  
+        }
+        
+    }
     
     public void setController(MainFrameController controller) {
         this.controller = controller;

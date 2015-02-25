@@ -146,7 +146,8 @@ public class Musicgroup implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Musicgroup[ musicgroupid=" + musicgroupid + " ]";
+        return name;
+        //return "eap.pli24.rastaman.entities.Musicgroup[ musicgroupid=" + musicgroupid + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
