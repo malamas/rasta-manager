@@ -157,6 +157,12 @@ public class MainFrameController implements Runnable {
         headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο άλμπουμ"));
     }
 
+    public void showGroupAlbumEditor(Album album) {
+        GroupAlbumEditorPanel editor = new GroupAlbumEditorPanel(this, em, album);
+        displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο άλμπουμ"));
+    }
+    
     public void showPlaylistEditor(Playlist playlist) {
         PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
         displayPanel(editor);
