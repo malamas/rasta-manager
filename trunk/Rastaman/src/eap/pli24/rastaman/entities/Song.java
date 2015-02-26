@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.entities;
 
 import java.beans.PropertyChangeListener;
@@ -30,7 +25,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 @Entity
 @Table(name = "SONG")
@@ -42,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Song.findByDuration", query = "SELECT s FROM Song s WHERE s.duration = :duration"),
     @NamedQuery(name = "Song.findByTracknr", query = "SELECT s FROM Song s WHERE s.tracknr = :tracknr")})
 public class Song implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "song")
     private List<PlaylistSong> playlistSongList;
     @Transient
@@ -184,5 +183,5 @@ public class Song implements Serializable {
     public void setPlaylistSongList(List<PlaylistSong> playlistSongList) {
         this.playlistSongList = playlistSongList;
     }
-    
+
 }

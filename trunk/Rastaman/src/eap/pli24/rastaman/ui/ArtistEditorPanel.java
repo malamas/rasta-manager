@@ -7,7 +7,10 @@ import javax.swing.JOptionPane;
 import org.jdesktop.beansbinding.Converter;
 
 /*
+ *
  * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class ArtistEditorPanel extends javax.swing.JPanel {
@@ -245,26 +248,32 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
     //    localEm.getTransaction().begin();
-    //    localEm.persist(boundArtist);
+        //    localEm.persist(boundArtist);
         try {
-            if ((firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty()) &&
-                   artisticNameField.getText().isEmpty() ) throw new Exception("Πρέπει να συμπληρώσετε ή Ονοματεπώνυμο ή Καλιτεχινκό Όνομα");
-            if (sexComboBox.getSelectedIndex() == -1 ) throw new Exception("Επιλέξτε φύλο");           
-            if (genreComboBox.getSelectedItem().toString().isEmpty() ) throw new Exception("Επιλέξτε Είδος Μουσικής"); 
+            if ((firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty())
+                    && artisticNameField.getText().isEmpty()) {
+                throw new Exception("Πρέπει να συμπληρώσετε ή Ονοματεπώνυμο ή Καλιτεχινκό Όνομα");
+            }
+            if (sexComboBox.getSelectedIndex() == -1) {
+                throw new Exception("Επιλέξτε φύλο");
+            }
+            if (genreComboBox.getSelectedItem().toString().isEmpty()) {
+                throw new Exception("Επιλέξτε Είδος Μουσικής");
+            }
 
-            String selectetGenreName= genreComboBox.getSelectedItem().toString();
-            for (Musicgenre g: musicGenreList) {
-                if (g.getName().equals(selectetGenreName)){
+            String selectetGenreName = genreComboBox.getSelectedItem().toString();
+            for (Musicgenre g : musicGenreList) {
+                if (g.getName().equals(selectetGenreName)) {
                     boundArtist.setMuscigenreid(g);
                     break;
                 }
-            } 
+            }
             localEm.getTransaction().commit();
             controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
-        } catch(Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());  
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
-               
+
     }//GEN-LAST:event_saveButtonActionPerformed
 
 
@@ -302,8 +311,6 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Artist artist;
     private Converter<String, String> conv;
-
-
 
     /**
      * Δημιουργεί ένα {@code ArtistEditorPanel} για την επεξεργασία ενός

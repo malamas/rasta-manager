@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.entities;
 
 import java.io.Serializable;
@@ -12,10 +7,14 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author malamas
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 @Embeddable
 public class PlaylistSongPK implements Serializable {
+
     @Basic(optional = false)
     @Column(name = "PLAYLISTPLAYLISTID")
     private long playlistplaylistid;
@@ -75,5 +74,5 @@ public class PlaylistSongPK implements Serializable {
     public String toString() {
         return "eap.pli24.rastaman.entities.PlaylistSongPK[ playlistplaylistid=" + playlistplaylistid + ", songsongid=" + songsongid + " ]";
     }
-    
+
 }

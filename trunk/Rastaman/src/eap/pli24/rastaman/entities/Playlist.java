@@ -26,6 +26,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 @Entity
@@ -37,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Playlist.findByName", query = "SELECT p FROM Playlist p WHERE p.name = :name"),
     @NamedQuery(name = "Playlist.findByCreationdate", query = "SELECT p FROM Playlist p WHERE p.creationdate = :creationdate")})
 public class Playlist implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist")
     @OrderBy("playorder ASC")
     private List<PlaylistSong> playlistSongList;
@@ -151,5 +155,5 @@ public class Playlist implements Serializable {
     public void setPlaylistSongList(List<PlaylistSong> playlistSongList) {
         this.playlistSongList = playlistSongList;
     }
-    
+
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.entities;
 
 import java.io.Serializable;
@@ -19,7 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author malamas
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 @Entity
 @Table(name = "PLAYLIST_SONG")
@@ -30,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PlaylistSong.findByPlayorder", query = "SELECT p FROM PlaylistSong p WHERE p.playorder = :playorder"),
     @NamedQuery(name = "PlaylistSong.findBySongsongid", query = "SELECT p FROM PlaylistSong p WHERE p.playlistSongPK.songsongid = :songsongid")})
 public class PlaylistSong implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlaylistSongPK playlistSongPK;
@@ -115,5 +114,5 @@ public class PlaylistSong implements Serializable {
     public String toString() {
         return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongPK=" + playlistSongPK + " ]";
     }
-    
+
 }

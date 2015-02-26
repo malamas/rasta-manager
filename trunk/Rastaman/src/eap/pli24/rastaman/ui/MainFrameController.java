@@ -20,14 +20,16 @@ import javax.swing.WindowConstants;
 
 /**
  *
- * @author Malamas Malamidis
  * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 public class MainFrameController implements Runnable {
 
     public enum PanelType {
 
-        ROOT_MENU("Βασικό μενού"),
+        ROOT_MENU("Αρχική"),
         ARTIST_TABLE("Καλλιτέχνες"),
         GROUP_TABLE("Συγκροτήματα"),
         ARTIST_ALBUM_TABLE("Άλμπουμ καλλιτεχνών"),
@@ -113,7 +115,7 @@ public class MainFrameController implements Runnable {
         centerPanel.add(headerPanel, BorderLayout.PAGE_START);
         JPanel startPanel = createPanel(PanelType.ROOT_MENU);
         centerPanel.add(startPanel, BorderLayout.CENTER);
-        headerPanel.setHeaderLabel("Βασικό μενού");
+        headerPanel.setHeaderLabel("Αρχική");
         activePanel = startPanel;
 
         // Εμφάνιση παραθύρου
@@ -162,7 +164,7 @@ public class MainFrameController implements Runnable {
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο άλμπουμ"));
     }
-    
+
     public void showPlaylistEditor(Playlist playlist) {
         PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
         displayPanel(editor);

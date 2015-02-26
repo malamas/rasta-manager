@@ -10,6 +10,9 @@ import java.awt.Font;
  * ώστε να μην μπορεί να κληρονομηθεί, και έχει {@code private} δημιουργό, ώστε
  * να μη μπορούν να δημιουργηθούν στιγμιότυπά της.
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public final class UIProperties {

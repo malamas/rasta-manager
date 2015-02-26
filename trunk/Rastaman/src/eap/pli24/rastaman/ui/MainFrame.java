@@ -7,6 +7,9 @@ import javax.swing.WindowConstants;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class MainFrame extends javax.swing.JFrame {

@@ -26,6 +26,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 @Entity
@@ -207,8 +210,8 @@ public class Artist implements Serializable {
 
     @Override
     public String toString() {
-       return getScreenName(); 
-       // return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
+        return getScreenName();
+        // return "eap.pli24.rastaman.entities.Artist[ artistid=" + artistid + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

@@ -11,8 +11,10 @@ import javax.swing.LayoutStyle;
 
 /**
  *
- * @author Malamas Malamidis
  * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 public class RootMenuPanel extends javax.swing.JPanel {
 

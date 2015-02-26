@@ -34,8 +34,10 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
- * @author Malamas Malamidis
  * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 public class ArtistTablePanel extends javax.swing.JPanel {
 
@@ -120,7 +122,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         buttonPanel.add(filler3);
 
         backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
-        backButton.setText("Επιστροφή");
+        backButton.setText("Αρχική");
         backButton.setPreferredSize(new Dimension(120, 36));
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -258,7 +260,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                 if (selectedArtist.getMusicgroupList().isEmpty()) {
                     Object[] options = {"Ναι", "Όχι"};
                     int n = JOptionPane.showOptionDialog(this,
-                            "Να διαγραφεί ο Καλιτέχνης: " + selectedArtist.getScreenName()+ ";",
+                            "Να διαγραφεί ο Καλιτέχνης: " + selectedArtist.getScreenName() + ";",
                             "Επιβεβαίωση Διαγραφής",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
