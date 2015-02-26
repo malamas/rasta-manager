@@ -34,8 +34,10 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
- * @author Malamas Malamidis
  * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 public class GroupTablePanel extends javax.swing.JPanel {
 
@@ -99,7 +101,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         buttonPanel.add(filler3);
 
         backButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/home22.png"))); // NOI18N
-        backButton.setText("Επιστροφή");
+        backButton.setText("Αρχική");
         backButton.setPreferredSize(new Dimension(120, 36));
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

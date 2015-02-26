@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eap.pli24.rastaman.entities;
 
 import java.io.Serializable;
@@ -23,7 +18,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author malamas
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
+ * @author Malamas Malamidis
  */
 @Entity
 @Table(name = "LABEL")
@@ -35,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Label.findByAddress", query = "SELECT l FROM Label l WHERE l.address = :address"),
     @NamedQuery(name = "Label.findByTelephone", query = "SELECT l FROM Label l WHERE l.telephone = :telephone")})
 public class Label implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -128,5 +127,5 @@ public class Label implements Serializable {
     public String toString() {
         return "eap.pli24.rastaman.entities.Label[ labelid=" + labelid + " ]";
     }
-    
+
 }

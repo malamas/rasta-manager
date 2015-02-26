@@ -5,6 +5,9 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class TableCellRendererFactory {

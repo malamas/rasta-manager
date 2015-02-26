@@ -4,6 +4,9 @@ import eap.pli24.rastaman.ui.MainFrameController;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class Rastaman {

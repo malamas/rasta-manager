@@ -24,6 +24,9 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class PlaylistEditorPanel extends javax.swing.JPanel {

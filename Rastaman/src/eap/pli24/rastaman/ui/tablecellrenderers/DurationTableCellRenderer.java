@@ -5,6 +5,9 @@ import javax.swing.SwingConstants;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class DurationTableCellRenderer extends GenericTableCellRenderer {

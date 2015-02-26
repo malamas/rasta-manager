@@ -7,6 +7,9 @@ import javax.swing.SwingConstants;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class DateTableCellRenderer extends GenericTableCellRenderer {
@@ -20,6 +23,6 @@ public class DateTableCellRenderer extends GenericTableCellRenderer {
 
     @Override
     protected void setValue(Object value) {
-        setText(value == null? null:sdf.format((Date) value));
+        setText(value == null ? null : sdf.format((Date) value));
     }
 }

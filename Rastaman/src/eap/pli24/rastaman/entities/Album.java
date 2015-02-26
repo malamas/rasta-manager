@@ -26,6 +26,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 @Entity

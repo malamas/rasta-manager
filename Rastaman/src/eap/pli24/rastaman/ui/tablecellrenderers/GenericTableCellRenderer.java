@@ -8,6 +8,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class GenericTableCellRenderer extends DefaultTableCellRenderer {

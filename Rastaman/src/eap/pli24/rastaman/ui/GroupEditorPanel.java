@@ -12,8 +12,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableColumnModel;
 import static org.eclipse.persistence.jpa.jpql.utility.CollectionTools.array;
+
 /*
+ *
  * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class GroupEditorPanel extends javax.swing.JPanel {
@@ -257,14 +261,18 @@ public class GroupEditorPanel extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            if (groupNameField.getText().isEmpty()) throw new Exception("Συμπληρώστε Όνομα"); 
-            boundGroup.setArtistList(groupArtistList);           
-            if (boundGroup.getArtistList().size() < 2 ) throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη"); 
+            if (groupNameField.getText().isEmpty()) {
+                throw new Exception("Συμπληρώστε Όνομα");
+            }
+            boundGroup.setArtistList(groupArtistList);
+            if (boundGroup.getArtistList().size() < 2) {
+                throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη");
+            }
             localEm.getTransaction().commit();
             controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
-        } catch(Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());  
-        }    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
 	}//GEN-LAST:event_saveButtonActionPerformed
 
     private void availArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
@@ -312,8 +320,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
     private Musicgroup group;
-   
-    
+
     public GroupEditorPanel(MainFrameController controller, EntityManager em, Musicgroup group) {
         this.controller = controller;
         this.em = em;
@@ -324,19 +331,19 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         for (int i = 0; i < tcmg.getColumnCount(); i++) {
             tcmg.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
         }
-        
+
         TableColumnModel tcma = availArtistTable.getColumnModel();
         for (int i = 0; i < tcma.getColumnCount(); i++) {
             tcma.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
         }
-        
+
         groupArtistList.clear();
-        if (group.getName() != null){
-            for (Artist a: group.getArtistList()){
+        if (group.getName() != null) {
+            for (Artist a : group.getArtistList()) {
                 groupArtistList.add(a);
             }
             for (Artist a : group.getArtistList()) {
-                for (Artist a2 : availArtistList){
+                for (Artist a2 : availArtistList) {
                     if (a.equals(a2)) {
                         availArtistList.remove(a2);
                         break;
@@ -349,27 +356,34 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         newButton.setEnabled(false);
         deleteButton.setEnabled(false);
     }
-    
-    private void addArtist(){
+
+    private void addArtist() {
         int selectedIndex = availArtistTable.getSelectedRow();
         if (selectedIndex != -1) {
             groupArtistList.add(availArtistList.remove(selectedIndex));
-            groupArtistTable.updateUI(); groupArtistTable.clearSelection();          
-            availArtistTable.updateUI(); availArtistTable.clearSelection();
+            groupArtistTable.updateUI();
+            groupArtistTable.clearSelection();
+            availArtistTable.updateUI();
+            availArtistTable.clearSelection();
             newButton.setEnabled(false);
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Εισαγωγή","Rastaman", JOptionPane.INFORMATION_MESSAGE);  
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Εισαγωγή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
-    private void deleteArtist(){
+    private void deleteArtist() {
         int selectedIndex = groupArtistTable.getSelectedRow();
         if (selectedIndex != -1) {
             availArtistList.add(groupArtistList.remove(selectedIndex));
-            availArtistTable.updateUI();  availArtistTable.clearSelection();
-            groupArtistTable.updateUI();  groupArtistTable.clearSelection();
+            availArtistTable.updateUI();
+            availArtistTable.clearSelection();
+            groupArtistTable.updateUI();
+            groupArtistTable.clearSelection();
             deleteButton.setEnabled(false);
-        } else JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Διαγραφή","Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Διαγραφή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
-    
 
     public void setController(MainFrameController controller) {
         this.controller = controller;

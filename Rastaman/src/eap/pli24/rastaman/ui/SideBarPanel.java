@@ -1,24 +1,18 @@
 package eap.pli24.rastaman.ui;
 
-import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class SideBarPanel extends javax.swing.JPanel {
@@ -47,7 +41,6 @@ public class SideBarPanel extends javax.swing.JPanel {
         filler2 = new Box.Filler(new Dimension(20, 40), new Dimension(20, 40), new Dimension(20, 40));
         creditsLabel = new JLabel();
         filler3 = new Box.Filler(new Dimension(20, 30), new Dimension(20, 30), new Dimension(20, 30));
-        projectPageButton = new JButton();
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(filler1);
@@ -67,34 +60,7 @@ public class SideBarPanel extends javax.swing.JPanel {
         creditsLabel.setVerticalTextPosition(SwingConstants.TOP);
         add(creditsLabel);
         add(filler3);
-
-        projectPageButton.setText("Ιστοσελίδα project (Google Code)");
-        projectPageButton.setAlignmentX(0.5F);
-        projectPageButton.setBorderPainted(false);
-        projectPageButton.setContentAreaFilled(false);
-        projectPageButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        projectPageButton.setFocusPainted(false);
-        projectPageButton.setPreferredSize(new Dimension(200, 22));
-        projectPageButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                projectPageButtonActionPerformed(evt);
-            }
-        });
-        add(projectPageButton);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void projectPageButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_projectPageButtonActionPerformed
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                try {
-                    desktop.browse(new URI("https://code.google.com/p/rasta-manager/"));
-                } catch (URISyntaxException | IOException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }//GEN-LAST:event_projectPageButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -102,7 +68,6 @@ public class SideBarPanel extends javax.swing.JPanel {
     private Box.Filler filler1;
     private Box.Filler filler2;
     private Box.Filler filler3;
-    private JButton projectPageButton;
     private JLabel rastamanLabel;
     // End of variables declaration//GEN-END:variables
     //
@@ -133,8 +98,5 @@ public class SideBarPanel extends javax.swing.JPanel {
         creditsLabel.setFont(UIProperties.CREDITS_FONT);
         creditsLabel.setForeground(UIProperties.CREDITS_FOREGROUND);
         creditsLabel.setText(credits);
-
-        projectPageButton.setForeground(UIProperties.CREDITS_FOREGROUND);
-        projectPageButton.setFont(UIProperties.CREDITS_FONT);
     }
 }

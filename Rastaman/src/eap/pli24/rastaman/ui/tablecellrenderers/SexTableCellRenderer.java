@@ -2,6 +2,9 @@ package eap.pli24.rastaman.ui.tablecellrenderers;
 
 /**
  *
+ * @author Apostolis Iakovakis
+ * @author Nikos Karagiannis
+ * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class SexTableCellRenderer extends GenericTableCellRenderer {
