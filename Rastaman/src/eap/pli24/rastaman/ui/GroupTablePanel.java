@@ -157,16 +157,21 @@ public class GroupTablePanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
+    // κλικ στο πλήκτρο επιστροφή στο κυρίως μενού
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
 
+    //κλίκ στο πλήκτρο Διαγραφή Συγκροτήματος
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteGroup();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //κλίκ στο πληκτρο Επεξεργασία Συγκροτήματος
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-
+        //¨Ανοιγμα της φόρμας επεξεργασίας Συγκροτήματος με
+        // παράμετρο το επιλεγμένο από τον πίνακα συγκροτημάτων
+        // συγκρότημα
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {
             Musicgroup selectedMusicgroup = musicgroupList.get(selectedIndex);
@@ -174,7 +179,10 @@ public class GroupTablePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    //κλίκ στο πλήκτρο Εισαγωγή Συγκροτήματος
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        //¨Ανοιγμα της φόρμας επεξεργασίας συγκροτήματος με
+        // παράμετρο νέο συγκρότημα
         controller.showGroupEditor(new Musicgroup());
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -208,7 +216,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
     public GroupTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
-        this.em = em;
+        this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
         initComponents();
         initFurther();
     }
@@ -220,24 +228,26 @@ public class GroupTablePanel extends javax.swing.JPanel {
         TableColumnModel tcm = groupTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 1:
+                case 1:  //Στήλη Ημερομηνία Δημιουργίας
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
                     break;
-                default:
+                default: //Όλες οι υπόλοιπες στήλες
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
             }
         }
     }
-
+    // Μέθοδος deleteGroup()
+    // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή συγκροτήματος και αφου κάνει τους 
+    // απαραίτητους ελέγχους διαγράφει το επιλεγμένο συγκρότημα
     private void deleteGroup() {
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {
             Musicgroup a = musicgroupList.get(selectedIndex);
-            if (a.getAlbumList().isEmpty()) {
+            if (a.getAlbumList().isEmpty()) { //εαν δεν έχει αλμπουμ
                 Object[] options = {"Ναι", "Όχι"};
                 int n;
-                if (a.getArtistList().isEmpty()) {
+                if (a.getArtistList().isEmpty()) { //εαν δεν έχει καλλιτέχνες
                     n = JOptionPane.showOptionDialog(this,
                             "Να διαγραφεί το συγκρότημα " + a.getName() + ";",
                             "Επιβεβαίωση Διαγραφής",
@@ -246,8 +256,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
                             null, //do not use a custom Icon
                             options, //the titles of buttons
                             options[1]); //default button title
-                } else {
-
+                } else { //Εάν έχει καλιτέχνες
                     n = JOptionPane.showOptionDialog(this,
                             "To συγκρότημα " + a.getName() + "\n"
                             + "έχει καλλιτέχνες οι οποίοι δεν θα  διαγραφούν."
@@ -259,7 +268,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
                             options, //the titles of buttons
                             options[1]); //default button title
                 }
-                if (n == 0) {
+                if (n == 0) { //Εαν τελικά επιλέξουμε να το διαγράψουμε
                     localEm.getTransaction().begin();
                     Query q = localEm.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
                             Musicgroup.class).setParameter("musicgroupID", a.getMusicgroupid());
