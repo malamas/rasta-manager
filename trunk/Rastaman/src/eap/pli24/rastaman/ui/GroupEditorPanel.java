@@ -246,42 +246,38 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
+    //κλικ στο πλήκτρο Ακύρωση
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        localEm.getTransaction().rollback();
+        localEm.getTransaction().rollback(); // Ακύρωση όλων των κινήσεων
         controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    //κλίκ στο πλήκτρο Διαγραφή Καλλιτέχνη
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteArtist();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //κλίκ στο πλήκτρο Εισαγωγή Καλλιτέχνη
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         addArtist();
     }//GEN-LAST:event_newButtonActionPerformed
-
+   
+    //κλίκ στο πλήκτρο Αποθήκευση Συγκροτήματος
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            if (groupNameField.getText().isEmpty()) {
-                throw new Exception("Συμπληρώστε Όνομα");
-            }
-            boundGroup.setArtistList(groupArtistList);
-            if (boundGroup.getArtistList().size() < 2) {
-                throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη");
-            }
-            localEm.getTransaction().commit();
-            controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
+        saveAndExit();
 	}//GEN-LAST:event_saveButtonActionPerformed
 
+    //κλίκ στον πίνακα διαθέσιμων καλλιτεχνών
     private void availArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
+        // ενεργοποίηση κατάλληλων πλήκτρων
         newButton.setEnabled(true);
         deleteButton.setEnabled(false);
         groupArtistTable.clearSelection();
     }//GEN-LAST:event_availArtistTableMouseClicked
 
+    //κλίκ στον πίνακα καλλιτεχνών Συγγκροτήματος
     private void groupArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
+        // ενεργοποίηση κατάλληλων πλήκτρων
         newButton.setEnabled(false);
         deleteButton.setEnabled(true);
         availArtistTable.clearSelection();
@@ -327,16 +323,21 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         this.group = group;
         initComponents();
         // Καθορισμός εμφάνισης των πινακων
+        // Πίνακας Καλιτεχνών του Γκρούπ
         TableColumnModel tcmg = groupArtistTable.getColumnModel();
         for (int i = 0; i < tcmg.getColumnCount(); i++) {
             tcmg.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
         }
-
+        //Πίνακας Διαθέσιμων Καλιτεχνών για συμμετοχή στο Γκρούπ
         TableColumnModel tcma = availArtistTable.getColumnModel();
         for (int i = 0; i < tcma.getColumnCount(); i++) {
             tcma.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
         }
-
+        /**
+         * Γέμισμα των πινάκων με τους σωστούς καλιτέχνες
+         * Αρχικά και οι δύο πίνακες έχουν όλους τους διαθέσιμους καλιτέχνες 
+         * έτσι ώστε να έχουμε το μέγιστο μέγεθος στους δύο πίνακες
+         */
         groupArtistList.clear();
         if (group.getName() != null) {
             for (Artist a : group.getArtistList()) {
@@ -351,12 +352,45 @@ public class GroupEditorPanel extends javax.swing.JPanel {
                 }
             }
         }
-        localEm.getTransaction().begin();
+        localEm.getTransaction().begin(); // Αρχή Transaction
         localEm.persist(boundGroup);
-        newButton.setEnabled(false);
+        /**
+         * Τα πλήκτρα εισαγωγή και διαγραφή απενεργοποιούνται μέχρι να 
+         * επιλεχθεί κάποιος καλλιτέχης
+         */
+        newButton.setEnabled(false); 
         deleteButton.setEnabled(false);
     }
-
+    
+    /**
+     * Μέθοδος saveAndExit()
+     * καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και αφου εκτελέσει τους απαραίτητους
+     * ελέγχους αποθηκεύει το Συγκρότημα boundGroup
+     */
+    private void saveAndExit(){
+        try {
+             //Ελεγχος Ονόματος.
+            if (groupNameField.getText().isEmpty()) {
+                throw new Exception("Συμπληρώστε Όνομα");
+            }
+            // Πρέπει να έχει τουλάχιστον 2 καλλιτέχνες
+            boundGroup.setArtistList(groupArtistList);
+            if (boundGroup.getArtistList().size() < 2) {
+                throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη");
+            }
+            localEm.getTransaction().commit(); //Αποθήκευση στη Βάση
+            controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
+    /**
+     * Μέθοδος addArtist()
+     * καλείται όταν πατηθεί το πλήκτρο εισαγωγή και μεταφέρει τον επιλεγμένο
+     * καλιτέχνη απο τον πίνακα των διαθέσιμων στον πίνακα των καλιτεχνών του
+     * συγκροτήματος
+     */    
     private void addArtist() {
         int selectedIndex = availArtistTable.getSelectedRow();
         if (selectedIndex != -1) {
@@ -366,11 +400,17 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             availArtistTable.updateUI();
             availArtistTable.clearSelection();
             newButton.setEnabled(false);
-        } else {
+        } else { // Μηνυμα για λόγους Ασφαλείας δεν πρέπει να εμφανιστεί ποτέ
             JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Εισαγωγή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+    /**
+     * Μέθοδος deleteArtist()
+     * καλείται όταν πατηθεί το πλήκτρο Διαγραφή και μεταφέρει τον επιλεγμένο
+     * καλιτέχνη απο τον πίνακα καλιτεχνών του συγκροτήματος  στον πίνακα  
+     * των διαθέσιμων καλιτεχνών
+     */        
     private void deleteArtist() {
         int selectedIndex = groupArtistTable.getSelectedRow();
         if (selectedIndex != -1) {
@@ -380,13 +420,8 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             groupArtistTable.updateUI();
             groupArtistTable.clearSelection();
             deleteButton.setEnabled(false);
-        } else {
+        } else { // Μηνυμα για λόγους Ασφαλείας δεν πρέπει να εμφανιστεί ποτέ
             JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Καλλιτέχνης \nπρος Διαγραφή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
-    public void setController(MainFrameController controller) {
-        this.controller = controller;
-    }
-
 }

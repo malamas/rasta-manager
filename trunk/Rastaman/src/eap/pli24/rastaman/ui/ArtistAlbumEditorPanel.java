@@ -277,24 +277,30 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
+    // κλικ στο πλήκτρο Ακύρωση
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        localEm.getTransaction().rollback();
+        localEm.getTransaction().rollback(); //Ακύρωση όλων των αλλαγών
         controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    // Κλικ στο πλήκτρο Διαγραφή Τραγουδιού
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteSong();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //κλικ στο πλήκτρο Εισαγωγή Τραγουδιού
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         addSong();
     }//GEN-LAST:event_newButtonActionPerformed
 
+    //κλικ στο πλήκτρο  Αποθήκευση
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         saveAndExit();
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    // κλικ και επιλογή τραγουδιού
     private void songTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_songTableMouseClicked
+        //ενεργοποίηση του πλήκτρου διαγραφής τραγουδιού
         deleteButton.setEnabled(true);
     }//GEN-LAST:event_songTableMouseClicked
 
@@ -352,10 +358,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         TableColumnModel tcm = songTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 0:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
-                    break;
-                case 2:
+                case 2: // στήλη διάρκεια
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
                     break;
                 default:
@@ -365,21 +368,27 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         }
         this.artistName = album.getArtistartistid() == null ? null : album.getArtistartistid().getScreenName();
         model = (DefaultTableModel) songTable.getModel();
-
+        //Εισαγωγή τραγουδιών στον πίνακα
         if (boundAlbum.getSongList() != null) {
             for (Song s : boundAlbum.getSongList()) {
                 model.addRow(new Object[]{s.getTracknr(), s.getTitle(), s.getDuration()});
             }
         }
 
-        localEm.getTransaction().begin();
+        localEm.getTransaction().begin(); // Αρχή Transaction
         localEm.persist(boundAlbum);
     }
 
+    // Μέθοδος addSong()
+    // Καλείται όταν πατηθεί το πλήκτρο Εισαγωγή τραγουδιού και 
+    // δημιουργεί μια νέα γραμμή για την καταχώρηση νέου τραγουδιού
     private void addSong() {
         boolean found;
         int i;
-        for (i = 1; i < model.getRowCount() + 2; i++) {
+        // Υπολογισμός πρώτου διαθέσιμου track number
+        //Ελεγχουμε κάθε ακέραιο ξεκινώντας απο το 1 και εαν δεν βραθεί 
+        //στον πίνακα των τραγουδιών τον προτείνουμε για συμπλήρωση στη νέα γραμμή
+        for (i = 1; i < model.getRowCount() + 2; i++) { 
             found = false;
             for (int j = 0; j < model.getRowCount(); j++) {
                 if (i == (int) model.getValueAt(j, 0)) {
@@ -387,13 +396,14 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (!found) {
-                break;
-            }
+            if (!found) break;
         }
         model.addRow(new Object[]{i, null, 0});
     }
-
+    
+    // Μέθοδος deleteSong()
+    // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή τραγουδιού και αφου κάνει τους 
+    // απαραίτητους ελέγχους διαγράφει το επιλεγμένο τραγούδι   
     private void deleteSong() {
         int selectedRow = songTable.getSelectedRow();
         if (selectedRow != -1) {
@@ -401,35 +411,31 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 if (s.getTracknr() == (int) model.getValueAt(selectedRow, 0)) {
 
                     // έλεγχος συμμετοχής τραγουδιού σε playlist
-                    int n = 0;
-                    if (!s.getPlaylistList().isEmpty()) {
-                        Object[] options = {"Ναι", "Όχι"};
-                        n = JOptionPane.showOptionDialog(this,
-                                "To τραγούδι συμμετέχει σε λίστα. Να διαγραφει? \n (Θα διαγραφεί και απο την λίστα)",
-                                "Επιβεβαίωση Διαγραφής",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null, //do not use a custom Icon
-                                options, //the titles of buttons
-                                options[1]); //default button title
-                    }
-                    if (n == 0) {
+                    if (!s.getPlaylistList().isEmpty()) { // Εαν συμμετέχει σε PlayList δεν διαγράφεται
+                        JOptionPane.showMessageDialog(this,"To τραγούδι συμμετέχει σε λίστα \n"
+                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                        "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                    } else { // Εαν δεν συμμετέχει σε PlayList  διαγράφεται
                         boundAlbum.getSongList().remove(s);
                         Query q = localEm.createQuery("DELETE FROM Song s1 WHERE s1.songid=:songID ",
                                 Song.class).setParameter("songID", s.getSongid());
                         q.executeUpdate();
                         model.removeRow(selectedRow);
-                        break;
                     }
+                    break;
                 }
             }
-
         } else {
             JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Τραγούδι \nπρος Διαγραφή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }
 
+    /**
+     * Μέθοδος saveAndExit()
+     * καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και αφου εκτελέσει τους απαραίτητους
+     * ελέγχους αποθηκεύει το αλμπουμ boundAlbum
+     */    
     private void saveAndExit() {
         try {
             if (titleField.getText().isEmpty()) {
@@ -501,9 +507,4 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         }
 
     }
-
-    public void setController(MainFrameController controller) {
-        this.controller = controller;
-    }
-
 }

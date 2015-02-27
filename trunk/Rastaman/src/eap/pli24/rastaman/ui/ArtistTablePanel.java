@@ -178,22 +178,29 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
+    //κλίκ στο πλήκτρο Εισαγωγή Καλιτέχνη
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        //¨Ανοιγμα της φόρμας επεξεργασίας καλιτέχνη με
+        // παράμετρο νέο καλιτέχνη
         controller.showArtistEditor(new Artist());
     }//GEN-LAST:event_newButtonActionPerformed
-
+    
+    //κλίκ στο πληκτρο Επεξεργασία Καλιτέχνη
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        //¨Ανοιγμα της φόρμας επεξεργασίας καλιτέχνη με
+        // παράμετρο τον επιλεγμένο από τον πίνακα καλιτεχνών
+        // καλιτέχνη
         int selectedIndex = artistTable.getSelectedRow();
         if (selectedIndex != -1) {
             Artist selectedArtist = artistList.get(selectedIndex);
             controller.showArtistEditor(selectedArtist);
         }
     }//GEN-LAST:event_editButtonActionPerformed
-
+    //κλίκ στο πλήκτρο Διαγραφή καλιτέχνη
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteArtist();
     }//GEN-LAST:event_deleteButtonActionPerformed
-
+    // κλικ στο πλήκτρο επιστροφή στο κυρίως μενού
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
@@ -227,7 +234,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
     public ArtistTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
-        this.em = em;
+        this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
         initComponents();
         initFurther();
     }
@@ -239,25 +246,27 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         TableColumnModel tcm = artistTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 3:
+                case 3:  // στήλη Φύλο
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.SEX));
                     break;
-                case 4:
+                case 4: // στήλη Ημερομηνία Γέννησης
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
                     break;
-                default:
+                default: // όλες οι στήλες...
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
             }
         }
     }
-
+    // Μέθοδος deleteArtist()
+    // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή Καλιτέχνη και αφου κάνει τους 
+    // απαραίτητους ελέγχους διαγράφει τον επιλεγμένο καλιτέχνη
     private void deleteArtist() {
         int selectedIndex = artistTable.getSelectedRow();
         if (selectedIndex != -1) {
             Artist selectedArtist = artistList.get(selectedIndex);
-            if (selectedArtist.getAlbumList().isEmpty()) {
-                if (selectedArtist.getMusicgroupList().isEmpty()) {
+            if (selectedArtist.getAlbumList().isEmpty()) { // εαν δεν συμμετέχει σε αλμπουμ
+                if (selectedArtist.getMusicgroupList().isEmpty()) { //εαν δεν συμμετέχει σε γκρουπ
                     Object[] options = {"Ναι", "Όχι"};
                     int n = JOptionPane.showOptionDialog(this,
                             "Να διαγραφεί ο Καλιτέχνης: " + selectedArtist.getScreenName() + ";",
@@ -267,7 +276,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                             null, //do not use a custom Icon
                             options, //the titles of buttons
                             options[1]); //default button title
-                    if (n == 0) {
+                    if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
                         localEm.getTransaction().begin();
                         Query q = localEm.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
                                 Artist.class).setParameter("artistID", selectedArtist.getArtistid());

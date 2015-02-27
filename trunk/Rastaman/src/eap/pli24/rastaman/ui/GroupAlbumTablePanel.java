@@ -174,16 +174,20 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
-
+    // κλικ στο πλήκτρο επιστροφή στο κυρίως μενού
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
 
+    // κλικ στο πλήκτρο Εισαγωγή νέου Αλμπουμ
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        // Ανοιγμα της φόρμας επεξεργασίας Αλμπουμ για νέο Αλμπουμ
         controller.showGroupAlbumEditor(new Album());
     }//GEN-LAST:event_newButtonActionPerformed
 
+    // κλικ στο πλήκτρο Επεξεργασία Αλμπουμ
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // Ανοιγμα της φόρμας επεξεργασίας Αλμπουμ για το επιλεγμένο Αλμπουμ
         int selectedIndex = groupAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
             Album selectedAlbum = albumList.get(selectedIndex);
@@ -191,6 +195,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    // κλικ στο πλήκτρο Διαγραφή Αλμπουμ    
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteGroupAlbum();
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -237,10 +242,10 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         TableColumnModel tcm = groupAlbumTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 3:
+                case 3: //στήλη Νο δισκου
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
                     break;
-                case 5:
+                case 5: //στήλη Ημερομηνία Κυκλοφορίας
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
                     break;
                 default:
@@ -250,10 +255,14 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         }
     }
 
+    // Μέθοδος deleteGroupAlbum()
+    // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή Album και αφου κάνει τους 
+    // απαραίτητους ελέγχους διαγράφει το επιλεγμένο Album    
     private void deleteGroupAlbum() {
         int selectedIndex = groupAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
             Album a = albumList.get(selectedIndex);
+            //Έλεγχος Συμμετοχής κάποιου τραγουδιού σε PlayList
             boolean isInPlaylist = false;
             for (Song s : a.getSongList()) {
                 if (!s.getPlaylistList().isEmpty()) {
@@ -261,18 +270,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (isInPlaylist) {
-                Object[] options = {"ΟΚ"};
-                int n = JOptionPane.showOptionDialog(this,
-                        "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
-                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
-                        "Διαγραφή Άλμπουμ",
-                        JOptionPane.NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null, //do not use a custom Icon
-                        options, //the titles of buttons
-                        options[0]); //default button title                
-            } else {
+            if (!isInPlaylist) { // Εαν δεν συμμετέχει σε PlayList  διαγράφεται
                 Object[] options = {"Ναι", "Όχι"};
                 int n = JOptionPane.showOptionDialog(this,
                         "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
@@ -284,19 +282,18 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                         options[1]); //default button title
                 if (n == 0) {
                     localEm.getTransaction().begin();
-                    try {
-                        Query q = localEm.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
-                                Album.class).setParameter("albumID", a.getAlbumid());
-                        q.executeUpdate();
-                        localEm.getTransaction().commit();
-                        albumList.remove(selectedIndex);
-                        groupAlbumTable.updateUI();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        localEm.getTransaction().rollback();
-                    }
+                    Query q = localEm.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
+                            Album.class).setParameter("albumID", a.getAlbumid());
+                    q.executeUpdate();
+                    localEm.getTransaction().commit();
+                    albumList.remove(selectedIndex);
+                    groupAlbumTable.updateUI();
                 }
-            }
+            } else { // Εαν συμμετέχει σε PlayList δεν διαγράφεται
+                JOptionPane.showMessageDialog(this, "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
+                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                        "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+            }            
         }
     }
 }

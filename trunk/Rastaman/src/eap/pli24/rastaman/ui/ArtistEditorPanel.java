@@ -240,40 +240,15 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
-
+    // κλικ στο πλήκτρο Ακύρωση
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        localEm.getTransaction().rollback();
+        localEm.getTransaction().rollback(); //ακύρωση όλων των μεταβολών
         controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
-
+    
+    //κλικ στο πλήκτρο Αποθήκευση
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-    //    localEm.getTransaction().begin();
-        //    localEm.persist(boundArtist);
-        try {
-            if ((firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty())
-                    && artisticNameField.getText().isEmpty()) {
-                throw new Exception("Πρέπει να συμπληρώσετε ή Ονοματεπώνυμο ή Καλιτεχινκό Όνομα");
-            }
-            if (sexComboBox.getSelectedIndex() == -1) {
-                throw new Exception("Επιλέξτε φύλο");
-            }
-            if (genreComboBox.getSelectedItem().toString().isEmpty()) {
-                throw new Exception("Επιλέξτε Είδος Μουσικής");
-            }
-
-            String selectetGenreName = genreComboBox.getSelectedItem().toString();
-            for (Musicgenre g : musicGenreList) {
-                if (g.getName().equals(selectetGenreName)) {
-                    boundArtist.setMuscigenreid(g);
-                    break;
-                }
-            }
-            localEm.getTransaction().commit();
-            controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
-
+        saveAndExit();
     }//GEN-LAST:event_saveButtonActionPerformed
 
 
@@ -314,7 +289,8 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
     /**
      * Δημιουργεί ένα {@code ArtistEditorPanel} για την επεξεργασία ενός
-     * {@code Artist}, και με ορισμένο {@code MainFrameController}
+     * {@code Artist}, και με ορισμένο {@code MainFrameController} και 
+     * ξεκινάει ένα transaction
      *
      * @param controller ο ελεγκτής
      * @param em
@@ -326,12 +302,13 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         this.artist = artist;
         initialize();
         initComponents();
-        localEm.getTransaction().begin();
+        localEm.getTransaction().begin(); 
         localEm.persist(boundArtist);
 
     }
-
+ 
     private void initialize() {
+        //converter για την εμφάνιση του φύλου
         conv = new Converter<String, String>() {
 
             @Override
@@ -344,5 +321,40 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
                 return ((value.equals("Άνδρας")) ? "m" : "f");
             }
         };
+    }
+    
+    /**
+     * Μέθοδος saveAndExit()
+     * καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και αφου εκτελέσει τους απαραίτητους
+     * ελέγχους αποθηκεύει τον Καλιτέχνη boundArtist
+     */
+    private void saveAndExit(){
+        try {
+            //Ελεγχος Ονόματος. Πρέπει να συμπληρωθεί ονοματεπώνυμο ή καλιτεχνικό
+            if ((firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty())
+                    && artisticNameField.getText().isEmpty()) {
+                throw new Exception("Πρέπει να συμπληρώσετε ή Ονοματεπώνυμο ή Καλιτεχινκό Όνομα");
+            }
+            // Ελεγχος επιλογής Φύλου
+            if (sexComboBox.getSelectedIndex() == -1) {
+                throw new Exception("Επιλέξτε φύλο");
+            }
+            //Έλεγχος επιλογής είδους Μουσικής
+            if (genreComboBox.getSelectedItem().toString().isEmpty()) {
+                throw new Exception("Επιλέξτε Είδος Μουσικής");
+            }
+            // Ενημέρωση του boundArtist με το επιλεγμένο είδος μουσικής
+            String selectetGenreName = genreComboBox.getSelectedItem().toString();
+            for (Musicgenre g : musicGenreList) {
+                if (g.getName().equals(selectetGenreName)) {
+                    boundArtist.setMuscigenreid(g);
+                    break;
+                }
+            }
+            localEm.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
+            controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
 }
