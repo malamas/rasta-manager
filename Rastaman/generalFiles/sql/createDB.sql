@@ -36,7 +36,7 @@ CREATE TABLE Artist (
   artisticName varchar(50), 
   sex          varchar(1) NOT NULL, 
   birthDay     date, 
-  birthPlace   varchar(50), 
+  birthPlace   varchar(100), 
   musciGenreID integer NOT NULL, 
   PRIMARY KEY (ArtistID),
   FOREIGN KEY (musciGenreID) REFERENCES MusicGenre (musicGenreID) ON DELETE Restrict
