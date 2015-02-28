@@ -1,17 +1,64 @@
+/*
+ * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
+ * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ *
+ * This file is part of Rastaman.
+ *
+ * Rastaman is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Rastaman is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
-import java.util.ArrayList;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.Beans;
+import java.text.DateFormat;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableColumnModel;
-import static org.eclipse.persistence.jpa.jpql.utility.CollectionTools.array;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.Binding;
+import org.jdesktop.beansbinding.BindingGroup;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
 
 /*
  *
@@ -37,77 +84,77 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
+        bindingGroup = new BindingGroup();
 
         localEm = em;
-        musicgroupQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgroup m");
-        musicgroupList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgroupQuery.getResultList();
+        musicgroupQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgroup m");
+        musicgroupList = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery.getResultList();
         boundGroup = group;
-        artistQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
-        availArtistList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : artistQuery.getResultList();
-        groupArtistList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : artistQuery.getResultList();
-        saveButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        groupNameField = new javax.swing.JTextField();
-        formationdateField = new javax.swing.JFormattedTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        groupArtistTable = new javax.swing.JTable();
-        deleteButton = new javax.swing.JButton();
-        newButton = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        availArtistTable = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
+        availArtistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
+        groupArtistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
+        saveButton = new JButton();
+        cancelButton = new JButton();
+        jPanel1 = new JPanel();
+        jLabel2 = new JLabel();
+        jLabel6 = new JLabel();
+        groupNameField = new JTextField();
+        formationdateField = new JFormattedTextField();
+        jScrollPane1 = new JScrollPane();
+        groupArtistTable = new JTable();
+        deleteButton = new JButton();
+        newButton = new JButton();
+        jScrollPane2 = new JScrollPane();
+        availArtistTable = new JTable();
+        jLabel3 = new JLabel();
+        jLabel4 = new JLabel();
 
-        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
+        saveButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
         saveButton.setText("Αποθήκευση");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 saveButtonActionPerformed(evt);
             }
         });
 
-        cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
+        cancelButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
         cancelButton.setText("Ακύρωση");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setBorder(BorderFactory.createEtchedBorder());
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setFont(new Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel2.setText("Όνομα :");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setFont(new Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel6.setText("Ημ.Δημιουργίας :");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, org.jdesktop.beansbinding.ELProperty.create("${name}"), groupNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, ELProperty.create("${name}"), groupNameField, BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        formationdateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        formationdateField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(DateFormat.getDateInstance(DateFormat.SHORT))));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, org.jdesktop.beansbinding.ELProperty.create("${formationdate}"), formationdateField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, ELProperty.create("${formationdate}"), formationdateField, BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        groupArtistTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        groupArtistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupArtistTable.getTableHeader().setReorderingAllowed(false);
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, groupArtistList, groupArtistTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${screenName}"));
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, groupArtistList, groupArtistTable);
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${screenName}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        groupArtistTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        groupArtistTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 groupArtistTableMouseClicked(evt);
             }
         });
@@ -116,34 +163,34 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             groupArtistTable.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
+        deleteButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/deleteuser22.png"))); // NOI18N
         deleteButton.setText("Διαγραφή");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
             }
         });
 
-        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
+        newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/adduser22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
-        newButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 newButtonActionPerformed(evt);
             }
         });
 
-        availArtistTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        availArtistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         availArtistTable.getTableHeader().setReorderingAllowed(false);
 
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, availArtistList, availArtistTable);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${screenName}"));
+        jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, availArtistList, availArtistTable);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${screenName}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        availArtistTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        availArtistTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 availArtistTableMouseClicked(evt);
             }
         });
@@ -152,93 +199,89 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             availArtistTable.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setFont(new Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Μέλη Συγκροτήματος");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setFont(new Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Διαθέσιμοι Καλιτέχνες");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(formationdateField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(formationdateField, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(groupNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(groupNameField, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 266, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(newButton)
                             .addComponent(deleteButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(groupNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(groupNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(formationdateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(formationdateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(66, 66, 66)
-                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(newButton, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                        .addComponent(deleteButton, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
                         .addGap(89, 89, 89))))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(265, 265, 265)
                         .addComponent(cancelButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(cancelButton)))
         );
@@ -247,28 +290,28 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     //κλικ στο πλήκτρο Ακύρωση
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         localEm.getTransaction().rollback(); // Ακύρωση όλων των κινήσεων
         controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     //κλίκ στο πλήκτρο Διαγραφή Καλλιτέχνη
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+    private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteArtist();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     //κλίκ στο πλήκτρο Εισαγωγή Καλλιτέχνη
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+    private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         addArtist();
     }//GEN-LAST:event_newButtonActionPerformed
-   
+
     //κλίκ στο πλήκτρο Αποθήκευση Συγκροτήματος
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+    private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         saveAndExit();
 	}//GEN-LAST:event_saveButtonActionPerformed
 
     //κλίκ στον πίνακα διαθέσιμων καλλιτεχνών
-    private void availArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
+    private void availArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
         // ενεργοποίηση κατάλληλων πλήκτρων
         newButton.setEnabled(true);
         deleteButton.setEnabled(false);
@@ -276,7 +319,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_availArtistTableMouseClicked
 
     //κλίκ στον πίνακα καλλιτεχνών Συγγκροτήματος
-    private void groupArtistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
+    private void groupArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
         // ενεργοποίηση κατάλληλων πλήκτρων
         newButton.setEnabled(false);
         deleteButton.setEnabled(true);
@@ -285,29 +328,29 @@ public class GroupEditorPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.persistence.Query artistQuery;
-    private java.util.List<eap.pli24.rastaman.entities.Artist> availArtistList;
-    private javax.swing.JTable availArtistTable;
-    private eap.pli24.rastaman.entities.Musicgroup boundGroup;
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JButton deleteButton;
-    private javax.swing.JFormattedTextField formationdateField;
-    private java.util.List<eap.pli24.rastaman.entities.Artist> groupArtistList;
-    private javax.swing.JTable groupArtistTable;
-    private javax.swing.JTextField groupNameField;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.persistence.EntityManager localEm;
-    private java.util.List<eap.pli24.rastaman.entities.Musicgroup> musicgroupList;
-    private javax.persistence.Query musicgroupQuery;
-    private javax.swing.JButton newButton;
-    private javax.swing.JButton saveButton;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+    private Query artistQuery;
+    private List<Artist> availArtistList;
+    private JTable availArtistTable;
+    private Musicgroup boundGroup;
+    private JButton cancelButton;
+    private JButton deleteButton;
+    private JFormattedTextField formationdateField;
+    private List<Artist> groupArtistList;
+    private JTable groupArtistTable;
+    private JTextField groupNameField;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel4;
+    private JLabel jLabel6;
+    private JPanel jPanel1;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private EntityManager localEm;
+    private List<Musicgroup> musicgroupList;
+    private Query musicgroupQuery;
+    private JButton newButton;
+    private JButton saveButton;
+    private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
@@ -334,9 +377,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             tcma.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
         }
         /**
-         * Γέμισμα των πινάκων με τους σωστούς καλιτέχνες
-         * Αρχικά και οι δύο πίνακες έχουν όλους τους διαθέσιμους καλιτέχνες 
-         * έτσι ώστε να έχουμε το μέγιστο μέγεθος στους δύο πίνακες
+         * Γέμισμα των πινάκων με τους σωστούς καλιτέχνες Αρχικά και οι δύο
+         * πίνακες έχουν όλους τους διαθέσιμους καλιτέχνες έτσι ώστε να έχουμε
+         * το μέγιστο μέγεθος στους δύο πίνακες
          */
         groupArtistList.clear();
         if (group.getName() != null) {
@@ -355,21 +398,21 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         localEm.getTransaction().begin(); // Αρχή Transaction
         localEm.persist(boundGroup);
         /**
-         * Τα πλήκτρα εισαγωγή και διαγραφή απενεργοποιούνται μέχρι να 
-         * επιλεχθεί κάποιος καλλιτέχης
+         * Τα πλήκτρα εισαγωγή και διαγραφή απενεργοποιούνται μέχρι να επιλεχθεί
+         * κάποιος καλλιτέχης
          */
-        newButton.setEnabled(false); 
+        newButton.setEnabled(false);
         deleteButton.setEnabled(false);
     }
-    
+
     /**
-     * Μέθοδος saveAndExit()
-     * καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και αφου εκτελέσει τους απαραίτητους
-     * ελέγχους αποθηκεύει το Συγκρότημα boundGroup
+     * Μέθοδος saveAndExit() καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και
+     * αφου εκτελέσει τους απαραίτητους ελέγχους αποθηκεύει το Συγκρότημα
+     * boundGroup
      */
-    private void saveAndExit(){
+    private void saveAndExit() {
         try {
-             //Ελεγχος Ονόματος.
+            //Ελεγχος Ονόματος.
             if (groupNameField.getText().isEmpty()) {
                 throw new Exception("Συμπληρώστε Όνομα");
             }
@@ -384,13 +427,12 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
-    
+
     /**
-     * Μέθοδος addArtist()
-     * καλείται όταν πατηθεί το πλήκτρο εισαγωγή και μεταφέρει τον επιλεγμένο
-     * καλιτέχνη απο τον πίνακα των διαθέσιμων στον πίνακα των καλιτεχνών του
-     * συγκροτήματος
-     */    
+     * Μέθοδος addArtist() καλείται όταν πατηθεί το πλήκτρο εισαγωγή και
+     * μεταφέρει τον επιλεγμένο καλιτέχνη απο τον πίνακα των διαθέσιμων στον
+     * πίνακα των καλιτεχνών του συγκροτήματος
+     */
     private void addArtist() {
         int selectedIndex = availArtistTable.getSelectedRow();
         if (selectedIndex != -1) {
@@ -406,11 +448,10 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Μέθοδος deleteArtist()
-     * καλείται όταν πατηθεί το πλήκτρο Διαγραφή και μεταφέρει τον επιλεγμένο
-     * καλιτέχνη απο τον πίνακα καλιτεχνών του συγκροτήματος  στον πίνακα  
-     * των διαθέσιμων καλιτεχνών
-     */        
+     * Μέθοδος deleteArtist() καλείται όταν πατηθεί το πλήκτρο Διαγραφή και
+     * μεταφέρει τον επιλεγμένο καλιτέχνη απο τον πίνακα καλιτεχνών του
+     * συγκροτήματος στον πίνακα των διαθέσιμων καλιτεχνών
+     */
     private void deleteArtist() {
         int selectedIndex = groupArtistTable.getSelectedRow();
         if (selectedIndex != -1) {

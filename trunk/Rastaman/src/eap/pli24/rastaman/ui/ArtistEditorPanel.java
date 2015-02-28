@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
+ * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ *
+ * This file is part of Rastaman.
+ *
+ * Rastaman is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Rastaman is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
@@ -245,7 +265,7 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         localEm.getTransaction().rollback(); //ακύρωση όλων των μεταβολών
         controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
-    
+
     //κλικ στο πλήκτρο Αποθήκευση
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         saveAndExit();
@@ -289,8 +309,8 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
     /**
      * Δημιουργεί ένα {@code ArtistEditorPanel} για την επεξεργασία ενός
-     * {@code Artist}, και με ορισμένο {@code MainFrameController} και 
-     * ξεκινάει ένα transaction
+     * {@code Artist}, και με ορισμένο {@code MainFrameController} και ξεκινάει
+     * ένα transaction
      *
      * @param controller ο ελεγκτής
      * @param em
@@ -302,11 +322,11 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         this.artist = artist;
         initialize();
         initComponents();
-        localEm.getTransaction().begin(); 
+        localEm.getTransaction().begin();
         localEm.persist(boundArtist);
 
     }
- 
+
     private void initialize() {
         //converter για την εμφάνιση του φύλου
         conv = new Converter<String, String>() {
@@ -322,13 +342,13 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
             }
         };
     }
-    
+
     /**
-     * Μέθοδος saveAndExit()
-     * καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και αφου εκτελέσει τους απαραίτητους
-     * ελέγχους αποθηκεύει τον Καλιτέχνη boundArtist
+     * Μέθοδος saveAndExit() καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και
+     * αφου εκτελέσει τους απαραίτητους ελέγχους αποθηκεύει τον Καλιτέχνη
+     * boundArtist
      */
-    private void saveAndExit(){
+    private void saveAndExit() {
         try {
             //Ελεγχος Ονόματος. Πρέπει να συμπληρωθεί ονοματεπώνυμο ή καλιτεχνικό
             if ((firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty())

@@ -27,17 +27,17 @@ INSERT INTO MusicGroup VALUES (2, 'Led Zeppelin', '1968-01-01');
 ALTER TABLE MusicGroup ALTER COLUMN musicGroupID RESTART WITH 3;
 
 -- artists
-INSERT INTO Artist VALUES (1, 'Waters', 'Roger', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (2, 'Gilmour', 'David', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (3, 'Mason', 'Nick', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (4, 'Wright', 'Richard', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (5, 'Barrett', 'Syd', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (6, 'Page', 'Jimmy', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (7, 'Plant', 'Robert', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (8, 'Bonham', 'John', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (9, 'Jones', 'John Paul', NULL, 'm', NULL, NULL, 1);
-INSERT INTO Artist VALUES (10, 'Χατζηδάκις', 'Μάνος', NULL, 'm', NULL, NULL, 4);
-INSERT INTO Artist VALUES (11, NULL, NULL, 'Eminem', 'm', NULL, NULL, 11);
+INSERT INTO Artist VALUES (1, 'Waters', 'Roger', NULL, 'm', '1943-09-06', 'Great Bookham, Surrey, England, UK', 1);
+INSERT INTO Artist VALUES (2, 'Gilmour', 'David', NULL, 'm', '1946-03-06', 'Cambridge, England, UK', 1);
+INSERT INTO Artist VALUES (3, 'Mason', 'Nick', NULL, 'm', '1944-01-27', 'Edgbaston, Birmingham, England, UK', 1);
+INSERT INTO Artist VALUES (4, 'Wright', 'Richard', NULL, 'm', '1943-07-28', 'Hatch End, Middlesex, England, UK', 1);
+INSERT INTO Artist VALUES (5, 'Barrett', 'Syd', NULL, 'm', '1946-01-06', 'Cambridge, England, UK', 1);
+INSERT INTO Artist VALUES (6, 'Page', 'Jimmy', NULL, 'm', '1944-01-09', 'Heston, Middlesex, England, UK', 1);
+INSERT INTO Artist VALUES (7, 'Plant', 'Robert', NULL, 'm', '1948-08-20', 'West Bromwich, Staffordshire, England, UK', 1);
+INSERT INTO Artist VALUES (8, 'Bonham', 'John', NULL, 'm', '1948-05-31', 'Redditch, Worcestershire, England, UK', 1);
+INSERT INTO Artist VALUES (9, 'Jones', 'John Paul', NULL, 'm', '1946-01-03', 'Sidcup, Kent, England, UK', 1);
+INSERT INTO Artist VALUES (10, 'Χατζηδάκις', 'Μάνος', NULL, 'm', '1925-10-23', 'Ξάνθη, Ελλάδα', 4);
+INSERT INTO Artist VALUES (11, NULL, NULL, 'Eminem', 'm', '1972-10-17', 'Detroit, Michigan, USA', 11);
 ALTER TABLE Artist ALTER COLUMN ArtistID RESTART WITH 12;
 
 -- group artists

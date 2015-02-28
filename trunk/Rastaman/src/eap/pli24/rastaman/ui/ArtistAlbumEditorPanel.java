@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
+ * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ *
+ * This file is part of Rastaman.
+ *
+ * Rastaman is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Rastaman is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Album;
@@ -388,7 +408,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         // Υπολογισμός πρώτου διαθέσιμου track number
         //Ελεγχουμε κάθε ακέραιο ξεκινώντας απο το 1 και εαν δεν βραθεί 
         //στον πίνακα των τραγουδιών τον προτείνουμε για συμπλήρωση στη νέα γραμμή
-        for (i = 1; i < model.getRowCount() + 2; i++) { 
+        for (i = 1; i < model.getRowCount() + 2; i++) {
             found = false;
             for (int j = 0; j < model.getRowCount(); j++) {
                 if (i == (int) model.getValueAt(j, 0)) {
@@ -396,11 +416,13 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (!found) break;
+            if (!found) {
+                break;
+            }
         }
         model.addRow(new Object[]{i, null, 0});
     }
-    
+
     // Μέθοδος deleteSong()
     // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή τραγουδιού και αφου κάνει τους 
     // απαραίτητους ελέγχους διαγράφει το επιλεγμένο τραγούδι   
@@ -412,9 +434,9 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
 
                     // έλεγχος συμμετοχής τραγουδιού σε playlist
                     if (!s.getPlaylistList().isEmpty()) { // Εαν συμμετέχει σε PlayList δεν διαγράφεται
-                        JOptionPane.showMessageDialog(this,"To τραγούδι συμμετέχει σε λίστα \n"
-                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
-                        "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "To τραγούδι συμμετέχει σε λίστα \n"
+                                + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                                "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                     } else { // Εαν δεν συμμετέχει σε PlayList  διαγράφεται
                         boundAlbum.getSongList().remove(s);
                         Query q = localEm.createQuery("DELETE FROM Song s1 WHERE s1.songid=:songID ",
@@ -432,10 +454,10 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Μέθοδος saveAndExit()
-     * καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και αφου εκτελέσει τους απαραίτητους
-     * ελέγχους αποθηκεύει το αλμπουμ boundAlbum
-     */    
+     * Μέθοδος saveAndExit() καλείται όταν πατηθεί το πλήκτρο Αποθήκευση και
+     * αφου εκτελέσει τους απαραίτητους ελέγχους αποθηκεύει το αλμπουμ
+     * boundAlbum
+     */
     private void saveAndExit() {
         try {
             if (titleField.getText().isEmpty()) {
