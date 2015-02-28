@@ -37,8 +37,8 @@ import java.awt.Font;
  */
 public final class UIProperties {
 
-    public static final Dimension MAIN_FRAME_INIT_SIZE = new Dimension(1000, 700);
-    public static final Dimension MAIN_FRAME_MIN_SIZE = new Dimension(900, 600);
+    public static final Dimension MAIN_FRAME_INIT_SIZE = new Dimension(1024, 640);
+    public static final Dimension MAIN_FRAME_MIN_SIZE = new Dimension(1024, 640);
 
     public static final int SIDEBAR_WIDTH = 240;
     public static final Color SIDEBAR_BACKGROUND = new Color(104, 104, 0);
