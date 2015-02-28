@@ -27,6 +27,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
+import java.io.File;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -36,9 +37,12 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -83,6 +87,10 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         buttonPanel = new JPanel();
         filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         backButton = new JButton();
+        filler8 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        importButton = new JButton();
+        filler7 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        portButton = new JButton();
         filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         newButton = new JButton();
         filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
@@ -123,6 +131,32 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             }
         });
         buttonPanel.add(backButton);
+        buttonPanel.add(filler8);
+
+        importButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/document-open.png"))); // NOI18N
+        importButton.setText("από XML");
+        importButton.setPreferredSize(new Dimension(120, 36));
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                importButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(importButton);
+        buttonPanel.add(filler7);
+
+        portButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/document-save.png"))); // NOI18N
+        portButton.setText("σε XML");
+        portButton.setPreferredSize(new Dimension(120, 36));
+
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), portButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        portButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                portButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(portButton);
         buttonPanel.add(filler2);
 
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
@@ -135,7 +169,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         editButton.setText("Επεξεργασία");
         editButton.setPreferredSize(new Dimension(120, 36));
 
-        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), editButton, BeanProperty.create("enabled"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), editButton, BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         editButton.addActionListener(new ActionListener() {
@@ -173,6 +207,14 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+        importListFromXml();
+    }//GEN-LAST:event_importButtonActionPerformed
+
+    private void portButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_portButtonActionPerformed
+        exportListToXml();
+    }//GEN-LAST:event_portButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton backButton;
@@ -184,11 +226,15 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private Box.Filler filler4;
     private Box.Filler filler5;
     private Box.Filler filler6;
+    private Box.Filler filler7;
+    private Box.Filler filler8;
+    private JButton importButton;
     private EntityManager localEm;
     private JButton newButton;
     private List<Playlist> playlistList;
     private Query playlistQuery;
     private JTable playlistTable;
+    private JButton portButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -221,5 +267,38 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                     break;
             }
         }
+    }
+
+    private void importListFromXml() {
+        File f = getUserSelectedFile(JFileChooser.OPEN_DIALOG);
+    }
+
+    private void exportListToXml() {
+        File f = getUserSelectedFile(JFileChooser.SAVE_DIALOG);
+    }
+
+    private File getUserSelectedFile(int fileChooserType) {
+        if (fileChooserType != JFileChooser.OPEN_DIALOG && fileChooserType != JFileChooser.SAVE_DIALOG) {
+            throw new IllegalArgumentException("fileChooserType should be either JFileChooser.OPEN_DIALOG or JFileChooser.SAVE_DIALOG");
+        }
+        JFileChooser fc = new JFileChooser();
+        File selectedFile = null;
+        fc.setDialogType(fileChooserType);
+        FileFilter xmlFilter = new FileNameExtensionFilter("αρχεία XML (*.xml)", "xml");
+        fc.setFileFilter(xmlFilter);
+        switch (fileChooserType) {
+            case JFileChooser.OPEN_DIALOG:
+                fc.setDialogTitle("Εισαγωγή από XML");
+                fc.setApproveButtonText("Εισαγωγή");
+                break;
+            case JFileChooser.SAVE_DIALOG:
+                fc.setDialogTitle("Εξαγωγή σε XML");
+                fc.setApproveButtonText("Εξαγωγή");
+                break;
+        }
+        if (fc.showDialog(this, null) == JFileChooser.APPROVE_OPTION) {
+            selectedFile = fc.getSelectedFile();
+        }
+        return selectedFile;
     }
 }
