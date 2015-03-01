@@ -22,6 +22,8 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
+import eap.pli24.rastaman.entities.Label;
+import eap.pli24.rastaman.entities.Musicgenre;
 import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.entities.Playlist;
 import java.awt.BorderLayout;
@@ -54,7 +56,9 @@ public class MainFrameController implements Runnable {
         GROUP_TABLE("Συγκροτήματα"),
         ARTIST_ALBUM_TABLE("Άλμπουμ καλλιτεχνών"),
         GROUP_ALBUM_TABLE("Άλμπουμ συγκροτημάτων"),
-        PLAYLIST_TABLE("Λίστες τραγουδιών");
+        PLAYLIST_TABLE("Λίστες τραγουδιών"),
+        LABEL_TABLE("Εταιρίες Παραγωγής"),
+        GENRE_TABLE("Είδη Μουσικής");
 
         private final String headerText;
 
@@ -164,25 +168,25 @@ public class MainFrameController implements Runnable {
     public void showArtistEditor(Artist artist) {
         ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος καλλιτέχνης"));
+        headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος Καλλιτέχνης"));
     }
 
     public void showGroupEditor(Musicgroup group) {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο συγκρότημα"));
+        headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο Συγκρότημα"));
     }
 
     public void showArtistAlbumEditor(Album album) {
         ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο άλμπουμ"));
+        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
     }
 
     public void showGroupAlbumEditor(Album album) {
         GroupAlbumEditorPanel editor = new GroupAlbumEditorPanel(this, em, album);
         displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο άλμπουμ"));
+        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
     }
 
     public void showPlaylistEditor(Playlist playlist) {
@@ -191,6 +195,17 @@ public class MainFrameController implements Runnable {
         headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
     }
 
+    public void showLabelEditor(Label label) {
+        LabelEditorPanel editor = new LabelEditorPanel(this, em, label);
+        displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
+    }
+    
+    public void showGenreEditor(Musicgenre musicgenre) {
+        GenreEditorPanel editor = new GenreEditorPanel(this, em, musicgenre);
+        displayPanel(editor);
+        headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((musicgenre.getName() != null) ? musicgenre.getName() : "Νέο Είδος Μουσικής"));
+    }
     private void displayPanel(JPanel panel) {
         centerPanel.remove(activePanel);
         centerPanel.add(panel, BorderLayout.CENTER);
@@ -216,6 +231,12 @@ public class MainFrameController implements Runnable {
                 break;
             case PLAYLIST_TABLE:
                 p = new PlaylistTablePanel(this, em);
+                break;
+            case LABEL_TABLE:
+                p = new LabelTablePanel(this,em);
+                break;
+            case GENRE_TABLE:
+                p= new GenreTablePanel(this,em);
                 break;
             case ROOT_MENU:
             default:
