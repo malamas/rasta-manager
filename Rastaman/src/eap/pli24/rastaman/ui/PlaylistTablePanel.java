@@ -132,6 +132,10 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Ημερομηνία δημιουργίας");
         columnBinding.setColumnClass(Date.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${songCount}"));
+        columnBinding.setColumnName("Πλήθος τραγουδιών");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         scrollPane1.setViewportView(playlistTable);
@@ -286,6 +290,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             switch (i) {
                 case 1:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
+                    break;
+                case 2:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
                     break;
                 default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));

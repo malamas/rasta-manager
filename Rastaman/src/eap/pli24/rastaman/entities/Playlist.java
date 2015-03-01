@@ -61,9 +61,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Playlist.findByCreationdate", query = "SELECT p FROM Playlist p WHERE p.creationdate = :creationdate")})
 public class Playlist implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist")
-    @OrderBy("playorder ASC")
-    private List<PlaylistSong> playlistSongList;
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -79,8 +76,9 @@ public class Playlist implements Serializable {
     @Column(name = "CREATIONDATE")
     @Temporal(TemporalType.DATE)
     private Date creationdate;
-    @ManyToMany(mappedBy = "playlistList")
-    private List<Song> songList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist")
+    @OrderBy("playorder ASC")
+    private List<PlaylistSong> playlistSongList;
 
     public Playlist() {
     }
@@ -126,12 +124,16 @@ public class Playlist implements Serializable {
     }
 
     @XmlTransient
-    public List<Song> getSongList() {
-        return songList;
+    public List<PlaylistSong> getPlaylistSongList() {
+        return playlistSongList;
     }
 
-    public void setSongList(List<Song> songList) {
-        this.songList = songList;
+    public void setPlaylistSongList(List<PlaylistSong> playlistSongList) {
+        this.playlistSongList = playlistSongList;
+    }
+
+    public int getSongCount() {
+        return playlistSongList.size();
     }
 
     @Override
@@ -166,14 +168,4 @@ public class Playlist implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-
-    @XmlTransient
-    public List<PlaylistSong> getPlaylistSongList() {
-        return playlistSongList;
-    }
-
-    public void setPlaylistSongList(List<PlaylistSong> playlistSongList) {
-        this.playlistSongList = playlistSongList;
-    }
-
 }
