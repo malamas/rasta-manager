@@ -215,6 +215,11 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), deleteButton, BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
         buttonPanel.add(deleteButton);
         buttonPanel.add(filler6);
 
@@ -246,6 +251,20 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             exportListToXml(selectedPlaylist);
         }
     }//GEN-LAST:event_portButtonActionPerformed
+
+    private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        int selectedIndex = playlistTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            Playlist selectedPlaylist = playlistList.get(selectedIndex);
+            Object[] options = {"Ναι", "Όχι"};
+            int selectedOption = JOptionPane.showOptionDialog(this, "Να διαγραφεί η λίστα '" + selectedPlaylist.getName() + "';", "Επιβεβαίωση διαγραφής", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (selectedOption == JOptionPane.YES_OPTION) {
+                em.getTransaction().begin();
+                em.remove(selectedPlaylist);
+                em.getTransaction().commit();
+            }
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
