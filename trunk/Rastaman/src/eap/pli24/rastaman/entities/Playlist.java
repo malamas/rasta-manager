@@ -132,8 +132,29 @@ public class Playlist implements Serializable {
         this.playlistSongList = playlistSongList;
     }
 
+    /**
+     * Επιστρέφει το πλήθος των τραγουδιών αυτής της {@code Playlist}.
+     *
+     * @return το πλήθος των τραγουδιών.
+     */
+    @XmlTransient
     public int getSongCount() {
         return playlistSongList.size();
+    }
+
+    /**
+     * Επιστρέφει τη συνολική διάρκεια σε δευτερόλεπτα των τραγουδιών αυτής της
+     * {@code Playlist}.
+     *
+     * @return η διάρκεια σε δευτερόλεπτα.
+     */
+    @XmlTransient
+    public int getDuration() {
+        int totalDuration = 0;
+        for (PlaylistSong ps : playlistSongList) {
+            totalDuration += ps.getSong().getDuration();
+        }
+        return totalDuration;
     }
 
     @Override
