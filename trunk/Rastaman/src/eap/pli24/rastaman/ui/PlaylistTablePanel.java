@@ -21,6 +21,8 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
+import eap.pli24.rastaman.entities.PlaylistSong;
+import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -28,9 +30,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.Box;
@@ -38,12 +45,22 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
@@ -52,6 +69,9 @@ import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -208,11 +228,15 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
-        importListFromXml();
+        //importListFromXml();
     }//GEN-LAST:event_importButtonActionPerformed
 
     private void portButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_portButtonActionPerformed
-        exportListToXml();
+        int selectedIndex = playlistTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            Playlist selectedPlaylist = playlistList.get(selectedIndex);
+            exportListToXml(selectedPlaylist);
+        }
     }//GEN-LAST:event_portButtonActionPerformed
 
 
@@ -242,6 +266,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
+    private static final Logger LOGGER = Logger.getLogger(PlaylistTablePanel.class.getName());
     private MainFrameController controller;
     private EntityManager em;
 
@@ -270,11 +295,99 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }
 
     private void importListFromXml() {
-        File f = getUserSelectedFile(JFileChooser.OPEN_DIALOG);
+        File file = getUserSelectedFile(JFileChooser.OPEN_DIALOG);
+
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+
+            Playlist newPl = new Playlist();
+            em.persist(newPl);
+
+            String name = doc.getElementsByTagName("name").item(0).getTextContent();
+            newPl.setName(name);
+            newPl.setCreationdate(new Date());
+
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void exportListToXml() {
-        File f = getUserSelectedFile(JFileChooser.SAVE_DIALOG);
+    private void exportListToXml(Playlist pl) {
+        // Επιλογή αρχείου από το χρήστη
+        File file = getUserSelectedFile(JFileChooser.SAVE_DIALOG);
+        if (file != null) {
+            try {
+                Document doc = buildDocumentFrom(pl);
+                // Εξαγωγή του δένδρου σε αρχείο
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(file);
+
+                transformer.transform(source, result);
+
+            } catch (ParserConfigurationException | TransformerException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Η δημιουργία του αρχείου xml απέτυχε...", "Σφάλμα", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+    private Document buildDocumentFrom(Playlist pl) throws ParserConfigurationException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
+
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+
+        // Ρίζα δένδρου xml
+        Element playlistEl = doc.createElement("playlist");
+        doc.appendChild(playlistEl);
+
+        // Όνομα λίστας
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(pl.getName()));
+        playlistEl.appendChild(nameEl);
+
+        // Ημερομηνία δημιουργίας
+        Element creationDateEl = doc.createElement("creationdate");
+        creationDateEl.appendChild(doc.createTextNode(sdf.format(pl.getCreationdate())));
+        playlistEl.appendChild(creationDateEl);
+
+        // Λίστα τραγουδιών
+        Element songlistEl = doc.createElement("songlist");
+
+        for (PlaylistSong ps : pl.getPlaylistSongList()) {
+            Song s = ps.getSong();
+            // στοιχείο για κάθε τραγούδι
+            Element songEl = doc.createElement("song");
+
+            // Στοιχείο με το id του τραγουδιού στη ΒΔ.
+            Element idEl = doc.createElement("id");
+            idEl.appendChild(doc.createTextNode(Long.toString(s.getSongid())));
+            songEl.appendChild(idEl);
+
+            // Τίτλος τραγουδιού
+            Element titleEl = doc.createElement("title");
+            titleEl.appendChild(doc.createTextNode(s.getTitle()));
+            songEl.appendChild(titleEl);
+
+            // Ερμηνευτής (καλλιτέχνης ή συγκρότημα
+            Element performerEl = doc.createElement("performer");
+            performerEl.appendChild(doc.createTextNode(s.getAlbumid().getPerformerScreenName()));
+            songEl.appendChild(performerEl);
+
+            songlistEl.appendChild(songEl);
+        }
+
+        playlistEl.appendChild(songlistEl);
+        return doc;
     }
 
     private File getUserSelectedFile(int fileChooserType) {
