@@ -297,6 +297,9 @@
           <BindingProperties>
             <BindingProperty name="enabled" source="playlistTable" sourcePath="${selectedElement!=null}" target="deleteButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler6">
           <Properties>
