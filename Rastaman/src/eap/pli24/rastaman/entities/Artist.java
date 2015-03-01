@@ -246,6 +246,6 @@ public class Artist implements Serializable {
         if (artisticname == null && lastname == null) {
             return null;
         }
-        return (artisticname != null) ? artisticname : (firstname + " " + lastname);
+        return ((artisticname != null) && !artisticname.equals("") ) ? artisticname : (firstname + " " + lastname);
     }
 }

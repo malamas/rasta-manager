@@ -179,6 +179,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             }
         });
         songTable.setCellSelectionEnabled(true);
+        songTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         songTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 songTableMouseClicked(evt);
@@ -374,6 +375,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         this.em = em;
         this.album = album;
         initComponents();
+        songTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         deleteButton.setEnabled(false);
         TableColumnModel tcm = songTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
@@ -479,24 +481,32 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 throw new Exception("To Αλμπουμ θα πρέπει να έχει \n τουλάχιστον ένα τραγούδι.");
             }
             for (int i = 0; i < model.getRowCount() - 1; i++) {
+                if ((model.getValueAt(i, 0) == null ) || model.getValueAt(i, 0).equals(0)  ) {
+                    songTable.setColumnSelectionInterval(0, 0);
+                    songTable.setRowSelectionInterval(i, i);
+                    i++;
+                    throw new Exception("Η Αριθμός Track στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν ή κενό");
+                } 
                 for (int j = i + 1; j < model.getRowCount(); j++) {
                     if (model.getValueAt(i, 0).equals(model.getValueAt(j, 0))) {
                         i++;
-                        throw new Exception("Το track " + i + " υπάρχει τουλάχιστον δύο φορές");
+                        throw new Exception("Το track " + model.getValueAt(j, 0).toString() + " υπάρχει τουλάχιστον δύο φορές");
                     }
                 }
             }
             boolean found;
             for (int i = 0; i < model.getRowCount(); i++) {
                 if (model.getValueAt(i, 1).toString().isEmpty()) {
-                    songTable.editCellAt(i, 1);
+                    songTable.setColumnSelectionInterval(1, 1);
+                    songTable.setRowSelectionInterval(i, i);
                     i++;
                     throw new Exception("Ο τίτλος στη " + i + "η γραμμή δεν μπορεί να είναι κενός");
                 }
-                if (model.getValueAt(i, 2).equals(0)) {
-                    songTable.editCellAt(i, 2);
+                if ((model.getValueAt(i, 2) == null ) || model.getValueAt(i, 2).equals(0)) {
+                    songTable.setColumnSelectionInterval(2, 2);
+                    songTable.setRowSelectionInterval(i, i);
                     i++;
-                    throw new Exception("Η Διάρκεια στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν");
+                    throw new Exception("Η Διάρκεια στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν ή κενό");
                 }
                 found = false;
                 for (Song s : albumSongList) {
