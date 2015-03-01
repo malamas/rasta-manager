@@ -32,7 +32,7 @@ import javax.swing.SwingConstants;
  */
 public class DurationTableCellRenderer extends GenericTableCellRenderer {
 
-    private DecimalFormat dcf = new DecimalFormat("#00");
+    private final DecimalFormat dcf = new DecimalFormat("#00");
 
     public DurationTableCellRenderer() {
         super();

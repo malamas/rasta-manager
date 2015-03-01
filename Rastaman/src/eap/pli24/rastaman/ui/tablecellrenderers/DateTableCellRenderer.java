@@ -34,7 +34,7 @@ import javax.swing.SwingConstants;
  */
 public class DateTableCellRenderer extends GenericTableCellRenderer {
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
 
     public DateTableCellRenderer() {
         super();
