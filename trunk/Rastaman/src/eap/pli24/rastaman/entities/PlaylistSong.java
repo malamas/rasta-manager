@@ -27,10 +27,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -41,24 +38,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "PLAYLIST_SONG")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "PlaylistSong.findAll", query = "SELECT p FROM PlaylistSong p"),
-    @NamedQuery(name = "PlaylistSong.findByPlaylistplaylistid", query = "SELECT p FROM PlaylistSong p WHERE p.playlistSongPK.playlistplaylistid = :playlistplaylistid"),
-    @NamedQuery(name = "PlaylistSong.findByPlayorder", query = "SELECT p FROM PlaylistSong p WHERE p.playorder = :playorder"),
-    @NamedQuery(name = "PlaylistSong.findBySongsongid", query = "SELECT p FROM PlaylistSong p WHERE p.playlistSongPK.songsongid = :songsongid")})
 public class PlaylistSong implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlaylistSongPK playlistSongPK;
     @Basic(optional = false)
-    @Column(name = "PLAYORDER")
-    private int playorder;
-    @JoinColumn(name = "PLAYLISTPLAYLISTID", referencedColumnName = "PLAYLISTID", insertable = false, updatable = false)
+    @Column(name = "SLOT")
+    private int slot;
+    @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "PLAYLIST_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Playlist playlist;
-    @JoinColumn(name = "SONGSONGID", referencedColumnName = "SONGID", insertable = false, updatable = false)
+    @JoinColumn(name = "SONG_ID", referencedColumnName = "SONGID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Song song;
 
@@ -71,7 +62,7 @@ public class PlaylistSong implements Serializable {
 
     public PlaylistSong(PlaylistSongPK playlistSongPK, int playorder) {
         this.playlistSongPK = playlistSongPK;
-        this.playorder = playorder;
+        this.slot = playorder;
     }
 
     public PlaylistSong(long playlistplaylistid, long songsongid) {
@@ -86,12 +77,12 @@ public class PlaylistSong implements Serializable {
         this.playlistSongPK = playlistSongPK;
     }
 
-    public int getPlayorder() {
-        return playorder;
+    public int getSlot() {
+        return slot;
     }
 
-    public void setPlayorder(int playorder) {
-        this.playorder = playorder;
+    public void setSlot(int slot) {
+        this.slot = slot;
     }
 
     public Playlist getPlaylist() {

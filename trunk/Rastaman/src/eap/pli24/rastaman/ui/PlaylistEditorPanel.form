@@ -70,7 +70,7 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="boundPlaylist" sourcePath="${playlistSongList}" target="playlistSongTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${playorder}">
+              <Subbinding sourcePath="${slot}">
                 <BindingParameter name="NAME" value="&#x3a3;&#x3b5;&#x3b9;&#x3c1;&#x3ac;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>

@@ -36,41 +36,41 @@ import javax.persistence.Embeddable;
 public class PlaylistSongPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "PLAYLISTPLAYLISTID")
-    private long playlistplaylistid;
+    @Column(name = "PLAYLIST_ID")
+    private long playlistId;
     @Basic(optional = false)
-    @Column(name = "SONGSONGID")
-    private long songsongid;
+    @Column(name = "SONG_ID")
+    private long songId;
 
     public PlaylistSongPK() {
     }
 
-    public PlaylistSongPK(long playlistplaylistid, long songsongid) {
-        this.playlistplaylistid = playlistplaylistid;
-        this.songsongid = songsongid;
+    public PlaylistSongPK(long playlistId, long songId) {
+        this.playlistId = playlistId;
+        this.songId = songId;
     }
 
-    public long getPlaylistplaylistid() {
-        return playlistplaylistid;
+    public long getPlaylistId() {
+        return playlistId;
     }
 
-    public void setPlaylistplaylistid(long playlistplaylistid) {
-        this.playlistplaylistid = playlistplaylistid;
+    public void setPlaylistId(long playlistId) {
+        this.playlistId = playlistId;
     }
 
     public long getSongsongid() {
-        return songsongid;
+        return songId;
     }
 
     public void setSongsongid(long songsongid) {
-        this.songsongid = songsongid;
+        this.songId = songsongid;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) playlistplaylistid;
-        hash += (int) songsongid;
+        hash += (int) playlistId;
+        hash += (int) songId;
         return hash;
     }
 
@@ -81,10 +81,10 @@ public class PlaylistSongPK implements Serializable {
             return false;
         }
         PlaylistSongPK other = (PlaylistSongPK) object;
-        if (this.playlistplaylistid != other.playlistplaylistid) {
+        if (this.playlistId != other.playlistId) {
             return false;
         }
-        if (this.songsongid != other.songsongid) {
+        if (this.songId != other.songId) {
             return false;
         }
         return true;
@@ -92,7 +92,7 @@ public class PlaylistSongPK implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.PlaylistSongPK[ playlistplaylistid=" + playlistplaylistid + ", songsongid=" + songsongid + " ]";
+        return "eap.pli24.rastaman.entities.PlaylistSongPK[ playlistplaylistid=" + playlistId + ", songsongid=" + songId + " ]";
     }
 
 }
