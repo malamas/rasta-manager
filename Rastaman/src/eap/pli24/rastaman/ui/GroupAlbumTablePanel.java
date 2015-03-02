@@ -285,7 +285,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
             //Έλεγχος Συμμετοχής κάποιου τραγουδιού σε PlayList
             boolean isInPlaylist = false;
             for (Song s : a.getSongList()) {
-                if (!s.getPlaylistList().isEmpty()) {
+                if (!s.getPlaylistSongList().isEmpty()) {
                     isInPlaylist = true;
                     break;
                 }

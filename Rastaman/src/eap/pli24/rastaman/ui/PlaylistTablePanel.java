@@ -405,7 +405,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
             // Στοιχείο με το id του τραγουδιού στη ΒΔ.
             Element idEl = doc.createElement("id");
-            idEl.appendChild(doc.createTextNode(Long.toString(s.getSongid())));
+            idEl.appendChild(doc.createTextNode(Long.toString(s.getSongId())));
             songEl.appendChild(idEl);
 
             // Τίτλος τραγουδιού
@@ -415,7 +415,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
             // Ερμηνευτής (καλλιτέχνης ή συγκρότημα
             Element performerEl = doc.createElement("performer");
-            performerEl.appendChild(doc.createTextNode(s.getAlbumid().getPerformerScreenName()));
+            performerEl.appendChild(doc.createTextNode(s.getAlbumId().getPerformerScreenName()));
             songEl.appendChild(performerEl);
 
             songlistEl.appendChild(songEl);

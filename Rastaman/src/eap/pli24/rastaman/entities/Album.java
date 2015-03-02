@@ -83,7 +83,7 @@ public class Album implements Serializable {
     @Basic(optional = false)
     @Column(name = "DISKNUMBER")
     private int disknumber;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumId")
     private List<Song> songList;
     @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")
     @ManyToOne

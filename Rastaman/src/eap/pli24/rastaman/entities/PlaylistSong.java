@@ -55,7 +55,7 @@ public class PlaylistSong implements Serializable {
     @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "PLAYLIST_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Playlist playlist;
-    @JoinColumn(name = "SONG_ID", referencedColumnName = "SONGID", insertable = false, updatable = false)
+    @JoinColumn(name = "SONG_ID", referencedColumnName = "SONG_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Song song;
 
@@ -125,7 +125,7 @@ public class PlaylistSong implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongPK=" + playlistSongId + " ]";
+        return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongId=" + playlistSongId + " ]";
     }
 
 }
