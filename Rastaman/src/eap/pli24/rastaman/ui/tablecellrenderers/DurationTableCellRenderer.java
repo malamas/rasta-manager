@@ -45,7 +45,9 @@ public class DurationTableCellRenderer extends GenericTableCellRenderer {
             setText(null);
         } else {
             int d = (int) value;
-            setText(dcf.format(d / 60) + ":" + dcf.format(d % 60));
+            int h = d / 3600;
+            d = d % 3600;
+            setText(((h > 0) ? h + ":" : "") + dcf.format(d / 60) + ":" + dcf.format(d % 60));
         }
     }
 }
