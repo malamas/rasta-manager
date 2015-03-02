@@ -21,9 +21,8 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
-import eap.pli24.rastaman.entities.PlaylistSong;
-import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eap.pli24.rastaman.util.XmlHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -31,11 +30,9 @@ import java.awt.event.ActionListener;
 import java.beans.Beans;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -71,7 +68,6 @@ import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -355,7 +351,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         File file = getUserSelectedFile(JFileChooser.SAVE_DIALOG);
         if (file != null) {
             try {
-                Document doc = buildDocumentFrom(pl);
+                Document doc = XmlHandler.buildDocumentFrom(pl);
                 // Εξαγωγή του δένδρου σε αρχείο
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
@@ -366,63 +362,13 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                 StreamResult result = new StreamResult(file);
 
                 transformer.transform(source, result);
+                JOptionPane.showMessageDialog(this, "Η εξαγωγή της λίστας ολοκληρώθηκε με επιτυχία.", "Εξαγωγή xml", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (ParserConfigurationException | TransformerException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Η δημιουργία του αρχείου xml απέτυχε...", "Σφάλμα", JOptionPane.WARNING_MESSAGE);
             }
         }
-    }
-
-    private Document buildDocumentFrom(Playlist pl) throws ParserConfigurationException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
-
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
-
-        // Ρίζα δένδρου xml
-        Element playlistEl = doc.createElement("playlist");
-        doc.appendChild(playlistEl);
-
-        // Όνομα λίστας
-        Element nameEl = doc.createElement("name");
-        nameEl.appendChild(doc.createTextNode(pl.getName()));
-        playlistEl.appendChild(nameEl);
-
-        // Ημερομηνία δημιουργίας
-        Element creationDateEl = doc.createElement("creationdate");
-        creationDateEl.appendChild(doc.createTextNode(sdf.format(pl.getCreationDate())));
-        playlistEl.appendChild(creationDateEl);
-
-        // Λίστα τραγουδιών
-        Element songlistEl = doc.createElement("songlist");
-
-        for (PlaylistSong ps : pl.getPlaylistSongList()) {
-            Song s = ps.getSong();
-            // στοιχείο για κάθε τραγούδι
-            Element songEl = doc.createElement("song");
-
-            // Στοιχείο με το id του τραγουδιού στη ΒΔ.
-            Element idEl = doc.createElement("id");
-            idEl.appendChild(doc.createTextNode(Long.toString(s.getSongId())));
-            songEl.appendChild(idEl);
-
-            // Τίτλος τραγουδιού
-            Element titleEl = doc.createElement("title");
-            titleEl.appendChild(doc.createTextNode(s.getTitle()));
-            songEl.appendChild(titleEl);
-
-            // Ερμηνευτής (καλλιτέχνης ή συγκρότημα
-            Element performerEl = doc.createElement("performer");
-            performerEl.appendChild(doc.createTextNode(s.getAlbumId().getPerformerScreenName()));
-            songEl.appendChild(performerEl);
-
-            songlistEl.appendChild(songEl);
-        }
-
-        playlistEl.appendChild(songlistEl);
-        return doc;
     }
 
     private File getUserSelectedFile(int fileChooserType) {

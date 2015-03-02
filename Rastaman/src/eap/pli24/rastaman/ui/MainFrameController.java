@@ -149,12 +149,12 @@ public class MainFrameController implements Runnable {
 
     public void shutdown() {
         // lazy init of the dialog icon
-        if (optionPaneIcon == null) {
-            java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
-            optionPaneIcon = new ImageIcon(imageURL);
-        }
+        //if (optionPaneIcon == null) {
+            //java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
+            //optionPaneIcon = new ImageIcon(imageURL);
+        //}
         Object[] options = {"Ναι", "Όχι"};
-        int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, optionPaneIcon, options, options[0]);
+        int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (selectedOption == JOptionPane.YES_OPTION) {
             mainFrame.dispose();
         }
