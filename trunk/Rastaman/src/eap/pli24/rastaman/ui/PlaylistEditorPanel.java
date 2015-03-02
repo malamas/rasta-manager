@@ -91,7 +91,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.albumid.performerScreenName}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.albumId.performerScreenName}"));
         columnBinding.setColumnName("Ερμηνευτής");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);

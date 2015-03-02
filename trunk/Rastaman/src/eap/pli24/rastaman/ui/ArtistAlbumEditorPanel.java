@@ -393,7 +393,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         //Εισαγωγή τραγουδιών στον πίνακα
         if (boundAlbum.getSongList() != null) {
             for (Song s : boundAlbum.getSongList()) {
-                model.addRow(new Object[]{s.getTracknr(), s.getTitle(), s.getDuration()});
+                model.addRow(new Object[]{s.getTrackNo(), s.getTitle(), s.getDuration()});
             }
         }
 
@@ -432,17 +432,17 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         int selectedRow = songTable.getSelectedRow();
         if (selectedRow != -1) {
             for (Song s : boundAlbum.getSongList()) {
-                if (s.getTracknr() == (int) model.getValueAt(selectedRow, 0)) {
+                if (s.getTrackNo() == (int) model.getValueAt(selectedRow, 0)) {
 
                     // έλεγχος συμμετοχής τραγουδιού σε playlist
-                    if (!s.getPlaylistList().isEmpty()) { // Εαν συμμετέχει σε PlayList δεν διαγράφεται
+                    if (!s.getPlaylistSongList().isEmpty()) { // Εαν συμμετέχει σε PlayList δεν διαγράφεται
                         JOptionPane.showMessageDialog(this, "To τραγούδι συμμετέχει σε λίστα \n"
                                 + "πρέπει πρώτα να διαγραφεί απο αυτή",
                                 "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                     } else { // Εαν δεν συμμετέχει σε PlayList  διαγράφεται
                         boundAlbum.getSongList().remove(s);
                         Query q = localEm.createQuery("DELETE FROM Song s1 WHERE s1.songid=:songID ",
-                                Song.class).setParameter("songID", s.getSongid());
+                                Song.class).setParameter("songID", s.getSongId());
                         q.executeUpdate();
                         model.removeRow(selectedRow);
                     }
@@ -481,12 +481,12 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 throw new Exception("To Αλμπουμ θα πρέπει να έχει \n τουλάχιστον ένα τραγούδι.");
             }
             for (int i = 0; i < model.getRowCount() - 1; i++) {
-                if ((model.getValueAt(i, 0) == null ) || model.getValueAt(i, 0).equals(0)  ) {
+                if ((model.getValueAt(i, 0) == null) || model.getValueAt(i, 0).equals(0)) {
                     songTable.setColumnSelectionInterval(0, 0);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
                     throw new Exception("Η Αριθμός Track στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν ή κενό");
-                } 
+                }
                 for (int j = i + 1; j < model.getRowCount(); j++) {
                     if (model.getValueAt(i, 0).equals(model.getValueAt(j, 0))) {
                         i++;
@@ -502,7 +502,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     i++;
                     throw new Exception("Ο τίτλος στη " + i + "η γραμμή δεν μπορεί να είναι κενός");
                 }
-                if ((model.getValueAt(i, 2) == null ) || model.getValueAt(i, 2).equals(0)) {
+                if ((model.getValueAt(i, 2) == null) || model.getValueAt(i, 2).equals(0)) {
                     songTable.setColumnSelectionInterval(2, 2);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
@@ -510,7 +510,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 }
                 found = false;
                 for (Song s : albumSongList) {
-                    if (s.getTracknr() == ((Integer) model.getValueAt(i, 0))) {
+                    if (s.getTrackNo() == ((Integer) model.getValueAt(i, 0))) {
                         s.setTitle((String) model.getValueAt(i, 1));
                         s.setDuration((Integer) model.getValueAt(i, 2));
                         found = true;
@@ -519,7 +519,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 }
                 if (!found) {
                     Song newSong = new Song(null, (String) model.getValueAt(i, 1), (Integer) model.getValueAt(i, 2), (Integer) model.getValueAt(i, 0));
-                    newSong.setAlbumid(boundAlbum);
+                    newSong.setAlbumId(boundAlbum);
                     albumSongList.add(newSong);
                 }
             }
