@@ -22,13 +22,13 @@ package eap.pli24.rastaman.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
 
 /**
  *
@@ -58,19 +58,19 @@ public class RootMenuPanel extends javax.swing.JPanel {
         menuPanel = new JPanel();
         playlistButton = new JButton();
         exitButton = new JButton();
-        jPanel1 = new JPanel();
-        labelButton = new JButton();
-        genreButton = new JButton();
-        jPanel2 = new JPanel();
+        mainFilePanel = new JPanel();
         artistButton = new JButton();
         musicgroupButton = new JButton();
         artistAlbumButton = new JButton();
         groupAlbumButton = new JButton();
+        auxFilePanel = new JPanel();
+        labelButton = new JButton();
+        genreButton = new JButton();
 
         setLayout(new BorderLayout());
 
         playlistButton.setText("Λίστες Αναπαραγωγής");
-        playlistButton.setPreferredSize(new Dimension(150, 30));
+        playlistButton.setPreferredSize(new Dimension(160, 32));
         playlistButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 playlistButtonActionPerformed(evt);
@@ -78,134 +78,103 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
 
         exitButton.setText("Έξοδος");
-        exitButton.setPreferredSize(new Dimension(150, 30));
+        exitButton.setPreferredSize(new Dimension(160, 32));
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 exitButtonActionPerformed(evt);
             }
         });
 
-        jPanel1.setBorder(BorderFactory.createTitledBorder("Βοηθητικοί Πίνακες"));
-
-        labelButton.setText("Εταιρίες Παραγωγής");
-        labelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                labelButtonActionPerformed(evt);
-            }
-        });
-
-        genreButton.setText("Είδη Μουσικής");
-        genreButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                genreButtonActionPerformed(evt);
-            }
-        });
-
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(genreButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(genreButton))
-        );
-
-        jPanel2.setBorder(BorderFactory.createTitledBorder("Αρχεία"));
+        mainFilePanel.setBorder(BorderFactory.createTitledBorder("Κύρια αρχεία"));
+        mainFilePanel.setPreferredSize(new Dimension(180, 200));
+        mainFilePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
         artistButton.setText("Καλλιτέχνες");
-        artistButton.setPreferredSize(new Dimension(150, 30));
+        artistButton.setPreferredSize(new Dimension(160, 32));
         artistButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 artistButtonActionPerformed(evt);
             }
         });
+        mainFilePanel.add(artistButton);
 
         musicgroupButton.setText("Συγκροτήματα");
-        musicgroupButton.setPreferredSize(new Dimension(150, 30));
+        musicgroupButton.setPreferredSize(new Dimension(160, 32));
         musicgroupButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 musicgroupButtonActionPerformed(evt);
             }
         });
+        mainFilePanel.add(musicgroupButton);
 
         artistAlbumButton.setText("Αλμπουμ καλλιτεχνών");
-        artistAlbumButton.setPreferredSize(new Dimension(150, 30));
+        artistAlbumButton.setPreferredSize(new Dimension(160, 32));
         artistAlbumButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 artistAlbumButtonActionPerformed(evt);
             }
         });
+        mainFilePanel.add(artistAlbumButton);
 
         groupAlbumButton.setText("Άλμπουμ συγκροτημάτων");
-        groupAlbumButton.setPreferredSize(new Dimension(150, 30));
+        groupAlbumButton.setPreferredSize(new Dimension(160, 32));
         groupAlbumButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 groupAlbumButtonActionPerformed(evt);
             }
         });
+        mainFilePanel.add(groupAlbumButton);
 
-        GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(artistButton, GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                    .addComponent(musicgroupButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(groupAlbumButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(artistAlbumButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(artistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(musicgroupButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(artistAlbumButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(groupAlbumButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        auxFilePanel.setBorder(BorderFactory.createTitledBorder("Βοηθητικά αρχεία"));
+        auxFilePanel.setPreferredSize(new Dimension(180, 100));
+        auxFilePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+
+        labelButton.setText("Εταιρίες Παραγωγής");
+        labelButton.setPreferredSize(new Dimension(160, 32));
+        labelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                labelButtonActionPerformed(evt);
+            }
+        });
+        auxFilePanel.add(labelButton);
+
+        genreButton.setText("Είδη Μουσικής");
+        genreButton.setPreferredSize(new Dimension(160, 32));
+        genreButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                genreButtonActionPerformed(evt);
+            }
+        });
+        auxFilePanel.add(genreButton);
 
         GroupLayout menuPanelLayout = new GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
                 .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(playlistButton, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitButton, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(346, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         add(menuPanel, BorderLayout.CENTER);
@@ -247,12 +216,12 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton artistAlbumButton;
     private JButton artistButton;
+    private JPanel auxFilePanel;
     private JButton exitButton;
     private JButton genreButton;
     private JButton groupAlbumButton;
-    private JPanel jPanel1;
-    private JPanel jPanel2;
     private JButton labelButton;
+    private JPanel mainFilePanel;
     private JPanel menuPanel;
     private JButton musicgroupButton;
     private JButton playlistButton;
