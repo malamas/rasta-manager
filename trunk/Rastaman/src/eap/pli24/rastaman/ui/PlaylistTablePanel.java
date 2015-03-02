@@ -67,6 +67,7 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 import org.w3c.dom.Document;
@@ -101,7 +102,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
         localEm = em;
         playlistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT p FROM Playlist p");
-        playlistList = Beans.isDesignTime() ? Collections.emptyList() : playlistQuery.getResultList();
+        playlistList = Beans.isDesignTime() ? Collections.emptyList() : ObservableCollections.observableList(playlistQuery.getResultList());
         scrollPane1 = new JScrollPane();
         playlistTable = new JTable();
         buttonPanel = new JPanel();
