@@ -25,6 +25,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -41,8 +44,11 @@ import javax.persistence.Table;
 public class PlaylistSong implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected PlaylistSongPK playlistSongPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "PLAYLIST_SONG_ID")
+    private Long playlistSongId;
     @Basic(optional = false)
     @Column(name = "SLOT")
     private int slot;
@@ -56,25 +62,21 @@ public class PlaylistSong implements Serializable {
     public PlaylistSong() {
     }
 
-    public PlaylistSong(PlaylistSongPK playlistSongPK) {
-        this.playlistSongPK = playlistSongPK;
+    public PlaylistSong(Long playlistSongId) {
+        this.playlistSongId = playlistSongId;
     }
 
-    public PlaylistSong(PlaylistSongPK playlistSongPK, int playorder) {
-        this.playlistSongPK = playlistSongPK;
-        this.slot = playorder;
+    public PlaylistSong(Long playlistSongId, int slot) {
+        this.playlistSongId = playlistSongId;
+        this.slot = slot;
     }
 
-    public PlaylistSong(long playlistplaylistid, long songsongid) {
-        this.playlistSongPK = new PlaylistSongPK(playlistplaylistid, songsongid);
+    public Long getPlaylistSongId() {
+        return playlistSongId;
     }
 
-    public PlaylistSongPK getPlaylistSongPK() {
-        return playlistSongPK;
-    }
-
-    public void setPlaylistSongPK(PlaylistSongPK playlistSongPK) {
-        this.playlistSongPK = playlistSongPK;
+    public void setPlaylistSongId(Long playlistSongId) {
+        this.playlistSongId = playlistSongId;
     }
 
     public int getSlot() {
@@ -104,7 +106,7 @@ public class PlaylistSong implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (playlistSongPK != null ? playlistSongPK.hashCode() : 0);
+        hash += (playlistSongId != null ? playlistSongId.hashCode() : 0);
         return hash;
     }
 
@@ -115,7 +117,7 @@ public class PlaylistSong implements Serializable {
             return false;
         }
         PlaylistSong other = (PlaylistSong) object;
-        if ((this.playlistSongPK == null && other.playlistSongPK != null) || (this.playlistSongPK != null && !this.playlistSongPK.equals(other.playlistSongPK))) {
+        if ((this.playlistSongId == null && other.playlistSongId != null) || (this.playlistSongId != null && !this.playlistSongId.equals(other.playlistSongId))) {
             return false;
         }
         return true;
@@ -123,7 +125,7 @@ public class PlaylistSong implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongPK=" + playlistSongPK + " ]";
+        return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongPK=" + playlistSongId + " ]";
     }
 
 }
