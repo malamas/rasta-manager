@@ -238,7 +238,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
-        //importListFromXml();
+        importListFromXml();
     }//GEN-LAST:event_importButtonActionPerformed
 
     private void portButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_portButtonActionPerformed
@@ -332,14 +332,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         try {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.parse(file);
-            doc.getDocumentElement().normalize();
 
-            Playlist newPl = new Playlist();
-            em.persist(newPl);
-
-            String name = doc.getElementsByTagName("name").item(0).getTextContent();
-            newPl.setName(name);
-            newPl.setCreationDate(new Date());
+            Playlist newPl = XmlHandler.buildPlaylistFromDocument(doc, em);
+            //em.persist(newPl);
 
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -351,7 +346,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         File file = getUserSelectedFile(JFileChooser.SAVE_DIALOG);
         if (file != null) {
             try {
-                Document doc = XmlHandler.buildDocumentFrom(pl);
+                Document doc = XmlHandler.buildDocumentFromPlaylist(pl);
                 // Εξαγωγή του δένδρου σε αρχείο
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();

@@ -24,12 +24,18 @@ import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.entities.PlaylistSong;
 import eap.pli24.rastaman.entities.Song;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import javax.persistence.EntityManager;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -43,7 +49,7 @@ public final class XmlHandler {
     private XmlHandler() {
     }
 
-    public static Document buildDocumentFrom(Playlist pl) throws ParserConfigurationException {
+    public static Document buildDocumentFromPlaylist(Playlist pl) throws ParserConfigurationException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -92,5 +98,27 @@ public final class XmlHandler {
 
         playlistEl.appendChild(songlistEl);
         return doc;
+    }
+
+    public static Playlist buildPlaylistFromDocument(Document doc, EntityManager em) {
+        doc.getDocumentElement().normalize();
+
+        Playlist playlist = new Playlist();
+
+        String name = doc.getElementsByTagName("name").item(0).getTextContent();
+        playlist.setName(name);
+        playlist.setCreationDate(new Date());
+
+        //Node songList = doc.getElementsByTagName("songlist").item(0);
+        NodeList nl = doc.getElementsByTagName("song");
+
+        List<Song> songList = new ArrayList();
+        for (int i = 0; i < nl.getLength(); i++) {
+            Node n = nl.item(i);
+            long songId = Long.parseLong(((Element) n).getElementsByTagName("id").item(0).getTextContent());
+            Song song = em.find(Song.class, songId);
+            songList.add(song);
+        }
+        return null;
     }
 }
