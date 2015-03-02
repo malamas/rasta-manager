@@ -32,17 +32,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -53,12 +48,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PLAYLIST")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Playlist.findAll", query = "SELECT p FROM Playlist p"),
-    @NamedQuery(name = "Playlist.findByPlaylistid", query = "SELECT p FROM Playlist p WHERE p.playlistid = :playlistid"),
-    @NamedQuery(name = "Playlist.findByName", query = "SELECT p FROM Playlist p WHERE p.name = :name"),
-    @NamedQuery(name = "Playlist.findByCreationdate", query = "SELECT p FROM Playlist p WHERE p.creationdate = :creationdate")})
 public class Playlist implements Serializable {
 
     @Transient
@@ -67,40 +56,40 @@ public class Playlist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "PLAYLISTID")
-    private Long playlistid;
+    @Column(name = "PLAYLIST_ID")
+    private Long playlistId;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
     @Basic(optional = false)
-    @Column(name = "CREATIONDATE")
+    @Column(name = "CREATION_DATE")
     @Temporal(TemporalType.DATE)
-    private Date creationdate;
+    private Date creationDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist")
-    @OrderBy("playorder ASC")
+    @OrderBy("slot ASC")
     private List<PlaylistSong> playlistSongList;
 
     public Playlist() {
     }
 
-    public Playlist(Long playlistid) {
-        this.playlistid = playlistid;
+    public Playlist(Long playlistId) {
+        this.playlistId = playlistId;
     }
 
-    public Playlist(Long playlistid, String name, Date creationdate) {
-        this.playlistid = playlistid;
+    public Playlist(Long playlistId, String name, Date creationDate) {
+        this.playlistId = playlistId;
         this.name = name;
-        this.creationdate = creationdate;
+        this.creationDate = creationDate;
     }
 
-    public Long getPlaylistid() {
-        return playlistid;
+    public Long getPlaylistId() {
+        return playlistId;
     }
 
-    public void setPlaylistid(Long playlistid) {
-        Long oldPlaylistid = this.playlistid;
-        this.playlistid = playlistid;
-        changeSupport.firePropertyChange("playlistid", oldPlaylistid, playlistid);
+    public void setPlaylistId(Long playlistId) {
+        Long oldPlaylistid = this.playlistId;
+        this.playlistId = playlistId;
+        changeSupport.firePropertyChange("playlistId", oldPlaylistid, playlistId);
     }
 
     public String getName() {
@@ -113,17 +102,16 @@ public class Playlist implements Serializable {
         changeSupport.firePropertyChange("name", oldName, name);
     }
 
-    public Date getCreationdate() {
-        return creationdate;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setCreationdate(Date creationdate) {
-        Date oldCreationdate = this.creationdate;
-        this.creationdate = creationdate;
-        changeSupport.firePropertyChange("creationdate", oldCreationdate, creationdate);
+    public void setCreationDate(Date creationDate) {
+        Date oldCreationDate = this.creationDate;
+        this.creationDate = creationDate;
+        changeSupport.firePropertyChange("creationDate", oldCreationDate, creationDate);
     }
 
-    @XmlTransient
     public List<PlaylistSong> getPlaylistSongList() {
         return playlistSongList;
     }
@@ -137,7 +125,6 @@ public class Playlist implements Serializable {
      *
      * @return το πλήθος των τραγουδιών.
      */
-    @XmlTransient
     public int getSongCount() {
         return playlistSongList.size();
     }
@@ -148,7 +135,6 @@ public class Playlist implements Serializable {
      *
      * @return η διάρκεια σε δευτερόλεπτα.
      */
-    @XmlTransient
     public int getDuration() {
         int totalDuration = 0;
         for (PlaylistSong ps : playlistSongList) {
@@ -160,7 +146,7 @@ public class Playlist implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (playlistid != null ? playlistid.hashCode() : 0);
+        hash += (playlistId != null ? playlistId.hashCode() : 0);
         return hash;
     }
 
@@ -171,7 +157,7 @@ public class Playlist implements Serializable {
             return false;
         }
         Playlist other = (Playlist) object;
-        if ((this.playlistid == null && other.playlistid != null) || (this.playlistid != null && !this.playlistid.equals(other.playlistid))) {
+        if ((this.playlistId == null && other.playlistId != null) || (this.playlistId != null && !this.playlistId.equals(other.playlistId))) {
             return false;
         }
         return true;
@@ -179,7 +165,7 @@ public class Playlist implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Playlist[ playlistid=" + playlistid + " ]";
+        return "eap.pli24.rastaman.entities.Playlist[ playlistid=" + playlistId + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

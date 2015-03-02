@@ -83,7 +83,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         ELProperty eLProperty = ELProperty.create("${playlistSongList}");
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundPlaylist, eLProperty, playlistSongTable);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${playorder}"));
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${slot}"));
         columnBinding.setColumnName("Σειρά");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);

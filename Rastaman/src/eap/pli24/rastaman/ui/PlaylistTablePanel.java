@@ -128,7 +128,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${creationdate}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${creationDate}"));
         columnBinding.setColumnName("Ημερομηνία δημιουργίας");
         columnBinding.setColumnClass(Date.class);
         columnBinding.setEditable(false);
@@ -262,6 +262,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                 em.getTransaction().begin();
                 em.remove(selectedPlaylist);
                 em.getTransaction().commit();
+                playlistList.remove(selectedPlaylist);
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -341,7 +342,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
             String name = doc.getElementsByTagName("name").item(0).getTextContent();
             newPl.setName(name);
-            newPl.setCreationdate(new Date());
+            newPl.setCreationDate(new Date());
 
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -390,7 +391,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
         // Ημερομηνία δημιουργίας
         Element creationDateEl = doc.createElement("creationdate");
-        creationDateEl.appendChild(doc.createTextNode(sdf.format(pl.getCreationdate())));
+        creationDateEl.appendChild(doc.createTextNode(sdf.format(pl.getCreationDate())));
         playlistEl.appendChild(creationDateEl);
 
         // Λίστα τραγουδιών
