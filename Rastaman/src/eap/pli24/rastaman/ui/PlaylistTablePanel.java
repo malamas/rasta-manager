@@ -335,7 +335,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }
 
     private void importListFromXml() {
-        File file = getUserSelectedFile(JFileChooser.OPEN_DIALOG);
+        File file = getUserSelectedFile(JFileChooser.OPEN_DIALOG, null);
         if (file != null) {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             try {
@@ -356,7 +356,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
     private void exportListToXml(Playlist pl) {
         // Επιλογή αρχείου από το χρήστη
-        File file = getUserSelectedFile(JFileChooser.SAVE_DIALOG);
+        File file = getUserSelectedFile(JFileChooser.SAVE_DIALOG, pl.getName());
         if (file != null) {
             try {
                 Document doc = XmlHandler.buildDocumentFromPlaylist(pl);
@@ -379,7 +379,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         }
     }
 
-    private File getUserSelectedFile(int fileChooserType) {
+    private File getUserSelectedFile(int fileChooserType, String filename) {
         if (fileChooserType != JFileChooser.OPEN_DIALOG && fileChooserType != JFileChooser.SAVE_DIALOG) {
             throw new IllegalArgumentException("fileChooserType should be either JFileChooser.OPEN_DIALOG or JFileChooser.SAVE_DIALOG");
         }
@@ -396,6 +396,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             case JFileChooser.SAVE_DIALOG:
                 fc.setDialogTitle("Εξαγωγή σε XML");
                 fc.setApproveButtonText("Εξαγωγή");
+                fc.setSelectedFile(new File(filename + ".xml"));
                 break;
         }
         if (fc.showDialog(this, null) == JFileChooser.APPROVE_OPTION) {
