@@ -157,6 +157,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent evt) {
                 groupArtistTableMouseClicked(evt);
             }
+            public void mousePressed(MouseEvent evt) {
+                groupArtistTableMousePressed(evt);
+            }
         });
         jScrollPane1.setViewportView(groupArtistTable);
         if (groupArtistTable.getColumnModel().getColumnCount() > 0) {
@@ -192,6 +195,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         availArtistTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 availArtistTableMouseClicked(evt);
+            }
+            public void mousePressed(MouseEvent evt) {
+                availArtistTableMousePressed(evt);
             }
         });
         jScrollPane2.setViewportView(availArtistTable);
@@ -310,23 +316,31 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         saveAndExit();
 	}//GEN-LAST:event_saveButtonActionPerformed
 
-    //κλίκ στον πίνακα διαθέσιμων καλλιτεχνών
+
     private void availArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
-        // ενεργοποίηση κατάλληλων πλήκτρων
-        groupArtistTable.clearSelection();
-        newButton.setEnabled(true);
-        deleteButton.setEnabled(false);
 
     }//GEN-LAST:event_availArtistTableMouseClicked
 
-    //κλίκ στον πίνακα καλλιτεχνών Συγγκροτήματος
+
     private void groupArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
-        // ενεργοποίηση κατάλληλων πλήκτρων
+
+    }//GEN-LAST:event_groupArtistTableMouseClicked
+  
+    //κλίκ στον πίνακα καλλιτεχνών Συγγκροτήματος
+    private void groupArtistTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMousePressed
+         // ενεργοποίηση κατάλληλων πλήκτρων
         availArtistTable.clearSelection();
         newButton.setEnabled(false);
         deleteButton.setEnabled(true);
+    }//GEN-LAST:event_groupArtistTableMousePressed
 
-    }//GEN-LAST:event_groupArtistTableMouseClicked
+    //κλίκ στον πίνακα διαθέσιμων καλλιτεχνών
+    private void availArtistTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_availArtistTableMousePressed
+        // ενεργοποίηση κατάλληλων πλήκτρων
+        groupArtistTable.clearSelection();
+        newButton.setEnabled(true);
+        deleteButton.setEnabled(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_availArtistTableMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
