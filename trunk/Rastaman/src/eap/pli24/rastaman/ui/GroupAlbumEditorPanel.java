@@ -22,6 +22,7 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Label;
+import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.util.ArrayList;
@@ -527,7 +528,13 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                     break;
                 }
             }
+            
             localEm.getTransaction().commit();
+            localEm.refresh(boundAlbum.getMusicgroupmusicgroupid());
+            localEm.refresh(boundAlbum.getLabelid());
+            for (Song s:albumSongList){
+                localEm.refresh(s);
+            }
             controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
