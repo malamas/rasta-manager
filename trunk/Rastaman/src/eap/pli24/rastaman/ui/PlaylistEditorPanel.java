@@ -24,6 +24,7 @@ import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.persistence.EntityManager;
@@ -31,13 +32,19 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
+import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
@@ -69,6 +76,9 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         bindingGroup = new BindingGroup();
 
         boundPlaylist = playlist;
+        namePanel = new JPanel();
+        nameLabel = new JLabel();
+        nameTextField = new JTextField();
         scrollPane1 = new JScrollPane();
         playlistSongTable = new JTable();
         buttonPanel = new JPanel();
@@ -77,6 +87,24 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
 
         setLayout(new BorderLayout());
+
+        namePanel.setPreferredSize(new Dimension(0, 50));
+        namePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 14));
+
+        nameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        nameLabel.setLabelFor(nameTextField);
+        nameLabel.setText("Όνομα:");
+        nameLabel.setPreferredSize(new Dimension(40, 14));
+        namePanel.add(nameLabel);
+
+        nameTextField.setPreferredSize(new Dimension(200, 20));
+
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundPlaylist, ELProperty.create("${name}"), nameTextField, BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        namePanel.add(nameTextField);
+
+        add(namePanel, BorderLayout.PAGE_START);
 
         playlistSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playlistSongTable.getTableHeader().setReorderingAllowed(false);
@@ -136,6 +164,9 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JButton cancelButton;
     private Box.Filler filler2;
     private Box.Filler filler3;
+    private JLabel nameLabel;
+    private JPanel namePanel;
+    private JTextField nameTextField;
     private JTable playlistSongTable;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -158,6 +189,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        namePanel.setPreferredSize(new Dimension(0, 50));
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistSongTable.getColumnModel();
