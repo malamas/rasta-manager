@@ -22,7 +22,7 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Label;
-import eap.pli24.rastaman.entities.Musicgenre;
+import eap.pli24.rastaman.entities.MusicGenre;
 import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
@@ -82,7 +82,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
 
         localEm = em;
         dateTableCellRenderer1 = new DateTableCellRenderer();
-        musicgenreQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgenre m");
+        musicgenreQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM MusicGenre m");
         musicgenreList = Beans.isDesignTime() ? Collections.emptyList() : musicgenreQuery.getResultList();
         scrollPane1 = new JScrollPane();
         genreTable = new JTable();
@@ -180,7 +180,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         //¨Ανοιγμα της φόρμας επεξεργασίας Είδους μουσικής με
         // παράμετρο νέο είδος μουσικής
-        controller.showGenreEditor(new Musicgenre());
+        controller.showGenreEditor(new MusicGenre());
     }//GEN-LAST:event_newButtonActionPerformed
 
     //κλίκ στο πληκτρο Επεξεργασία Είδους Μουσικής
@@ -190,7 +190,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
         // Είδος μουσικής
         int selectedIndex = genreTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Musicgenre selectedGenre = musicgenreList.get(selectedIndex);
+            MusicGenre selectedGenre = musicgenreList.get(selectedIndex);
             controller.showGenreEditor(selectedGenre);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -217,7 +217,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private Box.Filler filler6;
     private JTable genreTable;
     private EntityManager localEm;
-    private List<Musicgenre> musicgenreList;
+    private List<MusicGenre> musicgenreList;
     private Query musicgenreQuery;
     private JButton newButton;
     private JScrollPane scrollPane1;
@@ -254,7 +254,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private void deleteGenre() {
         int selectedIndex = genreTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Musicgenre selectedGenre = musicgenreList.get(selectedIndex);
+            MusicGenre selectedGenre = musicgenreList.get(selectedIndex);
             if (selectedGenre.getArtistList().isEmpty()) { // εαν δεν υπάρχει καλλιτέχνης
                     Object[] options = {"Ναι", "Όχι"};
                     int n = JOptionPane.showOptionDialog(this,
@@ -267,8 +267,8 @@ public class GenreTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                     if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
                         localEm.getTransaction().begin();
-                        Query q = localEm.createQuery("DELETE FROM Musicgenre g WHERE g.musicgenreid=:genreID ",
-                                Musicgenre.class).setParameter("genreID", selectedGenre.getMusicgenreid());
+                        Query q = localEm.createQuery("DELETE FROM MusicGenre g WHERE g.musicGenreId=:genreID ",
+                                MusicGenre.class).setParameter("genreID", selectedGenre.getMusicGenreId());
                         q.executeUpdate();
                         localEm.getTransaction().commit();
                         musicgenreList.remove(selectedIndex);

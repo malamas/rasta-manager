@@ -327,20 +327,21 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
     private void importListFromXml() {
         File file = getUserSelectedFile(JFileChooser.OPEN_DIALOG);
+        if (file != null) {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            try {
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Document doc = docBuilder.parse(file);
 
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(file);
+                Playlist newPl = XmlHandler.buildPlaylistFromDocument(doc, em);
+                em.getTransaction().begin();
+                em.persist(newPl);
+                em.getTransaction().commit();
+                playlistList.add(newPl);
 
-            Playlist newPl = XmlHandler.buildPlaylistFromDocument(doc, em);
-            em.getTransaction().begin();
-            em.persist(newPl);
-            em.getTransaction().commit();
-            playlistList.add(newPl);
-
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            } catch (ParserConfigurationException | SAXException | IOException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
