@@ -112,13 +112,20 @@ public final class XmlHandler {
         //Node songList = doc.getElementsByTagName("songlist").item(0);
         NodeList nl = doc.getElementsByTagName("song");
 
-        List<Song> songList = new ArrayList();
+        List<PlaylistSong> psList = new ArrayList();
         for (int i = 0; i < nl.getLength(); i++) {
             Node n = nl.item(i);
             long songId = Long.parseLong(((Element) n).getElementsByTagName("id").item(0).getTextContent());
             Song song = em.find(Song.class, songId);
-            songList.add(song);
+            if (song != null) {
+                PlaylistSong ps = new PlaylistSong();
+                ps.setPlaylist(playlist);
+                ps.setSlot(i + 1);
+                ps.setSong(song);
+                psList.add(ps);
+            }
         }
-        return null;
+        //playlist.setPlaylistSongList(psList);
+        return playlist;
     }
 }

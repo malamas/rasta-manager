@@ -107,7 +107,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         filler8 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         importButton = new JButton();
         filler7 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
-        portButton = new JButton();
+        exportButton = new JButton();
         filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         newButton = new JButton();
         filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
@@ -169,19 +169,19 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         buttonPanel.add(importButton);
         buttonPanel.add(filler7);
 
-        portButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/document-save.png"))); // NOI18N
-        portButton.setText("σε XML");
-        portButton.setPreferredSize(new Dimension(120, 36));
+        exportButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/document-save.png"))); // NOI18N
+        exportButton.setText("σε XML");
+        exportButton.setPreferredSize(new Dimension(120, 36));
 
-        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), portButton, BeanProperty.create("enabled"));
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistTable, ELProperty.create("${selectedElement!=null}"), exportButton, BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        portButton.addActionListener(new ActionListener() {
+        exportButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                portButtonActionPerformed(evt);
+                exportButtonActionPerformed(evt);
             }
         });
-        buttonPanel.add(portButton);
+        buttonPanel.add(exportButton);
         buttonPanel.add(filler2);
 
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
@@ -232,8 +232,8 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Playlist selectedPlaylist = playlistList.get(selectedIndex);
-            controller.showPlaylistEditor(selectedPlaylist);
+            Playlist sp = playlistList.get(selectedIndex);
+            controller.showPlaylistEditor(sp);
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -241,25 +241,25 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         importListFromXml();
     }//GEN-LAST:event_importButtonActionPerformed
 
-    private void portButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_portButtonActionPerformed
+    private void exportButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Playlist selectedPlaylist = playlistList.get(selectedIndex);
-            exportListToXml(selectedPlaylist);
+            Playlist sp = playlistList.get(selectedIndex);
+            exportListToXml(sp);
         }
-    }//GEN-LAST:event_portButtonActionPerformed
+    }//GEN-LAST:event_exportButtonActionPerformed
 
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Playlist selectedPlaylist = playlistList.get(selectedIndex);
+            Playlist sp = playlistList.get(selectedIndex);
             Object[] options = {"Ναι", "Όχι"};
-            int selectedOption = JOptionPane.showOptionDialog(this, "Να διαγραφεί η λίστα '" + selectedPlaylist.getName() + "';", "Επιβεβαίωση διαγραφής", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            int selectedOption = JOptionPane.showOptionDialog(this, "Να διαγραφεί η λίστα '" + sp.getName() + "';", "Επιβεβαίωση διαγραφής", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (selectedOption == JOptionPane.YES_OPTION) {
                 em.getTransaction().begin();
-                em.remove(selectedPlaylist);
+                em.remove(sp);
                 em.getTransaction().commit();
-                playlistList.remove(selectedPlaylist);
+                playlistList.remove(sp);
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -270,6 +270,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
+    private JButton exportButton;
     private Box.Filler filler2;
     private Box.Filler filler3;
     private Box.Filler filler4;
@@ -283,7 +284,6 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private List<Playlist> playlistList;
     private Query playlistQuery;
     private JTable playlistTable;
-    private JButton portButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -334,7 +334,10 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             Document doc = docBuilder.parse(file);
 
             Playlist newPl = XmlHandler.buildPlaylistFromDocument(doc, em);
-            //em.persist(newPl);
+            em.getTransaction().begin();
+            em.persist(newPl);
+            em.getTransaction().commit();
+            playlistList.add(newPl);
 
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
