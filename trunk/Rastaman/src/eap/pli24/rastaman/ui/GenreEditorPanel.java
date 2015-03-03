@@ -22,7 +22,7 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Label;
-import eap.pli24.rastaman.entities.Musicgenre;
+import eap.pli24.rastaman.entities.MusicGenre;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 import org.jdesktop.beansbinding.Converter;
@@ -54,10 +54,6 @@ public class GenreEditorPanel extends javax.swing.JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         localEm = em;
-        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m.name FROM Musicgenre m");
-        musicgenreNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgenreNameQuery.getResultList();
-        musicGenreQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgenre m");
-        musicGenreList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicGenreQuery.getResultList();
         boundMusicgenre = musicgenre;
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -153,16 +149,12 @@ public class GenreEditorPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private eap.pli24.rastaman.entities.Musicgenre boundMusicgenre;
+    private eap.pli24.rastaman.entities.MusicGenre boundMusicgenre;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField genreNameField;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.persistence.EntityManager localEm;
-    private java.util.List<Musicgenre> musicGenreList;
-    private javax.persistence.Query musicGenreQuery;
-    private java.util.List<eap.pli24.rastaman.entities.Musicgenre> musicgenreNameList;
-    private javax.persistence.Query musicgenreNameQuery;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -172,19 +164,19 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
-    private Musicgenre musicgenre;
+    private MusicGenre musicgenre;
 
 
     /**
      * Δημιουργεί ένα {@code GenreEditorPanel} για την επεξεργασία ενός
-     * {@code Musicgenre}, και με ορισμένο {@code MainFrameController} και ξεκινάει
+     * {@code MusicGenre}, και με ορισμένο {@code MainFrameController} και ξεκινάει
      * ένα transaction
      *
      * @param controller ο ελεγκτής
      * @param em
      * @param musicgenre Tο είδος μουσικής προς επεξεργασία
      */
-    public GenreEditorPanel(MainFrameController controller, EntityManager em, Musicgenre musicgenre) {
+    public GenreEditorPanel(MainFrameController controller, EntityManager em, MusicGenre musicgenre) {
         this.controller = controller;
         this.em = em;
         this.musicgenre = musicgenre;

@@ -8,8 +8,8 @@
     <class>eap.pli24.rastaman.entities.Album</class>
     <class>eap.pli24.rastaman.entities.Label</class>
     <class>eap.pli24.rastaman.entities.Musicgroup</class>
-    <class>eap.pli24.rastaman.entities.Musicgenre</class>
     <class>eap.pli24.rastaman.entities.PlaylistSong</class>
+    <class>eap.pli24.rastaman.entities.MusicGenre</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rastaman"/>
       <property name="javax.persistence.jdbc.user" value="rastaman"/>

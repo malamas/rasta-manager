@@ -51,10 +51,10 @@ public class PlaylistSong implements Serializable {
     @Basic(optional = false)
     @Column(name = "SLOT")
     private int slot;
-    @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "PLAYLIST_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "PLAYLIST_ID")
     @ManyToOne(optional = false)
     private Playlist playlist;
-    @JoinColumn(name = "SONG_ID", referencedColumnName = "SONG_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "SONG_ID", referencedColumnName = "SONG_ID")
     @ManyToOne(optional = false)
     private Song song;
 
@@ -126,5 +126,4 @@ public class PlaylistSong implements Serializable {
     public String toString() {
         return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongId=" + playlistSongId + " ]";
     }
-
 }

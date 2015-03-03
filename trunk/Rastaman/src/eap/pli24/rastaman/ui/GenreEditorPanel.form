@@ -10,43 +10,7 @@
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="musicgenreNameQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT m.name FROM Musicgenre m"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="musicgenreNameList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="musicgenreNameQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eap.pli24.rastaman.entities.Musicgenre&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="musicGenreQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT m FROM Musicgenre m"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="musicGenreList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="musicGenreQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Musicgenre&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="eap.pli24.rastaman.entities.Musicgenre" name="boundMusicgenre">
+    <Component class="eap.pli24.rastaman.entities.MusicGenre" name="boundMusicgenre">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="musicgenre"/>
       </AuxValues>

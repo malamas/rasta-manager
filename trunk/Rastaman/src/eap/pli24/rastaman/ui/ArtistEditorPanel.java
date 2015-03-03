@@ -21,7 +21,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
-import eap.pli24.rastaman.entities.Musicgenre;
+import eap.pli24.rastaman.entities.MusicGenre;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 import org.jdesktop.beansbinding.Converter;
@@ -53,10 +53,10 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         localEm = em;
-        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m.name FROM Musicgenre m");
+        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m.name FROM MusicGenre m");
         musicgenreNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgenreNameQuery.getResultList();
         boundArtist = artist;
-        musicGenreQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgenre m");
+        musicGenreQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM MusicGenre m");
         musicGenreList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicGenreQuery.getResultList();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -290,9 +290,9 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField lastNameField;
     private javax.persistence.EntityManager localEm;
-    private java.util.List<Musicgenre> musicGenreList;
+    private java.util.List<eap.pli24.rastaman.entities.MusicGenre> musicGenreList;
     private javax.persistence.Query musicGenreQuery;
-    private java.util.List<eap.pli24.rastaman.entities.Musicgenre> musicgenreNameList;
+    private java.util.List<eap.pli24.rastaman.entities.MusicGenre> musicgenreNameList;
     private javax.persistence.Query musicgenreNameQuery;
     private javax.swing.JButton saveButton;
     private javax.swing.JComboBox sexComboBox;
@@ -365,7 +365,7 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
             }
             // Ενημέρωση του boundArtist με το επιλεγμένο είδος μουσικής
             String selectetGenreName = genreComboBox.getSelectedItem().toString();
-            for (Musicgenre g : musicGenreList) {
+            for (MusicGenre g : musicGenreList) {
                 if (g.getName().equals(selectetGenreName)) {
                     boundArtist.setMuscigenreid(g);
                     break;

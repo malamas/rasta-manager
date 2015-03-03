@@ -125,7 +125,7 @@ public final class XmlHandler {
                 psList.add(ps);
             }
         }
-        //playlist.setPlaylistSongList(psList);
+        playlist.setPlaylistSongList(psList);
         return playlist;
     }
 }

@@ -23,7 +23,7 @@ package eap.pli24.rastaman.ui;
 import eap.pli24.rastaman.entities.Album;
 import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Label;
-import eap.pli24.rastaman.entities.Musicgenre;
+import eap.pli24.rastaman.entities.MusicGenre;
 import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.entities.Playlist;
 import java.awt.BorderLayout;
@@ -201,7 +201,7 @@ public class MainFrameController implements Runnable {
         headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
     }
     
-    public void showGenreEditor(Musicgenre musicgenre) {
+    public void showGenreEditor(MusicGenre musicgenre) {
         GenreEditorPanel editor = new GenreEditorPanel(this, em, musicgenre);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((musicgenre.getName() != null) ? musicgenre.getName() : "Νέο Είδος Μουσικής"));
