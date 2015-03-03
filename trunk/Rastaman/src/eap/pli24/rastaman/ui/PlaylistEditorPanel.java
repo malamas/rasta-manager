@@ -21,13 +21,18 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
+import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.Beans;
+import java.util.Collections;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -39,6 +44,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -76,20 +82,36 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         bindingGroup = new BindingGroup();
 
         boundPlaylist = playlist;
+        RastamanPUEntityManager = Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
+        songQuery = Beans.isDesignTime() ? null : RastamanPUEntityManager.createQuery("SELECT s FROM Song s");
+        songList = Beans.isDesignTime() ? Collections.emptyList() : songQuery.getResultList();
         namePanel = new JPanel();
         nameLabel = new JLabel();
         nameTextField = new JTextField();
+        tablesPanel = new JPanel();
+        filler8 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
         scrollPane1 = new JScrollPane();
         playlistSongTable = new JTable();
+        songButtonPanel = new JPanel();
+        filler5 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        addButton = new JButton();
+        filler6 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(120, 50));
+        removeButton = new JButton();
+        filler7 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        scrollPane2 = new JScrollPane();
+        availableSongTable = new JTable();
+        filler9 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
         buttonPanel = new JPanel();
-        filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
-        cancelButton = new JButton();
         filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        cancelButton = new JButton();
+        filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        saveButton = new JButton();
+        filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
 
-        setLayout(new BorderLayout());
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         namePanel.setPreferredSize(new Dimension(0, 50));
-        namePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 14));
+        namePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 12));
 
         nameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
         nameLabel.setLabelFor(nameTextField);
@@ -104,7 +126,13 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         namePanel.add(nameTextField);
 
-        add(namePanel, BorderLayout.PAGE_START);
+        add(namePanel);
+
+        tablesPanel.setPreferredSize(new Dimension(0, 200));
+        tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.LINE_AXIS));
+        tablesPanel.add(filler8);
+
+        scrollPane1.setPreferredSize(new Dimension(300, 0));
 
         playlistSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playlistSongTable.getTableHeader().setReorderingAllowed(false);
@@ -131,11 +159,87 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         jTableBinding.bind();
         scrollPane1.setViewportView(playlistSongTable);
 
-        add(scrollPane1, BorderLayout.CENTER);
+        tablesPanel.add(scrollPane1);
+
+        songButtonPanel.setAlignmentX(0.5F);
+        songButtonPanel.setMaximumSize(new Dimension(150, 32767));
+        songButtonPanel.setMinimumSize(new Dimension(150, 0));
+        songButtonPanel.setPreferredSize(new Dimension(150, 0));
+        songButtonPanel.setLayout(new BoxLayout(songButtonPanel, BoxLayout.PAGE_AXIS));
+        songButtonPanel.add(filler5);
+
+        addButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/go-previous.png"))); // NOI18N
+        addButton.setText("Προσθήκη");
+        addButton.setAlignmentX(0.5F);
+        addButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        addButton.setMaximumSize(new Dimension(100, 50));
+        addButton.setMinimumSize(new Dimension(100, 50));
+        addButton.setPreferredSize(new Dimension(100, 50));
+        addButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, availableSongTable, ELProperty.create("${selectedElement!=null}"), addButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+        songButtonPanel.add(addButton);
+        songButtonPanel.add(filler6);
+
+        removeButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/go-next.png"))); // NOI18N
+        removeButton.setText("Αφαίρεση");
+        removeButton.setAlignmentX(0.5F);
+        removeButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        removeButton.setMaximumSize(new Dimension(100, 50));
+        removeButton.setMinimumSize(new Dimension(100, 50));
+        removeButton.setPreferredSize(new Dimension(100, 50));
+        removeButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistSongTable, ELProperty.create("${selectedElement!=null}"), removeButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        removeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+        songButtonPanel.add(removeButton);
+        songButtonPanel.add(filler7);
+
+        tablesPanel.add(songButtonPanel);
+
+        scrollPane2.setPreferredSize(new Dimension(300, 0));
+
+        availableSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        availableSongTable.getTableHeader().setReorderingAllowed(false);
+
+        jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, songList, availableSongTable);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${title}"));
+        columnBinding.setColumnName("Τίτλος");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${albumId.performerScreenName}"));
+        columnBinding.setColumnName("Ερμηνευτής");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${duration}"));
+        columnBinding.setColumnName("Διάρκεια");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        scrollPane2.setViewportView(availableSongTable);
+
+        tablesPanel.add(scrollPane2);
+        tablesPanel.add(filler9);
+
+        add(tablesPanel);
 
         buttonPanel.setPreferredSize(new Dimension(0, 50));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
-        buttonPanel.add(filler3);
+        buttonPanel.add(filler2);
 
         cancelButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/undo22.png"))); // NOI18N
         cancelButton.setText("Ακύρωση");
@@ -146,9 +250,20 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
             }
         });
         buttonPanel.add(cancelButton);
-        buttonPanel.add(filler2);
+        buttonPanel.add(filler4);
 
-        add(buttonPanel, BorderLayout.PAGE_END);
+        saveButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/accept22.png"))); // NOI18N
+        saveButton.setText("Αποθήκευση");
+        saveButton.setPreferredSize(new Dimension(120, 36));
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(saveButton);
+        buttonPanel.add(filler3);
+
+        add(buttonPanel);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
@@ -157,18 +272,46 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    private void removeButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeButtonActionPerformed
+
+    private void addButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private EntityManager RastamanPUEntityManager;
+    private JButton addButton;
+    private JTable availableSongTable;
     private Playlist boundPlaylist;
     private JPanel buttonPanel;
     private JButton cancelButton;
     private Box.Filler filler2;
     private Box.Filler filler3;
+    private Box.Filler filler4;
+    private Box.Filler filler5;
+    private Box.Filler filler6;
+    private Box.Filler filler7;
+    private Box.Filler filler8;
+    private Box.Filler filler9;
     private JLabel nameLabel;
     private JPanel namePanel;
     private JTextField nameTextField;
     private JTable playlistSongTable;
+    private JButton removeButton;
+    private JButton saveButton;
     private JScrollPane scrollPane1;
+    private JScrollPane scrollPane2;
+    private JPanel songButtonPanel;
+    private List<Song> songList;
+    private Query songQuery;
+    private JPanel tablesPanel;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
@@ -189,7 +332,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
-        namePanel.setPreferredSize(new Dimension(0, 50));
+        buttonPanel.setMaximumSize(new Dimension(32767, UIProperties.BUTTON_PANEL_HEIGHT));
+        buttonPanel.setMinimumSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        namePanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        namePanel.setMaximumSize(new Dimension(32767, UIProperties.BUTTON_PANEL_HEIGHT));
+        namePanel.setMinimumSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistSongTable.getColumnModel();
@@ -203,6 +350,18 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
                     break;
                 default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
+        // Καθορισμός εμφάνισης πίνακα
+        TableColumnModel tcm2 = availableSongTable.getColumnModel();
+        for (int i = 0; i < tcm2.getColumnCount(); i++) {
+            switch (i) {
+                case 2:
+                    tcm2.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
+                    break;
+                default:
+                    tcm2.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
             }
         }
