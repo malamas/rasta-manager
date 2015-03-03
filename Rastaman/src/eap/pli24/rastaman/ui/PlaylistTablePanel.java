@@ -187,6 +187,11 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         newButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/add22.png"))); // NOI18N
         newButton.setText("Εισαγωγή");
         newButton.setPreferredSize(new Dimension(120, 36));
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
         buttonPanel.add(newButton);
         buttonPanel.add(filler4);
 
@@ -263,6 +268,10 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        controller.showPlaylistEditor(new Playlist());
+    }//GEN-LAST:event_newButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
