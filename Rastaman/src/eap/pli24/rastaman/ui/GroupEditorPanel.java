@@ -313,17 +313,19 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     //κλίκ στον πίνακα διαθέσιμων καλλιτεχνών
     private void availArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_availArtistTableMouseClicked
         // ενεργοποίηση κατάλληλων πλήκτρων
+        groupArtistTable.clearSelection();
         newButton.setEnabled(true);
         deleteButton.setEnabled(false);
-        groupArtistTable.clearSelection();
+
     }//GEN-LAST:event_availArtistTableMouseClicked
 
     //κλίκ στον πίνακα καλλιτεχνών Συγγκροτήματος
     private void groupArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
         // ενεργοποίηση κατάλληλων πλήκτρων
+        availArtistTable.clearSelection();
         newButton.setEnabled(false);
         deleteButton.setEnabled(true);
-        availArtistTable.clearSelection();
+
     }//GEN-LAST:event_groupArtistTableMouseClicked
 
 
@@ -422,6 +424,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
                 throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη");
             }
             localEm.getTransaction().commit(); //Αποθήκευση στη Βάση
+            for (Artist a:groupArtistList ) {
+                localEm.refresh(a);
+            }
             controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
