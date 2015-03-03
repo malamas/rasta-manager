@@ -31,13 +31,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -47,13 +43,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "MUSICGENRE")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Musicgenre.findAll", query = "SELECT m FROM Musicgenre m"),
-    @NamedQuery(name = "Musicgenre.findByMusicgenreid", query = "SELECT m FROM Musicgenre m WHERE m.musicgenreid = :musicgenreid"),
-    @NamedQuery(name = "Musicgenre.findByName", query = "SELECT m FROM Musicgenre m WHERE m.name = :name")})
-public class Musicgenre implements Serializable {
+@Table(name = "MUSIC_GENRE")
+public class MusicGenre implements Serializable {
 
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -61,34 +52,34 @@ public class Musicgenre implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "MUSICGENREID")
-    private Integer musicgenreid;
+    @Column(name = "MUSIC_GENRE_ID")
+    private Integer musicGenreId;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "muscigenreid")
     private List<Artist> artistList;
 
-    public Musicgenre() {
+    public MusicGenre() {
     }
 
-    public Musicgenre(Integer musicgenreid) {
-        this.musicgenreid = musicgenreid;
+    public MusicGenre(Integer musicGenreId) {
+        this.musicGenreId = musicGenreId;
     }
 
-    public Musicgenre(Integer musicgenreid, String name) {
-        this.musicgenreid = musicgenreid;
+    public MusicGenre(Integer musicGenreId, String name) {
+        this.musicGenreId = musicGenreId;
         this.name = name;
     }
 
-    public Integer getMusicgenreid() {
-        return musicgenreid;
+    public Integer getMusicGenreId() {
+        return musicGenreId;
     }
 
-    public void setMusicgenreid(Integer musicgenreid) {
-        Integer oldMusicgenreid = this.musicgenreid;
-        this.musicgenreid = musicgenreid;
-        changeSupport.firePropertyChange("musicgenreid", oldMusicgenreid, musicgenreid);
+    public void setMusicGenreId(Integer musicGenreId) {
+        Integer oldMusicGenreId = this.musicGenreId;
+        this.musicGenreId = musicGenreId;
+        changeSupport.firePropertyChange("musicgenreid", oldMusicGenreId, musicGenreId);
     }
 
     public String getName() {
@@ -101,7 +92,6 @@ public class Musicgenre implements Serializable {
         changeSupport.firePropertyChange("name", oldName, name);
     }
 
-    @XmlTransient
     public List<Artist> getArtistList() {
         return artistList;
     }
@@ -113,18 +103,18 @@ public class Musicgenre implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (musicgenreid != null ? musicgenreid.hashCode() : 0);
+        hash += (musicGenreId != null ? musicGenreId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Musicgenre)) {
+        if (!(object instanceof MusicGenre)) {
             return false;
         }
-        Musicgenre other = (Musicgenre) object;
-        if ((this.musicgenreid == null && other.musicgenreid != null) || (this.musicgenreid != null && !this.musicgenreid.equals(other.musicgenreid))) {
+        MusicGenre other = (MusicGenre) object;
+        if ((this.musicGenreId == null && other.musicGenreId != null) || (this.musicGenreId != null && !this.musicGenreId.equals(other.musicGenreId))) {
             return false;
         }
         return true;
@@ -132,7 +122,7 @@ public class Musicgenre implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Musicgenre[ musicgenreid=" + musicgenreid + " ]";
+        return "eap.pli24.rastaman.entities.MusicGenre[ musicGenreId=" + musicGenreId + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -142,5 +132,4 @@ public class Musicgenre implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-
 }
