@@ -427,6 +427,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
             for (Artist a:groupArtistList ) {
                 localEm.refresh(a);
             }
+            for (Artist a:availArtistList){
+                localEm.refresh(a);
+            }
             controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());

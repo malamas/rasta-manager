@@ -300,11 +300,8 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                     if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
                         localEm.getTransaction().begin();
-                        Query q = localEm.createQuery("DELETE FROM Artist art WHERE art.artistid=:artistID ",
-                                Artist.class).setParameter("artistID", selectedArtist.getArtistid());
-                        q.executeUpdate();
+                        localEm.remove(artistList.remove(selectedIndex));
                         localEm.getTransaction().commit();
-                        artistList.remove(selectedIndex);
                         artistTable.updateUI();
                     }
                 } else {

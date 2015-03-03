@@ -20,8 +20,7 @@
  */
 package eap.pli24.rastaman.ui;
 
-import eap.pli24.rastaman.entities.Artist;
-import eap.pli24.rastaman.entities.Label;
+
 import eap.pli24.rastaman.entities.MusicGenre;
 import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
@@ -31,7 +30,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -267,11 +265,8 @@ public class GenreTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                     if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
                         localEm.getTransaction().begin();
-                        Query q = localEm.createQuery("DELETE FROM MusicGenre g WHERE g.musicGenreId=:genreID ",
-                                MusicGenre.class).setParameter("genreID", selectedGenre.getMusicGenreId());
-                        q.executeUpdate();
+                        localEm.remove(musicgenreList.remove(selectedIndex));
                         localEm.getTransaction().commit();
-                        musicgenreList.remove(selectedIndex);
                         genreTable.updateUI();
                     }
             } else  JOptionPane.showMessageDialog(this, "Το είδος Μουσικής δεν μπορεί να διαγραφεί, \n διότι υπάρχει καλλιτέχνης σε αυτό.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
