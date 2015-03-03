@@ -435,9 +435,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                                 "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                     } else { // Εαν δεν συμμετέχει σε PlayList  διαγράφεται
                         boundAlbum.getSongList().remove(s);
-                        Query q = localEm.createQuery("DELETE FROM Song s1 WHERE s1.songid=:songID ",
-                                Song.class).setParameter("songID", s.getSongId());
-                        q.executeUpdate();
+                        localEm.remove(s);
                         model.removeRow(selectedRow);
                     }
                     break;
@@ -446,7 +444,6 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Τραγούδι \nπρος Διαγραφή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
         }
-
     }
 
     /**

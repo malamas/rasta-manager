@@ -20,7 +20,6 @@
  */
 package eap.pli24.rastaman.ui;
 
-import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Label;
 import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
@@ -30,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -271,11 +269,8 @@ public class LabelTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                     if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
                         localEm.getTransaction().begin();
-                        Query q = localEm.createQuery("DELETE FROM Label l WHERE l.labelid=:labelID ",
-                                Label.class).setParameter("labelID", selectedLabel.getLabelid());
-                        q.executeUpdate();
+                        localEm.remove(labelList.remove(selectedIndex));
                         localEm.getTransaction().commit();
-                        labelList.remove(selectedIndex);
                         labelTable.updateUI();
                     }
             } else  JOptionPane.showMessageDialog(this, "Η εταιρία δεν μπορεί να διαγραφεί, \n γιατί υπάρχει άλμπουμ της.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);

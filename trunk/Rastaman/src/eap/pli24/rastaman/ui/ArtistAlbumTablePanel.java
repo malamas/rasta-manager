@@ -307,11 +307,10 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                         options[1]); //default button title
                 if (n == 0) {
                     localEm.getTransaction().begin();
-                    Query q = localEm.createQuery("DELETE FROM Album al WHERE al.albumid=:albumID ",
-                            Album.class).setParameter("albumID", a.getAlbumid());
-                    q.executeUpdate();
+                    localEm.remove(albumList.remove(selectedIndex));
                     localEm.getTransaction().commit();
-                    albumList.remove(selectedIndex);
+                    localEm.refresh(a.getArtistartistid());
+                    localEm.refresh(a.getLabelid());
                     artistAlbumTable.updateUI();
                 }
             } else { // Εαν συμμετέχει σε PlayList δεν διαγράφεται

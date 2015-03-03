@@ -292,11 +292,8 @@ public class GroupTablePanel extends javax.swing.JPanel {
                 }
                 if (n == 0) { //Εαν τελικά επιλέξουμε να το διαγράψουμε
                     localEm.getTransaction().begin();
-                    Query q = localEm.createQuery("DELETE FROM Musicgroup grp WHERE grp.musicgroupid=:musicgroupID ",
-                            Musicgroup.class).setParameter("musicgroupID", a.getMusicgroupid());
-                    q.executeUpdate();
+                    localEm.remove(musicgroupList.remove(selectedIndex));
                     localEm.getTransaction().commit();
-                    musicgroupList.remove(selectedIndex);
                     groupTable.updateUI();
                 }
             } else {
