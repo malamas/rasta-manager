@@ -26,6 +26,7 @@ import eap.pli24.rastaman.entities.Label;
 import eap.pli24.rastaman.entities.MusicGenre;
 import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.entities.Playlist;
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.BorderLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -106,8 +107,8 @@ public class MainFrameController implements Runnable {
         mainFrame.setController(this);
 
         // Ορισμός διαστάσεων παραθύρου
-        mainFrame.setSize(UIProperties.MAIN_FRAME_INIT_SIZE);
-        mainFrame.setMinimumSize(UIProperties.MAIN_FRAME_MIN_SIZE);
+        mainFrame.setSize(SkinProvider.getInstance().getSkin().getMainFrameInitSize());
+        mainFrame.setMinimumSize(SkinProvider.getInstance().getSkin().getMainFrameMinSize());
 
         // Τοποθέτηση του παραθύρου στο κέντρο της οθόνης
         Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
@@ -150,8 +151,8 @@ public class MainFrameController implements Runnable {
     public void shutdown() {
         // lazy init of the dialog icon
         //if (optionPaneIcon == null) {
-            //java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
-            //optionPaneIcon = new ImageIcon(imageURL);
+        //java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
+        //optionPaneIcon = new ImageIcon(imageURL);
         //}
         Object[] options = {"Ναι", "Όχι"};
         int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -200,12 +201,13 @@ public class MainFrameController implements Runnable {
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
     }
-    
+
     public void showGenreEditor(MusicGenre musicgenre) {
         GenreEditorPanel editor = new GenreEditorPanel(this, em, musicgenre);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((musicgenre.getName() != null) ? musicgenre.getName() : "Νέο Είδος Μουσικής"));
     }
+
     private void displayPanel(JPanel panel) {
         centerPanel.remove(activePanel);
         centerPanel.add(panel, BorderLayout.CENTER);
@@ -233,10 +235,10 @@ public class MainFrameController implements Runnable {
                 p = new PlaylistTablePanel(this, em);
                 break;
             case LABEL_TABLE:
-                p = new LabelTablePanel(this,em);
+                p = new LabelTablePanel(this, em);
                 break;
             case GENRE_TABLE:
-                p= new GenreTablePanel(this,em);
+                p = new GenreTablePanel(this, em);
                 break;
             case ROOT_MENU:
             default:

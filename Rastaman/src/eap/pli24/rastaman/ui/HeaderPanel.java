@@ -20,6 +20,7 @@
  */
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.Dimension;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -76,9 +77,9 @@ public class HeaderPanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        setPreferredSize(new Dimension(0, UIProperties.HEADER_HEIGHT));
-        setBackground(UIProperties.HEADER_BACKGROUND);
-        headerLabel.setFont(UIProperties.HEADER_FONT);
-        headerLabel.setForeground(UIProperties.HEADER_FOREGROUND);
+        setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getHeaderHeight()));
+        setBackground(SkinProvider.getInstance().getSkin().getHeaderBackground());
+        headerLabel.setFont(SkinProvider.getInstance().getSkin().getHeaderFont());
+        headerLabel.setForeground(SkinProvider.getInstance().getSkin().getHeaderForeground());
     }
 }
