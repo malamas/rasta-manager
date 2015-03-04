@@ -66,7 +66,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         auxFilePanel = new JPanel();
         labelButton = new JButton();
         genreButton = new JButton();
-        skinButton = new JButton();
+        toggleSkinButton = new JButton();
 
         setLayout(new BorderLayout());
 
@@ -148,11 +148,11 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
         auxFilePanel.add(genreButton);
 
-        skinButton.setText("Skin");
-        skinButton.setPreferredSize(new Dimension(160, 32));
-        skinButton.addActionListener(new ActionListener() {
+        toggleSkinButton.setText("Αλλαγή θέματος");
+        toggleSkinButton.setPreferredSize(new Dimension(160, 32));
+        toggleSkinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                skinButtonActionPerformed(evt);
+                toggleSkinButtonActionPerformed(evt);
             }
         });
 
@@ -171,7 +171,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
                         .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
                             .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(skinButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(toggleSkinButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(346, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -183,7 +183,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(skinButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(toggleSkinButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(56, Short.MAX_VALUE))
@@ -224,9 +224,9 @@ public class RootMenuPanel extends javax.swing.JPanel {
         controller.switchToPanel(MainFrameController.PanelType.GENRE_TABLE);
     }//GEN-LAST:event_genreButtonActionPerformed
 
-    private void skinButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_skinButtonActionPerformed
+    private void toggleSkinButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_toggleSkinButtonActionPerformed
         controller.updateForSkinChange();
-    }//GEN-LAST:event_skinButtonActionPerformed
+    }//GEN-LAST:event_toggleSkinButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -241,7 +241,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private JPanel menuPanel;
     private JButton musicgroupButton;
     private JButton playlistButton;
-    private JButton skinButton;
+    private JButton toggleSkinButton;
     // End of variables declaration//GEN-END:variables
     //
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
