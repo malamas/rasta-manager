@@ -100,6 +100,7 @@ public class SideBarPanel extends javax.swing.JPanel {
         this.setPreferredSize(new Dimension(SkinProvider.getInstance().getSkin().getSidebarWidth(), 0));
         this.setBackground(SkinProvider.getInstance().getSkin().getSidebarBackground());
 
+        rastamanLabel.setVisible(SkinProvider.getInstance().getSkin().getRastamanVisible());
         rastamanLabel.setFont(SkinProvider.getInstance().getSkin().getRastamanFont());
         rastamanLabel.setForeground(SkinProvider.getInstance().getSkin().getRastamanForeground());
         String rastaman = "Rastaman!";

@@ -41,6 +41,8 @@ public interface Skin {
 
     Color getSidebarBackground();
 
+    boolean getRastamanVisible();
+
     Color getRastamanForeground();
 
     Font getRastamanFont();

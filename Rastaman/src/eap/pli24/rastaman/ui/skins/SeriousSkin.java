@@ -31,32 +31,32 @@ import java.awt.Font;
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class JamaicaSkin implements Skin {
+public class SeriousSkin implements Skin {
 
     private static final Dimension MAIN_FRAME_INIT_SIZE = new Dimension(1024, 640);
     private static final Dimension MAIN_FRAME_MIN_SIZE = new Dimension(1024, 640);
 
     private static final int SIDEBAR_WIDTH = 240;
-    private static final Color SIDEBAR_BACKGROUND = new Color(104, 104, 0);
-    
-    private static final boolean IS_RASTAMAN_VISIBLE = true;
+    private static final Color SIDEBAR_BACKGROUND = new Color(88, 132, 176);
+
+    private static final boolean IS_RASTAMAN_VISIBLE = false;
     private static final Color RASTAMAN_FOREGROUND = new Color(240, 220, 48);
     private static final Font RASTAMAN_FONT = new Font("Tahoma", 1, 14);
 
     private static final Dimension CREDITS_SIZE = new Dimension(200, 150);
-    private static final Color CREDITS_FOREGROUND = new Color(224, 224, 224);
+    private static final Color CREDITS_FOREGROUND = new Color(255, 255, 255);
     private static final Font CREDITS_FONT = new Font("Tahoma", 1, 11);
 
     private static final int HEADER_HEIGHT = 50;
-    private static final Color HEADER_BACKGROUND = new Color(204, 208, 204);
+    private static final Color HEADER_BACKGROUND = new Color(176, 192, 216);
     private static final Font HEADER_FONT = new Font("Tahoma", 1, 14);
     private static final Color HEADER_FOREGROUND = new Color(48, 48, 24);
 
     private static final int BUTTON_PANEL_HEIGHT = 42;
 
     private static final Color TABLE_ODD_ROW_BACKGROUND = new Color(255, 255, 255);
-    private static final Color TABLE_EVEN_ROW_BACKGROUND = new Color(224, 232, 216);
-    private static final Color TABLE_SELECTED_ROW_BACKGROUND = new Color(104, 104, 0);
+    private static final Color TABLE_EVEN_ROW_BACKGROUND = new Color(216, 224, 232);
+    private static final Color TABLE_SELECTED_ROW_BACKGROUND = new Color(88, 132, 176);
 
     @Override
     public Dimension getMainFrameInitSize() {
