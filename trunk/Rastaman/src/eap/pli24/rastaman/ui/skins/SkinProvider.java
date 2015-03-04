@@ -49,4 +49,8 @@ public class SkinProvider {
         return skin;
     }
 
+    public void toggle() {
+        skin = ((skin instanceof JamaicaSkin) ? new SeriousSkin() : new JamaicaSkin());
+    }
+
 }

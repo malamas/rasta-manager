@@ -72,6 +72,7 @@ public class MainFrameController implements Runnable {
     private EntityManager em;
     private MainFrame mainFrame;
     private HeaderPanel headerPanel;
+    private SideBarPanel sideBarPanel;
     private JPanel centerPanel;
     private JPanel activePanel;
     private ImageIcon optionPaneIcon;
@@ -128,13 +129,21 @@ public class MainFrameController implements Runnable {
             mainFrame.setIconImage(icon.getImage());
         }
 
+        mainFrame.setLayout(new BorderLayout());
+        initPanels();
+
+        // Εμφάνιση παραθύρου
+        mainFrame.setVisible(true);
+
+    }
+
+    private void initPanels() {
         centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
 
         headerPanel = new HeaderPanel();
-
-        mainFrame.setLayout(new BorderLayout());
-        mainFrame.add(new SideBarPanel(), BorderLayout.LINE_START);
+        sideBarPanel = new SideBarPanel();
+        mainFrame.add(sideBarPanel, BorderLayout.LINE_START);
         mainFrame.add(centerPanel, BorderLayout.CENTER);
 
         centerPanel.add(headerPanel, BorderLayout.PAGE_START);
@@ -142,10 +151,12 @@ public class MainFrameController implements Runnable {
         centerPanel.add(startPanel, BorderLayout.CENTER);
         headerPanel.setHeaderLabel("Αρχική");
         activePanel = startPanel;
+    }
 
-        // Εμφάνιση παραθύρου
-        mainFrame.setVisible(true);
-
+    public void updateForSkinChange() {
+        mainFrame.getContentPane().removeAll();
+        SkinProvider.getInstance().toggle();
+        initPanels();
     }
 
     public void shutdown() {

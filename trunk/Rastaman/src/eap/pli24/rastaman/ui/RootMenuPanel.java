@@ -66,6 +66,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         auxFilePanel = new JPanel();
         labelButton = new JButton();
         genreButton = new JButton();
+        skinButton = new JButton();
 
         setLayout(new BorderLayout());
 
@@ -147,6 +148,14 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
         auxFilePanel.add(genreButton);
 
+        skinButton.setText("Skin");
+        skinButton.setPreferredSize(new Dimension(160, 32));
+        skinButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                skinButtonActionPerformed(evt);
+            }
+        });
+
         GroupLayout menuPanelLayout = new GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -161,7 +170,8 @@ public class RootMenuPanel extends javax.swing.JPanel {
                         .addGap(33, 33, 33)
                         .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(skinButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(346, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -173,8 +183,10 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(skinButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         add(menuPanel, BorderLayout.CENTER);
@@ -212,6 +224,10 @@ public class RootMenuPanel extends javax.swing.JPanel {
         controller.switchToPanel(MainFrameController.PanelType.GENRE_TABLE);
     }//GEN-LAST:event_genreButtonActionPerformed
 
+    private void skinButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_skinButtonActionPerformed
+        controller.updateForSkinChange();
+    }//GEN-LAST:event_skinButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton artistAlbumButton;
@@ -225,6 +241,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private JPanel menuPanel;
     private JButton musicgroupButton;
     private JButton playlistButton;
+    private JButton skinButton;
     // End of variables declaration//GEN-END:variables
     //
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
