@@ -36,8 +36,20 @@ public class SkinProvider {
 
     public enum Skins {
 
-        JAMAICA,
-        SERIOUS;
+        JAMAICA("Jamaica"),
+        SERIOUS("Σοβαρότης"),
+        RED("Κόκκινο");
+
+        private final String name;
+
+        Skins(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     private static final SkinProvider INSTANCE = new SkinProvider();
@@ -64,6 +76,7 @@ public class SkinProvider {
         skinMap = new EnumMap<>(Skins.class);
         skinMap.put(Skins.JAMAICA, new JamaicaSkin());
         skinMap.put(Skins.SERIOUS, new SeriousSkin());
+        skinMap.put(Skins.RED, new RedSkin());
     }
 
     public Skin getSkin() {
