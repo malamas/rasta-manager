@@ -21,7 +21,6 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Label;
-import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -78,7 +77,6 @@ public class LabelTablePanel extends javax.swing.JPanel {
         bindingGroup = new BindingGroup();
 
         localEm = em;
-        dateTableCellRenderer1 = new DateTableCellRenderer();
         labelQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT l FROM Label l");
         labelList = Beans.isDesignTime() ? Collections.emptyList() : labelQuery.getResultList();
         scrollPane1 = new JScrollPane();
@@ -93,8 +91,6 @@ public class LabelTablePanel extends javax.swing.JPanel {
         filler5 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         deleteButton = new JButton();
         filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
-
-        dateTableCellRenderer1.setText("dateTableCellRenderer1");
 
         setLayout(new BorderLayout());
 
@@ -209,7 +205,6 @@ public class LabelTablePanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton backButton;
     private JPanel buttonPanel;
-    private DateTableCellRenderer dateTableCellRenderer1;
     private JButton deleteButton;
     private JButton editButton;
     private Box.Filler filler2;
