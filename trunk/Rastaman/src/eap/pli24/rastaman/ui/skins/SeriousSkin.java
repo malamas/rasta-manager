@@ -38,6 +38,7 @@ public class SeriousSkin implements Skin {
 
     private static final int SIDEBAR_WIDTH = 240;
     private static final Color SIDEBAR_BACKGROUND = new Color(88, 132, 176);
+    private static final boolean SIDEBAR_VISIBLE_ON_NON_ROOT = false;
 
     private static final boolean IS_RASTAMAN_VISIBLE = false;
     private static final Color RASTAMAN_FOREGROUND = new Color(240, 220, 48);
@@ -76,6 +77,11 @@ public class SeriousSkin implements Skin {
     @Override
     public Color getSidebarBackground() {
         return SIDEBAR_BACKGROUND;
+    }
+
+    @Override
+    public boolean getSidebarVisibleOnNonRoot() {
+        return SIDEBAR_VISIBLE_ON_NON_ROOT;
     }
 
     @Override

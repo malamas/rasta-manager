@@ -159,10 +159,17 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         scrollPane1.setViewportView(playlistSongTable);
+        if (playlistSongTable.getColumnModel().getColumnCount() > 0) {
+            playlistSongTable.getColumnModel().getColumn(0).setMinWidth(45);
+            playlistSongTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            playlistSongTable.getColumnModel().getColumn(0).setMaxWidth(55);
+            playlistSongTable.getColumnModel().getColumn(3).setMinWidth(60);
+            playlistSongTable.getColumnModel().getColumn(3).setPreferredWidth(65);
+            playlistSongTable.getColumnModel().getColumn(3).setMaxWidth(70);
+        }
 
         tablesPanel.add(scrollPane1);
 
-        songButtonPanel.setAlignmentX(0.5F);
         songButtonPanel.setMaximumSize(new Dimension(150, 32767));
         songButtonPanel.setMinimumSize(new Dimension(150, 0));
         songButtonPanel.setPreferredSize(new Dimension(150, 0));
@@ -232,6 +239,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         scrollPane2.setViewportView(availableSongTable);
+        if (availableSongTable.getColumnModel().getColumnCount() > 0) {
+            availableSongTable.getColumnModel().getColumn(2).setMinWidth(60);
+            availableSongTable.getColumnModel().getColumn(2).setPreferredWidth(65);
+            availableSongTable.getColumnModel().getColumn(2).setMaxWidth(70);
+        }
 
         tablesPanel.add(scrollPane2);
         tablesPanel.add(filler9);

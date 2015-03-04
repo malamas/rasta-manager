@@ -38,7 +38,8 @@ public class JamaicaSkin implements Skin {
 
     private static final int SIDEBAR_WIDTH = 240;
     private static final Color SIDEBAR_BACKGROUND = new Color(104, 104, 0);
-    
+    private static final boolean SIDEBAR_VISIBLE_ON_NON_ROOT = true;
+
     private static final boolean IS_RASTAMAN_VISIBLE = true;
     private static final Color RASTAMAN_FOREGROUND = new Color(240, 220, 48);
     private static final Font RASTAMAN_FONT = new Font("Tahoma", 1, 14);
@@ -76,6 +77,11 @@ public class JamaicaSkin implements Skin {
     @Override
     public Color getSidebarBackground() {
         return SIDEBAR_BACKGROUND;
+    }
+
+    @Override
+    public boolean getSidebarVisibleOnNonRoot() {
+        return SIDEBAR_VISIBLE_ON_NON_ROOT;
     }
 
     @Override

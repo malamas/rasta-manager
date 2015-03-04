@@ -41,6 +41,8 @@ public interface Skin {
 
     Color getSidebarBackground();
 
+    boolean getSidebarVisibleOnNonRoot();
+
     boolean getRastamanVisible();
 
     Color getRastamanForeground();
