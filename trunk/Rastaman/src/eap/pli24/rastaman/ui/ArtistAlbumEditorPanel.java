@@ -181,6 +181,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         });
         songTable.setCellSelectionEnabled(true);
         songTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        songTable.getTableHeader().setReorderingAllowed(false);
         songTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 songTableMouseClicked(evt);
@@ -419,11 +420,12 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (!found) {
-                break;
-            }
+            if (!found) break;
         }
         model.addRow(new Object[]{i, null, 0});
+        //μετακίνηση του κέρσορα στην καινούρια γραμμή
+        songTable.setColumnSelectionInterval(0, 0);
+        songTable.setRowSelectionInterval(model.getRowCount()-1, model.getRowCount()-1);
     }
 
     // Μέθοδος deleteSong()
@@ -495,7 +497,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             }
             boolean found;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if (model.getValueAt(i, 1).toString().isEmpty()) {
+                if (model.getValueAt(i, 1) == null || model.getValueAt(i, 1).equals("")) {
                     songTable.setColumnSelectionInterval(1, 1);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
