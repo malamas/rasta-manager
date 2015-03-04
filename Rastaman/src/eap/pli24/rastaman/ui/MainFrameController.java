@@ -28,6 +28,7 @@ import eap.pli24.rastaman.entities.Musicgroup;
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.util.logging.Level;
@@ -49,9 +50,9 @@ import javax.swing.WindowConstants;
  * @author Malamas Malamidis
  */
 public class MainFrameController implements Runnable {
-
+    
     public enum PanelType {
-
+        
         ROOT_MENU("Αρχική"),
         ARTIST_TABLE("Καλλιτέχνες"),
         GROUP_TABLE("Συγκροτήματα"),
@@ -60,14 +61,14 @@ public class MainFrameController implements Runnable {
         PLAYLIST_TABLE("Λίστες τραγουδιών"),
         LABEL_TABLE("Εταιρίες Παραγωγής"),
         GENRE_TABLE("Είδη Μουσικής");
-
+        
         private final String headerText;
-
+        
         PanelType(String headerText) {
             this.headerText = headerText;
         }
     }
-
+    
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
     private EntityManager em;
     private MainFrame mainFrame;
@@ -76,7 +77,7 @@ public class MainFrameController implements Runnable {
     private JPanel centerPanel;
     private JPanel activePanel;
     private ImageIcon optionPaneIcon;
-
+    
     @Override
     public void run() {
         initLookAndFeel();
@@ -96,11 +97,11 @@ public class MainFrameController implements Runnable {
             LOGGER.log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private void initDatabase() {
         em = Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
     }
-
+    
     private void initMainFrame() {
         mainFrame = new MainFrame();
 
@@ -119,7 +120,7 @@ public class MainFrameController implements Runnable {
         // Ο χειρισμός του κλεισίματος γίνεται με ειδικό listener,
         // ώστε να καλείται η μέθοδος shutdown() του ελεγκτή (για ελέγχους κλπ.)
         mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
+        
         mainFrame.setTitle("Rastaman");
 
         // Φόρτωση και ορισμός εικονιδίου 
@@ -128,37 +129,37 @@ public class MainFrameController implements Runnable {
             ImageIcon icon = new ImageIcon(imageURL);
             mainFrame.setIconImage(icon.getImage());
         }
-
+        
         mainFrame.setLayout(new BorderLayout());
         initPanels();
 
         // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
-
+        
     }
-
+    
     private void initPanels() {
         centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
-
+        
         headerPanel = new HeaderPanel();
         sideBarPanel = new SideBarPanel();
         mainFrame.add(sideBarPanel, BorderLayout.LINE_START);
         mainFrame.add(centerPanel, BorderLayout.CENTER);
-
+        
         centerPanel.add(headerPanel, BorderLayout.PAGE_START);
         JPanel startPanel = createPanel(PanelType.ROOT_MENU);
         centerPanel.add(startPanel, BorderLayout.CENTER);
         headerPanel.setHeaderLabel("Αρχική");
         activePanel = startPanel;
     }
-
+    
     public void updateForSkinChange() {
         mainFrame.getContentPane().removeAll();
         SkinProvider.getInstance().toggle();
         initPanels();
     }
-
+    
     public void shutdown() {
         // lazy init of the dialog icon
         //if (optionPaneIcon == null) {
@@ -171,62 +172,67 @@ public class MainFrameController implements Runnable {
             mainFrame.dispose();
         }
     }
-
+    
     public void switchToPanel(PanelType p) {
         displayPanel(createPanel(p));
         headerPanel.setHeaderLabel(p.headerText);
     }
-
+    
     public void showArtistEditor(Artist artist) {
         ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος Καλλιτέχνης"));
     }
-
+    
     public void showGroupEditor(Musicgroup group) {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο Συγκρότημα"));
     }
-
+    
     public void showArtistAlbumEditor(Album album) {
         ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
     }
-
+    
     public void showGroupAlbumEditor(Album album) {
         GroupAlbumEditorPanel editor = new GroupAlbumEditorPanel(this, em, album);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
     }
-
+    
     public void showPlaylistEditor(Playlist playlist) {
         PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
     }
-
+    
     public void showLabelEditor(Label label) {
         LabelEditorPanel editor = new LabelEditorPanel(this, em, label);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
     }
-
+    
     public void showGenreEditor(MusicGenre musicgenre) {
         GenreEditorPanel editor = new GenreEditorPanel(this, em, musicgenre);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((musicgenre.getName() != null) ? musicgenre.getName() : "Νέο Είδος Μουσικής"));
     }
-
+    
     private void displayPanel(JPanel panel) {
+        if (panel instanceof RootMenuPanel) {
+            sideBarPanel.setPreferredSize(new Dimension(SkinProvider.getInstance().getSkin().getSidebarWidth(), 0));
+        } else if (!SkinProvider.getInstance().getSkin().getSidebarVisibleOnNonRoot()) {
+            sideBarPanel.setPreferredSize(new Dimension(0, 0));
+        }
         centerPanel.remove(activePanel);
         centerPanel.add(panel, BorderLayout.CENTER);
         panel.setVisible(true);
         centerPanel.validate();
         activePanel = panel;
     }
-
+    
     private JPanel createPanel(PanelType type) {
         JPanel p;
         switch (type) {
