@@ -21,6 +21,7 @@
 package eap.pli24.rastaman.ui.skins;
 
 import eap.pli24.rastaman.ui.tablecellrenderers.GenericTableCellRenderer;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,9 +34,16 @@ import java.util.Set;
  */
 public class SkinProvider {
 
+    public enum Skins {
+
+        JAMAICA,
+        SERIOUS;
+    }
+
     private static final SkinProvider INSTANCE = new SkinProvider();
-    private Skin skin;
+    private Skins activeSkin;
     private Set<GenericTableCellRenderer> observers;
+    private EnumMap<Skins, Skin> skinMap;
 
     private SkinProvider() {
         initialize();
@@ -47,17 +55,28 @@ public class SkinProvider {
     }
 
     private void initialize() {
-        skin = new JamaicaSkin();
         observers = new HashSet<>();
+        initSkinMap();
+        activeSkin = Skins.JAMAICA;
+    }
+
+    private void initSkinMap() {
+        skinMap = new EnumMap<>(Skins.class);
+        skinMap.put(Skins.JAMAICA, new JamaicaSkin());
+        skinMap.put(Skins.SERIOUS, new SeriousSkin());
     }
 
     public Skin getSkin() {
-        return skin;
+        return skinMap.get(activeSkin);
     }
 
-    public void toggle() {
-        skin = ((skin instanceof JamaicaSkin) ? new SeriousSkin() : new JamaicaSkin());
-        if (observers != null) {
+    public Skins getActiveSkin() {
+        return activeSkin;
+    }
+
+    public void setActiveSkin(Skins skin) {
+        if (activeSkin != skin) {
+            activeSkin = skin;
             for (GenericTableCellRenderer ob : observers) {
                 ob.update();
             }
