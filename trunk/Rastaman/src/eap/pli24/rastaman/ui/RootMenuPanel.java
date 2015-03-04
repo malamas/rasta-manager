@@ -20,15 +20,21 @@
  */
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
+import javax.swing.MutableComboBoxModel;
 
 /**
  *
@@ -66,7 +72,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         auxFilePanel = new JPanel();
         labelButton = new JButton();
         genreButton = new JButton();
-        toggleSkinButton = new JButton();
+        skinComboBox = new JComboBox<SkinProvider.Skins>();
 
         setLayout(new BorderLayout());
 
@@ -148,11 +154,9 @@ public class RootMenuPanel extends javax.swing.JPanel {
         });
         auxFilePanel.add(genreButton);
 
-        toggleSkinButton.setText("Αλλαγή θέματος");
-        toggleSkinButton.setPreferredSize(new Dimension(160, 32));
-        toggleSkinButton.addActionListener(new ActionListener() {
+        skinComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                toggleSkinButtonActionPerformed(evt);
+                skinComboBoxActionPerformed(evt);
             }
         });
 
@@ -164,29 +168,33 @@ public class RootMenuPanel extends javax.swing.JPanel {
                     .addGroup(menuPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(menuPanelLayout.createSequentialGroup()
+                                .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                                .addComponent(skinComboBox, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
+                            .addGroup(menuPanelLayout.createSequentialGroup()
+                                .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(menuPanelLayout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(toggleSkinButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(346, Short.MAX_VALUE))
+                            .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         menuPanelLayout.setVerticalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(skinComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(playlistButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(toggleSkinButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         add(menuPanel, BorderLayout.CENTER);
@@ -224,9 +232,9 @@ public class RootMenuPanel extends javax.swing.JPanel {
         controller.switchToPanel(MainFrameController.PanelType.GENRE_TABLE);
     }//GEN-LAST:event_genreButtonActionPerformed
 
-    private void toggleSkinButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_toggleSkinButtonActionPerformed
-        controller.updateForSkinChange();
-    }//GEN-LAST:event_toggleSkinButtonActionPerformed
+    private void skinComboBoxActionPerformed(ActionEvent evt) {//GEN-FIRST:event_skinComboBoxActionPerformed
+        controller.switchToSkin((SkinProvider.Skins) skinComboBox.getSelectedItem());
+    }//GEN-LAST:event_skinComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -241,20 +249,27 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private JPanel menuPanel;
     private JButton musicgroupButton;
     private JButton playlistButton;
-    private JButton toggleSkinButton;
+    private JComboBox<SkinProvider.Skins> skinComboBox;
     // End of variables declaration//GEN-END:variables
     //
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
-
+    
     public RootMenuPanel(MainFrameController controller) {
         this.controller = controller;
         initComponents();
         initFurther();
     }
-
+    
     private void initFurther() {
+        MutableComboBoxModel<SkinProvider.Skins> cbm = new DefaultComboBoxModel<>();
+        for (SkinProvider.Skins s : SkinProvider.Skins.values()) {
+            cbm.addElement(s);
+        }
+        cbm.setSelectedItem(SkinProvider.getInstance().getActiveSkin());
+        skinComboBox.setModel(cbm);
+        
     }
 }
