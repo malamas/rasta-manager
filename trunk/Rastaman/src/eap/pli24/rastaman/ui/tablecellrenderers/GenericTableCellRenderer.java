@@ -20,7 +20,7 @@
  */
 package eap.pli24.rastaman.ui.tablecellrenderers;
 
-import eap.pli24.rastaman.ui.UIProperties;
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
@@ -35,9 +35,9 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class GenericTableCellRenderer extends DefaultTableCellRenderer {
 
-    private static final Color oddRowColor = UIProperties.TABLE_ODD_ROW_BACKGROUND;
-    private static final Color evenRowColor = UIProperties.TABLE_EVEN_ROW_BACKGROUND;
-    private static final Color selectedColor = UIProperties.TABLE_SELECTED_ROW_BACKGROUND;
+    private static final Color oddRowColor = SkinProvider.getInstance().getSkin().getTableOddRowBackground();
+    private static final Color evenRowColor = SkinProvider.getInstance().getSkin().getTableEvenRowBackground();
+    private static final Color selectedColor = SkinProvider.getInstance().getSkin().getTableSelectedRowBackground();
 
     public GenericTableCellRenderer() {
         super();

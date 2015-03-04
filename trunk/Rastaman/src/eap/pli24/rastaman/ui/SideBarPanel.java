@@ -20,6 +20,7 @@
  */
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.Dimension;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -96,11 +97,11 @@ public class SideBarPanel extends javax.swing.JPanel {
     //
 
     private void initFurther() {
-        this.setPreferredSize(new Dimension(UIProperties.SIDEBAR_WIDTH, 0));
-        this.setBackground(UIProperties.SIDEBAR_BACKGROUND);
+        this.setPreferredSize(new Dimension(SkinProvider.getInstance().getSkin().getSidebarWidth(), 0));
+        this.setBackground(SkinProvider.getInstance().getSkin().getSidebarBackground());
 
-        rastamanLabel.setFont(UIProperties.RASTAMAN_FONT);
-        rastamanLabel.setForeground(UIProperties.RASTAMAN_FOREGROUND);
+        rastamanLabel.setFont(SkinProvider.getInstance().getSkin().getRastamanFont());
+        rastamanLabel.setForeground(SkinProvider.getInstance().getSkin().getRastamanForeground());
         String rastaman = "Rastaman!";
         //String rastaman = "<html><font color=#55a035>Ra</font>"
         //        + "<font color=#f0d52c>sta</font>"
@@ -114,9 +115,9 @@ public class SideBarPanel extends javax.swing.JPanel {
                 + "Νίκος Καραγιάννης<br>"
                 + "Νίκος Κρομμύδας<br>"
                 + "Μάλαμας Μαλαμίδης";
-        creditsLabel.setMaximumSize(UIProperties.CREDITS_SIZE);
-        creditsLabel.setFont(UIProperties.CREDITS_FONT);
-        creditsLabel.setForeground(UIProperties.CREDITS_FOREGROUND);
+        creditsLabel.setMaximumSize(SkinProvider.getInstance().getSkin().getCreditsSize());
+        creditsLabel.setFont(SkinProvider.getInstance().getSkin().getCreditsFont());
+        creditsLabel.setForeground(SkinProvider.getInstance().getSkin().getCreditsForeground());
         creditsLabel.setText(credits);
     }
 }
