@@ -21,6 +21,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Label;
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -235,7 +236,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = labelTable.getColumnModel();
@@ -247,28 +248,29 @@ public class LabelTablePanel extends javax.swing.JPanel {
     // Μέθοδος deleteLabel()
     // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή Εταιρίας και αφου κάνει τους 
     // απαραίτητους ελέγχους διαγράφει την επιλεγμένη Εταιρία
-
     private void deleteLabel() {
         int selectedIndex = labelTable.getSelectedRow();
         if (selectedIndex != -1) {
             Label selectedLabel = labelList.get(selectedIndex);
             if (selectedLabel.getAlbumList().isEmpty()) { // εαν δεν συμμετέχει σε αλμπουμ
-                    Object[] options = {"Ναι", "Όχι"};
-                    int n = JOptionPane.showOptionDialog(this,
-                            "Να διαγραφεί η εταιρία: " + selectedLabel.getName() + ";",
-                            "Επιβεβαίωση Διαγραφής",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, //do not use a custom Icon
-                            options, //the titles of buttons
-                            options[1]); //default button title
-                    if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
-                        localEm.getTransaction().begin();
-                        localEm.remove(labelList.remove(selectedIndex));
-                        localEm.getTransaction().commit();
-                        labelTable.updateUI();
-                    }
-            } else  JOptionPane.showMessageDialog(this, "Η εταιρία δεν μπορεί να διαγραφεί, \n γιατί υπάρχει άλμπουμ της.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                Object[] options = {"Ναι", "Όχι"};
+                int n = JOptionPane.showOptionDialog(this,
+                        "Να διαγραφεί η εταιρία: " + selectedLabel.getName() + ";",
+                        "Επιβεβαίωση Διαγραφής",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, //do not use a custom Icon
+                        options, //the titles of buttons
+                        options[1]); //default button title
+                if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
+                    localEm.getTransaction().begin();
+                    localEm.remove(labelList.remove(selectedIndex));
+                    localEm.getTransaction().commit();
+                    labelTable.updateUI();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Η εταιρία δεν μπορεί να διαγραφεί, \n γιατί υπάρχει άλμπουμ της.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 }

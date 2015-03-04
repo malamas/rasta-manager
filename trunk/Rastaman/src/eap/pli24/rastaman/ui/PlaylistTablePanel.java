@@ -21,6 +21,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import eap.pli24.rastaman.util.XmlHandler;
 import java.awt.BorderLayout;
@@ -312,7 +313,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistTable.getColumnModel();

@@ -22,6 +22,7 @@ package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.entities.Song;
+import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -331,12 +332,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }
 
     private void initFurther() {
-        buttonPanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
-        buttonPanel.setMaximumSize(new Dimension(32767, UIProperties.BUTTON_PANEL_HEIGHT));
-        buttonPanel.setMinimumSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
-        namePanel.setPreferredSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
-        namePanel.setMaximumSize(new Dimension(32767, UIProperties.BUTTON_PANEL_HEIGHT));
-        namePanel.setMinimumSize(new Dimension(0, UIProperties.BUTTON_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
+        buttonPanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
+        buttonPanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
+        namePanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
+        namePanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
+        namePanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistSongTable.getColumnModel();
