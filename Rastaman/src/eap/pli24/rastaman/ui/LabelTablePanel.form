@@ -10,11 +10,6 @@
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
       </AuxValues>
     </Component>
-    <Component class="eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer" name="dateTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
-      </Properties>
-    </Component>
     <Component class="javax.persistence.Query" name="labelQuery">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT l FROM Label l"/>

@@ -21,7 +21,6 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Artist;
-import eap.pli24.rastaman.ui.tablecellrenderers.DateTableCellRenderer;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -81,7 +80,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         localEm = em;
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        dateTableCellRenderer1 = new DateTableCellRenderer();
         scrollPane1 = new JScrollPane();
         artistTable = new JTable();
         buttonPanel = new JPanel();
@@ -94,8 +92,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         filler5 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         deleteButton = new JButton();
         filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
-
-        dateTableCellRenderer1.setText("dateTableCellRenderer1");
 
         setLayout(new BorderLayout());
 
@@ -232,7 +228,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private JTable artistTable;
     private JButton backButton;
     private JPanel buttonPanel;
-    private DateTableCellRenderer dateTableCellRenderer1;
     private JButton deleteButton;
     private JButton editButton;
     private Box.Filler filler2;
