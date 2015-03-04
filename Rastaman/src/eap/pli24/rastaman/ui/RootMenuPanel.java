@@ -32,9 +32,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.MutableComboBoxModel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -73,6 +75,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
         labelButton = new JButton();
         genreButton = new JButton();
         skinComboBox = new JComboBox<SkinProvider.Skins>();
+        jLabel1 = new JLabel();
 
         setLayout(new BorderLayout());
 
@@ -160,6 +163,10 @@ public class RootMenuPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel1.setLabelFor(skinComboBox);
+        jLabel1.setText("Εμφάνιση:");
+
         GroupLayout menuPanelLayout = new GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -170,8 +177,10 @@ public class RootMenuPanel extends javax.swing.JPanel {
                         .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(menuPanelLayout.createSequentialGroup()
                                 .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                                .addComponent(skinComboBox, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                                .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(skinComboBox, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
                             .addGroup(menuPanelLayout.createSequentialGroup()
                                 .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))))
@@ -187,7 +196,9 @@ public class RootMenuPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(mainFilePanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(skinComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGroup(menuPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(skinComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
                 .addComponent(auxFilePanel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -244,6 +255,7 @@ public class RootMenuPanel extends javax.swing.JPanel {
     private JButton exitButton;
     private JButton genreButton;
     private JButton groupAlbumButton;
+    private JLabel jLabel1;
     private JButton labelButton;
     private JPanel mainFilePanel;
     private JPanel menuPanel;
