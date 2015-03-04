@@ -20,6 +20,10 @@
  */
 package eap.pli24.rastaman.ui.skins;
 
+import eap.pli24.rastaman.ui.tablecellrenderers.GenericTableCellRenderer;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Apostolis Iakovakis
@@ -31,6 +35,7 @@ public class SkinProvider {
 
     private static final SkinProvider INSTANCE = new SkinProvider();
     private Skin skin;
+    private Set<GenericTableCellRenderer> observers;
 
     private SkinProvider() {
         initialize();
@@ -43,6 +48,7 @@ public class SkinProvider {
 
     private void initialize() {
         skin = new JamaicaSkin();
+        observers = new HashSet<>();
     }
 
     public Skin getSkin() {
@@ -51,6 +57,15 @@ public class SkinProvider {
 
     public void toggle() {
         skin = ((skin instanceof JamaicaSkin) ? new SeriousSkin() : new JamaicaSkin());
+        if (observers != null) {
+            for (GenericTableCellRenderer ob : observers) {
+                ob.update();
+            }
+        }
+    }
+
+    public void addObserver(GenericTableCellRenderer gtr) {
+        observers.add(gtr);
     }
 
 }

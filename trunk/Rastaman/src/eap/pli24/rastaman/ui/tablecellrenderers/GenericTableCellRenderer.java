@@ -35,12 +35,14 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class GenericTableCellRenderer extends DefaultTableCellRenderer {
 
-    private static final Color oddRowColor = SkinProvider.getInstance().getSkin().getTableOddRowBackground();
-    private static final Color evenRowColor = SkinProvider.getInstance().getSkin().getTableEvenRowBackground();
-    private static final Color selectedColor = SkinProvider.getInstance().getSkin().getTableSelectedRowBackground();
+    private Color oddRowColor;
+    private Color evenRowColor;
+    private Color selectedColor;
 
     public GenericTableCellRenderer() {
         super();
+        retrieveColors();
+        SkinProvider.getInstance().addObserver(this);
     }
 
     @Override
@@ -48,5 +50,15 @@ public class GenericTableCellRenderer extends DefaultTableCellRenderer {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         this.setBackground((isSelected ? selectedColor : (row % 2 == 0) ? oddRowColor : evenRowColor));
         return this;
+    }
+
+    public void update() {
+        retrieveColors();
+    }
+
+    private void retrieveColors() {
+        oddRowColor = SkinProvider.getInstance().getSkin().getTableOddRowBackground();
+        evenRowColor = SkinProvider.getInstance().getSkin().getTableEvenRowBackground();
+        selectedColor = SkinProvider.getInstance().getSkin().getTableSelectedRowBackground();
     }
 }
