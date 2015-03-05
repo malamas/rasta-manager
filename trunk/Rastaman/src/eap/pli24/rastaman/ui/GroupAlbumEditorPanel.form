@@ -305,8 +305,8 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="labelComboBox">
           <BindingProperties>
-            <BindingProperty name="elements" source="labelNamelist" target="labelComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${labelid.name}" target="labelComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="elements" source="labelList" target="labelComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${labelid}" target="labelComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="groupComboBox">

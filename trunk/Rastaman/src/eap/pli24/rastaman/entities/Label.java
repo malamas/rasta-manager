@@ -158,7 +158,7 @@ public class Label implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Label[ labelid=" + labelid + " ]";
+        return name;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

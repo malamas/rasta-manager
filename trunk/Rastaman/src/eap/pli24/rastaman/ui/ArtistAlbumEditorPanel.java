@@ -21,7 +21,6 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Album;
-import eap.pli24.rastaman.entities.Artist;
 import eap.pli24.rastaman.entities.Label;
 import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -127,9 +125,9 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${releasedate}"), releasedateField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labelNamelist, labelComboBox);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labelList, labelComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${labelid.name}"), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${labelid}"), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistComboBox);
@@ -377,7 +375,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     public ArtistAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
         this.controller = controller;
         this.em = em;
-        this.album = album;
+        this.album = album; 
         initComponents();
         songTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         deleteButton.setEnabled(false);
@@ -532,14 +530,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
             }
             boundAlbum.setSongList(albumSongList);
 
-            String selectetLabelName = labelComboBox.getSelectedItem().toString();
-            for (Label g : labelList) {
-                if (g.getName().equals(selectetLabelName)) {
-                    boundAlbum.setLabelid(g);
-                    break;
-                }
-            }
-            
+          
             localEm.getTransaction().commit();
             localEm.refresh(boundAlbum.getArtistartistid());
             localEm.refresh(boundAlbum.getLabelid());
