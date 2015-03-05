@@ -31,14 +31,14 @@ import java.awt.Font;
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class SeriousSkin implements Skin {
+public class SeriousWideSkin implements Skin {
 
     private static final Dimension MAIN_FRAME_INIT_SIZE = new Dimension(1024, 640);
     private static final Dimension MAIN_FRAME_MIN_SIZE = new Dimension(1024, 640);
 
     private static final int SIDEBAR_WIDTH = 240;
     private static final Color SIDEBAR_BACKGROUND = new Color(88, 132, 176);
-    private static final boolean SIDEBAR_VISIBLE_ON_NON_ROOT = true;
+    private static final boolean SIDEBAR_VISIBLE_ON_NON_ROOT = false;
 
     private static final boolean IS_RASTAMAN_VISIBLE = false;
     private static final Color RASTAMAN_FOREGROUND = new Color(240, 220, 48);

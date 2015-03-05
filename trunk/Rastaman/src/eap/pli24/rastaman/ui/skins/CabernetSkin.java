@@ -31,13 +31,13 @@ import java.awt.Font;
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class RedSkin implements Skin {
+public class CabernetSkin implements Skin {
 
     private static final Dimension MAIN_FRAME_INIT_SIZE = new Dimension(1024, 640);
     private static final Dimension MAIN_FRAME_MIN_SIZE = new Dimension(1024, 640);
 
     private static final int SIDEBAR_WIDTH = 240;
-    private static final Color SIDEBAR_BACKGROUND = new Color(188, 132, 176);
+    private static final Color SIDEBAR_BACKGROUND = new Color(144, 32, 48);
     private static final boolean SIDEBAR_VISIBLE_ON_NON_ROOT = false;
 
     private static final boolean IS_RASTAMAN_VISIBLE = false;
@@ -49,7 +49,7 @@ public class RedSkin implements Skin {
     private static final Font CREDITS_FONT = new Font("Tahoma", 1, 11);
 
     private static final int HEADER_HEIGHT = 50;
-    private static final Color HEADER_BACKGROUND = new Color(176, 92, 16);
+    private static final Color HEADER_BACKGROUND = new Color(232, 224, 224);
     private static final Font HEADER_FONT = new Font("Tahoma", 1, 14);
     private static final Color HEADER_FOREGROUND = new Color(48, 48, 24);
 
@@ -57,7 +57,7 @@ public class RedSkin implements Skin {
 
     private static final Color TABLE_ODD_ROW_BACKGROUND = new Color(255, 255, 255);
     private static final Color TABLE_EVEN_ROW_BACKGROUND = new Color(232, 216, 224);
-    private static final Color TABLE_SELECTED_ROW_BACKGROUND = new Color(188, 132, 76);
+    private static final Color TABLE_SELECTED_ROW_BACKGROUND = new Color(144, 32, 48);
 
     @Override
     public Dimension getMainFrameInitSize() {
