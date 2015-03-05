@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -98,8 +99,17 @@ public class MainFrameController implements Runnable {
         }
     }
 
+    /**
+     *
+     */
     private void initDatabase() {
-        em = Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
+        try {
+            em = Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "Η σύνδεση με τη βάση δεδομένων απέτυχε! Η εφαρμογή δεν μπορεί να ξεκινήσει...", "Rastaman", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+
     }
 
     private void initMainFrame() {
