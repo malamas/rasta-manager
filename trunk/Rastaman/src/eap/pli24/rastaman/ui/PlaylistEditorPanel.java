@@ -30,6 +30,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -108,6 +109,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filler10 = new Box.Filler(new Dimension(10, 50), new Dimension(10, 50), new Dimension(10, 50));
         filterTextField = new JTextField();
         filler11 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        filler12 = new Box.Filler(new Dimension(10, 50), new Dimension(10, 50), new Dimension(10, 50));
+        filterCountLabel = new JLabel();
         scrollPane2 = new JScrollPane();
         availableSongTable = new JTable();
         filler9 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
@@ -250,6 +253,14 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filterTextField.setPreferredSize(new Dimension(150, 20));
         filterPanel.add(filterTextField);
         filterPanel.add(filler11);
+        filterPanel.add(filler12);
+
+        filterCountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        filterCountLabel.setLabelFor(nameTextField);
+        filterCountLabel.setMaximumSize(new Dimension(0, 14));
+        filterCountLabel.setMinimumSize(new Dimension(0, 14));
+        filterCountLabel.setPreferredSize(new Dimension(40, 14));
+        filterPanel.add(filterCountLabel);
 
         availableSongPanel.add(filterPanel);
 
@@ -323,6 +334,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JButton cancelButton;
     private Box.Filler filler10;
     private Box.Filler filler11;
+    private Box.Filler filler12;
     private Box.Filler filler2;
     private Box.Filler filler3;
     private Box.Filler filler4;
@@ -331,6 +343,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private Box.Filler filler7;
     private Box.Filler filler8;
     private Box.Filler filler9;
+    private JLabel filterCountLabel;
     private JLabel filterLabel;
     private JPanel filterPanel;
     private JTextField filterTextField;
@@ -358,6 +371,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private Playlist playlist;
     private SongTableModel stm;
     private Comparator<Song> songComparator;
+    private int totalSongCount;
+    List<Song> filteredList;
 
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
         this.controller = controller;
@@ -377,14 +392,20 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         songComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
 
+        filteredList = new ArrayList<>();
         stm = new SongTableModel();
-        playlist.getPlaylistSongList().stream().forEach((ps) -> {
+        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
             songList.remove(ps.getSong());
-        });
+        }
+        totalSongCount = songList.size();
+//        playlist.getPlaylistSongList().stream().forEach((ps) -> {
+//            songList.remove(ps.getSong());
+//        });
 
         songList.sort(songComparator);
         stm.setSongList(songList);
         availableSongTable.setModel(stm);
+        filterCountLabel.setText("(" + Integer.toString(songList.size()) + "/" + totalSongCount + ")");
 
         // Καθορισμός εμφάνισης πίνακα
         TableColumnModel tcm = playlistSongTable.getColumnModel();
@@ -435,6 +456,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
     private void filter() {
         String filter = filterTextField.getText().toLowerCase();
-        stm.setSongList(songList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList()));
+        filteredList = songList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
+        stm.setSongList(filteredList);
+        filterCountLabel.setText("(" + Integer.toString(filteredList.size()) + "/" + totalSongCount + ")");
     }
 }
