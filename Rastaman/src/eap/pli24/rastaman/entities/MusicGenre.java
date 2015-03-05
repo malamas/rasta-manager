@@ -122,7 +122,8 @@ public class MusicGenre implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.MusicGenre[ musicGenreId=" + musicGenreId + " ]";
+        return name;
+        //return "eap.pli24.rastaman.entities.MusicGenre[ musicGenreId=" + musicGenreId + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

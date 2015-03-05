@@ -53,8 +53,6 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         localEm = em;
-        musicgenreNameQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m.name FROM MusicGenre m");
-        musicgenreNameList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgenreNameQuery.getResultList();
         boundArtist = artist;
         musicGenreQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM MusicGenre m");
         musicGenreList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicGenreQuery.getResultList();
@@ -147,9 +145,9 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
         genreComboBox.setActionCommand("");
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, musicgenreNameList, genreComboBox);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicGenreList, genreComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${muscigenreid.name}"), genreComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, org.jdesktop.beansbinding.ELProperty.create("${muscigenreid}"), genreComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         binding.setSourceNullValue(null);
         bindingGroup.addBinding(binding);
 
@@ -292,8 +290,6 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     private javax.persistence.EntityManager localEm;
     private java.util.List<eap.pli24.rastaman.entities.MusicGenre> musicGenreList;
     private javax.persistence.Query musicGenreQuery;
-    private java.util.List<eap.pli24.rastaman.entities.MusicGenre> musicgenreNameList;
-    private javax.persistence.Query musicgenreNameQuery;
     private javax.swing.JButton saveButton;
     private javax.swing.JComboBox sexComboBox;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
@@ -363,14 +359,7 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
             if (genreComboBox.getSelectedItem().toString().isEmpty()) {
                 throw new Exception("Επιλέξτε Είδος Μουσικής");
             }
-            // Ενημέρωση του boundArtist με το επιλεγμένο είδος μουσικής
-            String selectetGenreName = genreComboBox.getSelectedItem().toString();
-            for (MusicGenre g : musicGenreList) {
-                if (g.getName().equals(selectetGenreName)) {
-                    boundArtist.setMuscigenreid(g);
-                    break;
-                }
-            }
+
             localEm.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
             controller.switchToPanel(MainFrameController.PanelType.ARTIST_TABLE);
         } catch (Exception e) {
