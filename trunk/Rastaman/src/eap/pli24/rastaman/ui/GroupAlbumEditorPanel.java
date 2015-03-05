@@ -370,7 +370,8 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Album album;
     private DefaultTableModel model;
-
+    private Comparator<Song> songComparator;
+    
     public GroupAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
         this.controller = controller;
         this.em = em;
@@ -391,8 +392,11 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         }
 
         model = (DefaultTableModel) songTable.getModel();
+        songComparator = (Song s1, Song s2) -> (Integer.compare(s1.getTrackNo() , s2.getTrackNo()));
         if (boundAlbum.getSongList() != null) {
-                     for (Song s : boundAlbum.getSongList()) {
+            List<Song> mySongList = boundAlbum.getSongList();
+            mySongList.sort(songComparator);
+            for (Song s : mySongList) {
                 model.addRow(new Object[]{s.getTrackNo(), s.getTitle(), s.getDuration()});
             }
         }
