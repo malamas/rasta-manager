@@ -32,6 +32,7 @@ import java.awt.event.ActionListener;
 import java.beans.Beans;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.Box;
@@ -45,6 +46,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -100,9 +103,9 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filler7 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         availableSongPanel = new JPanel();
         filterPanel = new JPanel();
-        nameLabel1 = new JLabel();
+        filterLabel = new JLabel();
         filler10 = new Box.Filler(new Dimension(10, 50), new Dimension(10, 50), new Dimension(10, 50));
-        nameTextField2 = new JTextField();
+        filterTextField = new JTextField();
         filler11 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         scrollPane2 = new JScrollPane();
         availableSongTable = new JTable();
@@ -234,17 +237,17 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filterPanel.setPreferredSize(new Dimension(0, 30));
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.LINE_AXIS));
 
-        nameLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
-        nameLabel1.setLabelFor(nameTextField);
-        nameLabel1.setText("Φίλτρο:");
-        nameLabel1.setPreferredSize(new Dimension(40, 14));
-        filterPanel.add(nameLabel1);
+        filterLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        filterLabel.setLabelFor(nameTextField);
+        filterLabel.setText("Φίλτρο:");
+        filterLabel.setPreferredSize(new Dimension(40, 14));
+        filterPanel.add(filterLabel);
         filterPanel.add(filler10);
 
-        nameTextField2.setMaximumSize(new Dimension(150, 20));
-        nameTextField2.setMinimumSize(new Dimension(150, 20));
-        nameTextField2.setPreferredSize(new Dimension(150, 20));
-        filterPanel.add(nameTextField2);
+        filterTextField.setMaximumSize(new Dimension(150, 20));
+        filterTextField.setMinimumSize(new Dimension(150, 20));
+        filterTextField.setPreferredSize(new Dimension(150, 20));
+        filterPanel.add(filterTextField);
         filterPanel.add(filler11);
 
         availableSongPanel.add(filterPanel);
@@ -327,13 +330,13 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private Box.Filler filler7;
     private Box.Filler filler8;
     private Box.Filler filler9;
+    private JLabel filterLabel;
     private JPanel filterPanel;
+    private JTextField filterTextField;
     private EntityManager localEm;
     private JLabel nameLabel;
-    private JLabel nameLabel1;
     private JPanel namePanel;
     private JTextField nameTextField;
-    private JTextField nameTextField2;
     private JTable playlistSongTable;
     private JButton removeButton;
     private JButton saveButton;
@@ -353,7 +356,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Playlist playlist;
     private SongTableModel stm;
-
+    
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
         this.controller = controller;
         this.em = em;
@@ -361,7 +364,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         initComponents();
         initFurther();
     }
-
+    
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
@@ -369,7 +372,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         namePanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         namePanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         namePanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
-
+        
         stm = new SongTableModel();
         for (PlaylistSong ps : playlist.getPlaylistSongList()) {
             songList.remove(ps.getSong());
@@ -404,5 +407,28 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
                     break;
             }
         }
+        
+        filterTextField.getDocument().addDocumentListener(new DocumentListener() {
+            
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filter();
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filter();
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
+    }
+    
+    private void filter() {
+        String filter = filterTextField.getText().toLowerCase();
+        stm.setSongList(songList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList()));
     }
 }

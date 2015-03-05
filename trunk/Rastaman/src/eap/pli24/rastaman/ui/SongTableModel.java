@@ -69,6 +69,7 @@ public class SongTableModel extends AbstractTableModel {
 
     public void setSongList(List<Song> songList) {
         this.songList = songList;
+        fireTableDataChanged();
     }
 
 }
