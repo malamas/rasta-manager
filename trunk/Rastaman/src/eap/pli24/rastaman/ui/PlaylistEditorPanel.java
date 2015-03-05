@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Beans;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -356,7 +357,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Playlist playlist;
     private SongTableModel stm;
-    
+    private Comparator<Song> songComparator;
+
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
         this.controller = controller;
         this.em = em;
@@ -364,7 +366,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         initComponents();
         initFurther();
     }
-    
+
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
@@ -372,11 +374,15 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         namePanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         namePanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         namePanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
-        
+
+        songComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
+
         stm = new SongTableModel();
-        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
+        playlist.getPlaylistSongList().stream().forEach((ps) -> {
             songList.remove(ps.getSong());
-        }
+        });
+
+        songList.sort(songComparator);
         stm.setSongList(songList);
         availableSongTable.setModel(stm);
 
@@ -407,26 +413,26 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
                     break;
             }
         }
-        
+
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
-            
+
             @Override
             public void insertUpdate(DocumentEvent e) {
                 filter();
             }
-            
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 filter();
             }
-            
+
             @Override
             public void changedUpdate(DocumentEvent e) {
-                
+
             }
         });
     }
-    
+
     private void filter() {
         String filter = filterTextField.getText().toLowerCase();
         stm.setSongList(songList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList()));

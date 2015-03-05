@@ -20,7 +20,8 @@ INSERT INTO Label VALUES (4, 'Sony Music', '550 Madison Ave., New York, NY 10022
 INSERT INTO Label VALUES (5, 'Universal Music', '2220 Colorado Avenue, Santa Monica, CA 90404, USA', NULL);
 INSERT INTO Label VALUES (6, 'Warner Music', '75 Rockefeller Plaza, New York, NY 10019, USA', NULL);
 INSERT INTO Label VALUES (7, 'Island Records', NULL, NULL);
-ALTER TABLE Label ALTER COLUMN labelID RESTART WITH 8;
+INSERT INTO Label VALUES (8, 'EMI Records', NULL, NULL);
+ALTER TABLE Label ALTER COLUMN labelID RESTART WITH 9;
 
 -- groups
 INSERT INTO MusicGroup VALUES (1, 'Pink Floyd', '1965-01-01');
@@ -40,7 +41,8 @@ INSERT INTO Artist VALUES (9, 'Jones', 'John Paul', NULL, 'm', '1946-01-03', 'Si
 INSERT INTO Artist VALUES (10, 'Χατζηδάκις', 'Μάνος', NULL, 'm', '1925-10-23', 'Ξάνθη, Ελλάδα', 4);
 INSERT INTO Artist VALUES (11, NULL, NULL, 'Eminem', 'm', '1972-10-17', 'Detroit, Michigan, USA', 11);
 INSERT INTO Artist VALUES (12, 'Marley', 'Robert Nesta', 'Bob Marley', 'm', '1945-02-06', 'Nine Mile, Saint Ann, Jamaica', 9);
-ALTER TABLE Artist ALTER COLUMN ArtistID RESTART WITH 13;
+INSERT INTO Artist VALUES (13, 'Pugliese', 'Osvaldo', NULL, 'm', '1905-12-02', 'Villa Crespo, Buenos Aires, Argentina', 6);
+ALTER TABLE Artist ALTER COLUMN ArtistID RESTART WITH 14;
 
 -- group artists
 -- Pink Floyd members
@@ -63,7 +65,8 @@ INSERT INTO Album VALUES (2, 'Celebration Day', 2, '2012-11-16', 'lp', 1, NULL, 
 INSERT INTO Album VALUES (3, 'Celebration Day', 2, '2012-11-16', 'lp', 2, NULL, 2);
 INSERT INTO Album VALUES (4, 'Reflections', 3, '1970-01-01', 'lp', 1, 10, NULL);
 INSERT INTO Album VALUES (5, 'Rastaman Vibration', 7, '1976-04-30', 'lp', 1, 12, NULL);
-ALTER TABLE Album ALTER COLUMN albumID RESTART WITH 6;
+INSERT INTO Album VALUES (6, 'Reliquias - Instrumentales inolvidables Vol. 3', 8, '1999-01-01', 'lp', 1, 13, NULL);
+ALTER TABLE Album ALTER COLUMN albumID RESTART WITH 7;
 
 -- songs
 INSERT INTO SONG VALUES (1, 'Speak To Me', 90, 1, 1);
@@ -112,7 +115,27 @@ INSERT INTO SONG VALUES (43, 'Who the Cap Fit', 283, 7, 5);
 INSERT INTO SONG VALUES (44, 'Night Shift', 190, 8, 5);
 INSERT INTO SONG VALUES (45, 'War', 216, 9, 5);
 INSERT INTO SONG VALUES (46, 'Rat Race', 170, 10, 5);
-ALTER TABLE SONG ALTER COLUMN SONG_ID RESTART WITH 47;
+INSERT INTO SONG VALUES (47, 'Gallo ciego', 215, 01, 6);
+INSERT INTO SONG VALUES (48, 'Yunta de oro', 213, 02, 6);
+INSERT INTO SONG VALUES (49, 'Quejumbroso', 215, 03, 6);
+INSERT INTO SONG VALUES (50, 'Mato y voy', 214, 04, 6);
+INSERT INTO SONG VALUES (51, 'Pata ancha', 203, 05, 6);
+INSERT INTO SONG VALUES (52, 'A Roberto Peppe', 187, 06, 6);
+INSERT INTO SONG VALUES (53, 'Marrón y azul', 200, 07, 6);
+INSERT INTO SONG VALUES (54, 'La rayuela', 200, 08, 6);
+INSERT INTO SONG VALUES (55, 'Seguime si podés', 190, 09, 6);
+INSERT INTO SONG VALUES (56, 'El embrollo', 190, 10, 6);
+INSERT INTO SONG VALUES (57, 'El refrán', 175, 11, 6);
+INSERT INTO SONG VALUES (58, 'Bien milonga', 195, 12, 6);
+INSERT INTO SONG VALUES (59, 'Pastoral', 170, 13, 6);
+INSERT INTO SONG VALUES (60, 'Canaro en París', 174, 14, 6);
+INSERT INTO SONG VALUES (61, 'Pinta brava', 165, 15, 6);
+INSERT INTO SONG VALUES (62, 'Punto y coma', 149, 16, 6);
+INSERT INTO SONG VALUES (63, 'Entrada prohibida', 170, 17, 6);
+INSERT INTO SONG VALUES (64, 'El buscapié', 170, 18, 6);
+INSERT INTO SONG VALUES (65, 'Jueves', 161, 19, 6);
+INSERT INTO SONG VALUES (66, 'Vayan saliendo', 151, 20, 6);
+ALTER TABLE SONG ALTER COLUMN SONG_ID RESTART WITH 67;
 
 -- playlists
 INSERT INTO PLAYLIST VALUES (1, 'Afternoon classics', '2015-02-01');
