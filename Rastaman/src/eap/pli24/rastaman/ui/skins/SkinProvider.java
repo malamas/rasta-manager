@@ -38,7 +38,8 @@ public class SkinProvider {
 
         JAMAICA("Jamaica"),
         SERIOUS("Σοβαρότης"),
-        RED("Κόκκινο");
+        SERIOUS_WIDE("Σοβαρότης (wide)"),
+        CABERNET("Καμπερνέ (wide)");
 
         private final String name;
 
@@ -76,7 +77,8 @@ public class SkinProvider {
         skinMap = new EnumMap<>(Skins.class);
         skinMap.put(Skins.JAMAICA, new JamaicaSkin());
         skinMap.put(Skins.SERIOUS, new SeriousSkin());
-        skinMap.put(Skins.RED, new RedSkin());
+        skinMap.put(Skins.SERIOUS_WIDE, new SeriousWideSkin());
+        skinMap.put(Skins.CABERNET, new CabernetSkin());
     }
 
     public Skin getSkin() {

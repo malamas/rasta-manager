@@ -55,7 +55,7 @@ public class JamaicaSkin implements Skin {
 
     private static final int BUTTON_PANEL_HEIGHT = 42;
 
-    private static final Color TABLE_ODD_ROW_BACKGROUND = new Color(255, 255, 255);
+    private static final Color TABLE_ODD_ROW_BACKGROUND = new Color(248, 248, 248);
     private static final Color TABLE_EVEN_ROW_BACKGROUND = new Color(224, 232, 216);
     private static final Color TABLE_SELECTED_ROW_BACKGROUND = new Color(104, 104, 0);
 
