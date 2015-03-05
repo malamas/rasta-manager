@@ -392,9 +392,10 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         }
 
         model = (DefaultTableModel) songTable.getModel();
-        songComparator = (Song s1, Song s2) -> (Integer.compare(s1.getTrackNo() , s2.getTrackNo()));
+        //Εισαγωγή τραγουδιών στον πίνακα
         if (boundAlbum.getSongList() != null) {
-            List<Song> mySongList = boundAlbum.getSongList();
+            List<Song> mySongList = new ArrayList<>();
+            mySongList.addAll(boundAlbum.getSongList());
             mySongList.sort(songComparator);
             for (Song s : mySongList) {
                 model.addRow(new Object[]{s.getTrackNo(), s.getTitle(), s.getDuration()});

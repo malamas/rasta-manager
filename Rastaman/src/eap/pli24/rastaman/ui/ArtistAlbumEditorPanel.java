@@ -26,6 +26,7 @@ import eap.pli24.rastaman.entities.Label;
 import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -371,6 +372,7 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
     private Album album;
     private String artistName;
     private DefaultTableModel model;
+    private Comparator<Song> songComparator;
 
     public ArtistAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
         this.controller = controller;
@@ -392,9 +394,13 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
         }
         this.artistName = album.getArtistartistid() == null ? null : album.getArtistartistid().getScreenName();
         model = (DefaultTableModel) songTable.getModel();
+        songComparator = (Song s1, Song s2) -> (Integer.compare(s1.getTrackNo() , s2.getTrackNo()));
         //Εισαγωγή τραγουδιών στον πίνακα
         if (boundAlbum.getSongList() != null) {
-            for (Song s : boundAlbum.getSongList()) {
+            List<Song> mySongList = new ArrayList<>();
+            mySongList.addAll(boundAlbum.getSongList());
+            mySongList.sort(songComparator);
+            for (Song s : mySongList) {
                 model.addRow(new Object[]{s.getTrackNo(), s.getTitle(), s.getDuration()});
             }
         }
