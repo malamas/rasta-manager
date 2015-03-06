@@ -33,6 +33,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -46,6 +48,8 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "SONG")
+@NamedQueries({
+    @NamedQuery(name = "Song.findAll", query = "SELECT s FROM Song s")})
 public class Song implements Serializable {
 
     @Transient
@@ -162,7 +166,7 @@ public class Song implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public String toString() {
         return "eap.pli24.rastaman.entities.Song[ songId=" + songId + " ]";

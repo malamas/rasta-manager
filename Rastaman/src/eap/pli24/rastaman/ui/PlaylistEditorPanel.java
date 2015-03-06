@@ -20,6 +20,8 @@
  */
 package eap.pli24.rastaman.ui;
 
+import eap.pli24.rastaman.ui.tablemodels.SongTableModel;
+import eap.pli24.rastaman.ui.tablemodels.OrderedSongTableModel;
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.entities.PlaylistSong;
 import eap.pli24.rastaman.entities.Song;
@@ -33,6 +35,7 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -50,6 +53,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -57,8 +61,6 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
-import org.jdesktop.swingbinding.JTableBinding;
-import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
@@ -87,9 +89,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         bindingGroup = new BindingGroup();
 
         boundPlaylist = playlist;
-        localEm = em;
-        songQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT s FROM Song s");
-        songList = Beans.isDesignTime() ? Collections.emptyList() : songQuery.getResultList();
         namePanel = new JPanel();
         nameLabel = new JLabel();
         nameTextField = new JTextField();
@@ -99,8 +98,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         playlistSongTable = new JTable();
         songButtonPanel = new JPanel();
         filler5 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        upButton = new JButton();
+        filler14 = new Box.Filler(new Dimension(5, 40), new Dimension(5, 40), new Dimension(120, 40));
+        downButton = new JButton();
+        filler15 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         addButton = new JButton();
-        filler6 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(120, 50));
+        filler6 = new Box.Filler(new Dimension(5, 40), new Dimension(5, 40), new Dimension(120, 40));
         removeButton = new JButton();
         filler7 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         availableSongPanel = new JPanel();
@@ -123,6 +126,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
+        namePanel.setMaximumSize(new Dimension(32767, 50));
         namePanel.setPreferredSize(new Dimension(0, 50));
         namePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 12));
 
@@ -148,38 +152,17 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         scrollPane1.setMinimumSize(new Dimension(50, 0));
         scrollPane1.setPreferredSize(new Dimension(300, 0));
 
+        playlistSongTable.setModel(new DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         playlistSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         playlistSongTable.getTableHeader().setReorderingAllowed(false);
-
-        ELProperty eLProperty = ELProperty.create("${playlistSongList}");
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundPlaylist, eLProperty, playlistSongTable);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${slot}"));
-        columnBinding.setColumnName("Σειρά");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.title}"));
-        columnBinding.setColumnName("Τίτλος");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.albumId.performerScreenName}"));
-        columnBinding.setColumnName("Ερμηνευτής");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${song.duration}"));
-        columnBinding.setColumnName("Διάρκεια");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
         scrollPane1.setViewportView(playlistSongTable);
-        if (playlistSongTable.getColumnModel().getColumnCount() > 0) {
-            playlistSongTable.getColumnModel().getColumn(0).setMinWidth(45);
-            playlistSongTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-            playlistSongTable.getColumnModel().getColumn(0).setMaxWidth(55);
-            playlistSongTable.getColumnModel().getColumn(3).setMinWidth(60);
-            playlistSongTable.getColumnModel().getColumn(3).setPreferredWidth(65);
-            playlistSongTable.getColumnModel().getColumn(3).setMaxWidth(70);
-        }
 
         tablesPanel.add(scrollPane1);
 
@@ -188,6 +171,46 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         songButtonPanel.setPreferredSize(new Dimension(150, 0));
         songButtonPanel.setLayout(new BoxLayout(songButtonPanel, BoxLayout.PAGE_AXIS));
         songButtonPanel.add(filler5);
+
+        upButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/go-up.png"))); // NOI18N
+        upButton.setText("Πάνω");
+        upButton.setAlignmentX(0.5F);
+        upButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        upButton.setMaximumSize(new Dimension(100, 50));
+        upButton.setMinimumSize(new Dimension(100, 50));
+        upButton.setPreferredSize(new Dimension(100, 50));
+        upButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistSongTable, ELProperty.create("${selectedElement!=null}"), upButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        upButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                upButtonActionPerformed(evt);
+            }
+        });
+        songButtonPanel.add(upButton);
+        songButtonPanel.add(filler14);
+
+        downButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/go-down.png"))); // NOI18N
+        downButton.setText("Κάτω");
+        downButton.setAlignmentX(0.5F);
+        downButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        downButton.setMaximumSize(new Dimension(100, 50));
+        downButton.setMinimumSize(new Dimension(100, 50));
+        downButton.setPreferredSize(new Dimension(100, 50));
+        downButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistSongTable, ELProperty.create("${selectedElement!=null}"), downButton, BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        downButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                downButtonActionPerformed(evt);
+            }
+        });
+        songButtonPanel.add(downButton);
+        songButtonPanel.add(filler15);
 
         addButton.setIcon(new ImageIcon(getClass().getResource("/eap/pli24/rastaman/resources/images/go-previous.png"))); // NOI18N
         addButton.setText("Προσθήκη");
@@ -231,7 +254,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         tablesPanel.add(songButtonPanel);
 
-        availableSongPanel.setMaximumSize(new Dimension(32767, 32767));
         availableSongPanel.setMinimumSize(new Dimension(50, 0));
         availableSongPanel.setPreferredSize(new Dimension(300, 0));
         availableSongPanel.setLayout(new BoxLayout(availableSongPanel, BoxLayout.PAGE_AXIS));
@@ -266,6 +288,14 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         scrollPane2.setPreferredSize(new Dimension(300, 0));
 
+        availableSongTable.setModel(new DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         availableSongTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         availableSongTable.getTableHeader().setReorderingAllowed(false);
         scrollPane2.setViewportView(availableSongTable);
@@ -277,6 +307,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         add(tablesPanel);
 
+        buttonPanel.setMaximumSize(new Dimension(32999, 50));
         buttonPanel.setPreferredSize(new Dimension(0, 50));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         buttonPanel.add(filler2);
@@ -313,16 +344,33 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void removeButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        // TODO add your handling code here:
+        removeSongFromList();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void addButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        addSongToList();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
+        save();
+        controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void upButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
+        int s = playlistSongTable.getSelectedRow();
+        if (s > 0) {
+            swapSelectedSongs(s - 1);
+            playlistSongTable.getSelectionModel().setSelectionInterval(s - 1, s - 1);
+        }
+    }//GEN-LAST:event_upButtonActionPerformed
+
+    private void downButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
+        int s = playlistSongTable.getSelectedRow();
+        if (s < selectedSongList.size() - 1) {
+            swapSelectedSongs(s);
+            playlistSongTable.getSelectionModel().setSelectionInterval(s + 1, s + 1);
+        }
+    }//GEN-LAST:event_downButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -332,9 +380,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private Playlist boundPlaylist;
     private JPanel buttonPanel;
     private JButton cancelButton;
+    private JButton downButton;
     private Box.Filler filler10;
     private Box.Filler filler11;
     private Box.Filler filler12;
+    private Box.Filler filler14;
+    private Box.Filler filler15;
     private Box.Filler filler2;
     private Box.Filler filler3;
     private Box.Filler filler4;
@@ -347,7 +398,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JLabel filterLabel;
     private JPanel filterPanel;
     private JTextField filterTextField;
-    private EntityManager localEm;
     private JLabel nameLabel;
     private JPanel namePanel;
     private JTextField nameTextField;
@@ -357,9 +407,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JScrollPane scrollPane1;
     private JScrollPane scrollPane2;
     private JPanel songButtonPanel;
-    private List<Song> songList;
-    private Query songQuery;
     private JPanel tablesPanel;
+    private JButton upButton;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
@@ -370,16 +419,37 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Playlist playlist;
     private SongTableModel stm;
-    private Comparator<Song> songComparator;
-    private int totalSongCount;
-    List<Song> filteredList;
+    private OrderedSongTableModel otm;
+    private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
+    private List<Song> availableSongList;
+    private List<Song> selectedSongList;
+    private List<Song> filteredList;
 
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
         this.controller = controller;
         this.em = em;
         this.playlist = playlist;
         initComponents();
+        initLists();
+        initTables();
         initFurther();
+    }
+
+    private void initLists() {
+        selectedSongList = new ArrayList<>();
+        availableSongList = new ArrayList<>();
+        availableSongList.addAll(em.createNamedQuery("Song.findAll", Song.class).getResultList());
+
+        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
+            availableSongList.remove(ps.getSong());
+            selectedSongList.add(ps.getSong());
+        }
+        filteredList = availableSongList;
+
+//        playlist.getPlaylistSongList().stream().forEach((ps) -> {
+//            availableSongList.remove(ps.getSong());
+//        });
+        availableSongList.sort(songTitleComparator);
     }
 
     private void initFurther() {
@@ -389,51 +459,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         namePanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         namePanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         namePanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
-
-        songComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
-
-        filteredList = new ArrayList<>();
-        stm = new SongTableModel();
-        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
-            songList.remove(ps.getSong());
-        }
-        totalSongCount = songList.size();
-//        playlist.getPlaylistSongList().stream().forEach((ps) -> {
-//            songList.remove(ps.getSong());
-//        });
-
-        songList.sort(songComparator);
-        stm.setSongList(songList);
-        availableSongTable.setModel(stm);
-        filterCountLabel.setText("(" + Integer.toString(songList.size()) + "/" + totalSongCount + ")");
-
-        // Καθορισμός εμφάνισης πίνακα
-        TableColumnModel tcm = playlistSongTable.getColumnModel();
-        for (int i = 0; i < tcm.getColumnCount(); i++) {
-            switch (i) {
-                case 0:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
-                    break;
-                case 3:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
-                    break;
-                default:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
-                    break;
-            }
-        }
-        // Καθορισμός εμφάνισης πίνακα
-        TableColumnModel tcm2 = availableSongTable.getColumnModel();
-        for (int i = 0; i < tcm2.getColumnCount(); i++) {
-            switch (i) {
-                case 2:
-                    tcm2.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
-                    break;
-                default:
-                    tcm2.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
-                    break;
-            }
-        }
 
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -454,10 +479,107 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         });
     }
 
+    private void initTables() {
+        stm = new SongTableModel();
+        stm.setSongList(filteredList);
+        availableSongTable.setModel(stm);
+        updateLabels();
+
+        otm = new OrderedSongTableModel();
+        otm.setSongList(selectedSongList);
+        playlistSongTable.setModel(otm);
+
+        // Καθορισμός εμφάνισης στηλών πινάκων
+        TableColumnModel tcm;
+
+        // Πίνακας τραγουδιών λίστας
+        tcm = playlistSongTable.getColumnModel();
+        for (int i = 0; i < tcm.getColumnCount(); i++) {
+            switch (i) {
+                case 0:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
+                    break;
+                case 3:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
+                    break;
+                default:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
+        // Πίνακας διαθέσιμων τραγουδιών
+        tcm = availableSongTable.getColumnModel();
+        for (int i = 0; i < tcm.getColumnCount(); i++) {
+            switch (i) {
+                case 2:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
+                    break;
+                default:
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
+                    break;
+            }
+        }
+    }
+
     private void filter() {
         String filter = filterTextField.getText().toLowerCase();
-        filteredList = songList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
+        filteredList = availableSongList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
         stm.setSongList(filteredList);
-        filterCountLabel.setText("(" + Integer.toString(filteredList.size()) + "/" + totalSongCount + ")");
+        //stm.fireTableDataChanged();
+        updateLabels();
+    }
+
+    private void addSongToList() {
+        Song song = filteredList.remove(availableSongTable.getSelectedRow());
+        availableSongList.remove(song);
+        int s = playlistSongTable.getSelectedRow();
+        int e = selectedSongList.size();
+        int ins = ((s == -1) ? e : s);
+        selectedSongList.add(ins, song);
+        otm.setSongList(selectedSongList);
+        stm.setSongList(filteredList);
+        updateLabels();
+    }
+
+    private void removeSongFromList() {
+        int sel = playlistSongTable.getSelectedRow();
+        if (sel < selectedSongList.size()) {
+            Song song = selectedSongList.remove(sel);
+            availableSongList.add(song);
+            availableSongList.sort(songTitleComparator);
+            String filter = filterTextField.getText().toLowerCase();
+            filteredList = availableSongList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
+            otm.setSongList(selectedSongList);
+            stm.setSongList(filteredList);
+            updateLabels();
+        }
+    }
+
+    private void swapSelectedSongs(int firstIndex) {
+        Song song = selectedSongList.remove(firstIndex);
+        selectedSongList.add(firstIndex + 1, song);
+        otm.setSongList(selectedSongList);
+    }
+
+    private void updateLabels() {
+        filterCountLabel.setText("(" + Integer.toString(filteredList.size()) + "/" + availableSongList.size() + ")");
+    }
+
+    private void save() {
+        List<PlaylistSong> psl = new ArrayList<>();
+        for (int i = 0; i < selectedSongList.size(); i++) {
+            PlaylistSong ps = new PlaylistSong();
+            ps.setSlot(i + 1);
+            ps.setPlaylist(playlist);
+            ps.setSong(selectedSongList.get(i));
+            psl.add(ps);
+        }
+        playlist.setName(boundPlaylist.getName());
+        playlist.setCreationDate(new Date());
+        playlist.setPlaylistSongList(psl);
+        em.getTransaction().begin();
+        em.merge(playlist);
+        em.getTransaction().commit();
+
     }
 }

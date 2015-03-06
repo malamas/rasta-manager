@@ -18,7 +18,7 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eap.pli24.rastaman.ui;
+package eap.pli24.rastaman.ui.tablemodels;
 
 import eap.pli24.rastaman.entities.Song;
 import java.util.List;
@@ -31,14 +31,14 @@ import javax.swing.table.AbstractTableModel;
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class SongTableModel extends AbstractTableModel {
+public class OrderedSongTableModel extends AbstractTableModel {
 
-    private static final int COLUMN_COUNT = 3;
+    private static final int COLUMN_COUNT = 4;
     private List<Song> songList;
 
     @Override
     public int getRowCount() {
-        return ((songList == null) ? 0 : songList.size());
+        return ((songList == null) ? 1 : songList.size() + 1);
     }
 
     @Override
@@ -49,20 +49,34 @@ public class SongTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object value;
-        Song song = songList.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                value = song.getTitle();
-                break;
-            case 1:
-                value = song.getAlbumId().getPerformerScreenName();
-                break;
-            case 2:
-                value = song.getDuration();
-                break;
-            default:
-                value = null;
-                break;
+        if (rowIndex > songList.size() - 1) {
+            switch (columnIndex) {
+                case 0:
+                    value = "*";
+                    break;
+                default:
+                    value = null;
+                    break;
+            }
+        } else {
+            Song song = songList.get(rowIndex);
+            switch (columnIndex) {
+                case 0:
+                    value = rowIndex + 1;
+                    break;
+                case 1:
+                    value = song.getTitle();
+                    break;
+                case 2:
+                    value = song.getAlbumId().getPerformerScreenName();
+                    break;
+                case 3:
+                    value = song.getDuration();
+                    break;
+                default:
+                    value = null;
+                    break;
+            }
         }
         return value;
     }
