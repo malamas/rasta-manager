@@ -36,6 +36,11 @@ public class SongTableModel extends AbstractTableModel {
     private static final int COLUMN_COUNT = 3;
     private List<Song> songList;
 
+    public SongTableModel(List<Song> songList) {
+        super();
+        this.songList = songList;
+    }
+
     @Override
     public int getRowCount() {
         return ((songList == null) ? 0 : songList.size());
@@ -69,7 +74,5 @@ public class SongTableModel extends AbstractTableModel {
 
     public void setSongList(List<Song> songList) {
         this.songList = songList;
-        fireTableDataChanged();
     }
-
 }

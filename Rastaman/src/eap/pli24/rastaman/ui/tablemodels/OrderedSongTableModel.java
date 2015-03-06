@@ -34,7 +34,12 @@ import javax.swing.table.AbstractTableModel;
 public class OrderedSongTableModel extends AbstractTableModel {
 
     private static final int COLUMN_COUNT = 4;
-    private List<Song> songList;
+    private final List<Song> songList;
+
+    public OrderedSongTableModel(List<Song> songList) {
+        super();
+        this.songList = songList;
+    }
 
     @Override
     public int getRowCount() {
@@ -69,10 +74,4 @@ public class OrderedSongTableModel extends AbstractTableModel {
         }
         return value;
     }
-
-    public void setSongList(List<Song> songList) {
-        this.songList = songList;
-        fireTableDataChanged();
-    }
-
 }
