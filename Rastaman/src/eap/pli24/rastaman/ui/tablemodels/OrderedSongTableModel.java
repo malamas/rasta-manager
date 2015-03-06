@@ -38,7 +38,7 @@ public class OrderedSongTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return ((songList == null) ? 1 : songList.size() + 1);
+        return ((songList == null) ? 1 : songList.size());
     }
 
     @Override
@@ -49,34 +49,23 @@ public class OrderedSongTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object value;
-        if (rowIndex > songList.size() - 1) {
-            switch (columnIndex) {
-                case 0:
-                    value = "*";
-                    break;
-                default:
-                    value = null;
-                    break;
-            }
-        } else {
-            Song song = songList.get(rowIndex);
-            switch (columnIndex) {
-                case 0:
-                    value = rowIndex + 1;
-                    break;
-                case 1:
-                    value = song.getTitle();
-                    break;
-                case 2:
-                    value = song.getAlbumId().getPerformerScreenName();
-                    break;
-                case 3:
-                    value = song.getDuration();
-                    break;
-                default:
-                    value = null;
-                    break;
-            }
+        Song song = songList.get(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                value = rowIndex + 1;
+                break;
+            case 1:
+                value = song.getTitle();
+                break;
+            case 2:
+                value = song.getAlbumId().getPerformerScreenName();
+                break;
+            case 3:
+                value = song.getDuration();
+                break;
+            default:
+                value = null;
+                break;
         }
         return value;
     }
