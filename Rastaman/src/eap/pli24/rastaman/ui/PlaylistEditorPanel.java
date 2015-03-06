@@ -357,7 +357,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         int s = playlistSongTable.getSelectedRow();
         if (s > 0) {
             swapSelectedSongs(s - 1);
-            playlistSongTable.getSelectionModel().setSelectionInterval(s - 1, s - 1);
+            updateLeft(s - 1);
         }
     }//GEN-LAST:event_upButtonActionPerformed
 
@@ -365,7 +365,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         int s = playlistSongTable.getSelectedRow();
         if (s < selectedSongList.size() - 1) {
             swapSelectedSongs(s);
-            playlistSongTable.getSelectionModel().setSelectionInterval(s + 1, s + 1);
+            updateLeft(s + 1);
         }
     }//GEN-LAST:event_downButtonActionPerformed
 
@@ -421,11 +421,13 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private List<Song> availableSongList;
     private List<Song> selectedSongList;
     private List<Song> filteredList;
+    private String filterString;
 
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
         this.controller = controller;
         this.em = em;
         this.playlist = playlist;
+        this.filterString = "";
         initComponents();
         initLists();
         initTables();
@@ -461,12 +463,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                filter();
+                updateForFilterChange();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                filter();
+                updateForFilterChange();
             }
 
             @Override
@@ -478,13 +480,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
     private void initTables() {
         stm = new SongTableModel();
-        stm.setSongList(filteredList);
         availableSongTable.setModel(stm);
-        updateLabels();
+        updateRight();
 
         otm = new OrderedSongTableModel();
-        otm.setSongList(selectedSongList);
         playlistSongTable.setModel(otm);
+        updateLeft(-1);
 
         // Καθορισμός εμφάνισης στηλών πινάκων
         TableColumnModel tcm;
@@ -518,12 +519,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         }
     }
 
-    private void filter() {
-        String filter = filterTextField.getText().toLowerCase();
-        filteredList = availableSongList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
-        stm.setSongList(filteredList);
-        //stm.fireTableDataChanged();
-        updateLabels();
+    private List<Song> getFilteredList() {
+        return availableSongList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filterString) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filterString))).collect(Collectors.toList());
     }
 
     private void addSongToList() {
@@ -533,34 +530,45 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         int e = selectedSongList.size();
         int ins = ((s == -1) ? e : s);
         selectedSongList.add(ins, song);
-        otm.setSongList(selectedSongList);
-        playlistSongTable.getSelectionModel().setSelectionInterval(ins, ins);
-        stm.setSongList(filteredList);
-        updateLabels();
+        updateLeft(ins);
+        updateRight();
     }
 
     private void removeSongFromList() {
         int sel = playlistSongTable.getSelectedRow();
-        if (sel < selectedSongList.size()) {
-            Song song = selectedSongList.remove(sel);
-            availableSongList.add(song);
-            availableSongList.sort(songTitleComparator);
-            String filter = filterTextField.getText().toLowerCase();
-            filteredList = availableSongList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
-            otm.setSongList(selectedSongList);
-            if (selectedSongList.size() != 0) {
-                int newSel = ((sel < selectedSongList.size()) ? sel : sel - 1);
-                playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
-            }
-            stm.setSongList(filteredList);
-            updateLabels();
+        Song song = selectedSongList.remove(sel);
+        availableSongList.add(song);
+        availableSongList.sort(songTitleComparator);
+        filteredList = getFilteredList();
+
+        int newSel = -1;
+        if (selectedSongList.size() != 0) {
+            newSel = ((sel < selectedSongList.size()) ? sel : sel - 1);
         }
+        updateLeft(newSel);
+
+        updateRight();
     }
 
     private void swapSelectedSongs(int firstIndex) {
         Song song = selectedSongList.remove(firstIndex);
         selectedSongList.add(firstIndex + 1, song);
+    }
+
+    private void updateForFilterChange() {
+        filterString = filterTextField.getText().toLowerCase();
+        filteredList = getFilteredList();
+        updateRight();
+    }
+
+    private void updateLeft(int newSel) {
         otm.setSongList(selectedSongList);
+        playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
+    }
+
+    private void updateRight() {
+        stm.setSongList(filteredList);
+        updateLabels();
     }
 
     private void updateLabels() {
