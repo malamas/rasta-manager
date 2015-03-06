@@ -537,6 +537,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         int ins = ((s == -1) ? e : s);
         selectedSongList.add(ins, song);
         otm.setSongList(selectedSongList);
+        playlistSongTable.getSelectionModel().setSelectionInterval(ins, ins);
         stm.setSongList(filteredList);
         updateLabels();
     }
@@ -550,6 +551,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
             String filter = filterTextField.getText().toLowerCase();
             filteredList = availableSongList.stream().filter(s -> (s.getTitle().toLowerCase().contains(filter) || s.getAlbumId().getPerformerScreenName().toLowerCase().contains(filter))).collect(Collectors.toList());
             otm.setSongList(selectedSongList);
+            if (selectedSongList.size() != 0) {
+                int newSel = ((sel < selectedSongList.size()) ? sel : sel - 1);
+                playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
+            }
             stm.setSongList(filteredList);
             updateLabels();
         }
