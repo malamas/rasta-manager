@@ -50,6 +50,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import org.jdesktop.beansbinding.AutoBinding;
@@ -415,12 +416,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
     private Playlist playlist;
-    private SongTableModel stm;
-    private OrderedSongTableModel otm;
     private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
     private List<Song> availableSongList;
     private List<Song> selectedSongList;
     private List<Song> filteredList;
+    private SongTableModel stm;
     private String filterString;
 
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
@@ -443,12 +443,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
             availableSongList.remove(ps.getSong());
             selectedSongList.add(ps.getSong());
         }
-        filteredList = availableSongList;
 
 //        playlist.getPlaylistSongList().stream().forEach((ps) -> {
 //            availableSongList.remove(ps.getSong());
 //        });
         availableSongList.sort(songTitleComparator);
+        filteredList = new ArrayList<>(availableSongList);
     }
 
     private void initFurther() {
@@ -479,12 +479,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }
 
     private void initTables() {
-        stm = new SongTableModel();
+        stm = new SongTableModel(selectedSongList);
         availableSongTable.setModel(stm);
         updateRight();
 
-        otm = new OrderedSongTableModel();
-        playlistSongTable.setModel(otm);
+        playlistSongTable.setModel(new OrderedSongTableModel(selectedSongList));
         updateLeft(-1);
 
         // Καθορισμός εμφάνισης στηλών πινάκων
@@ -562,12 +561,13 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }
 
     private void updateLeft(int newSel) {
-        otm.setSongList(selectedSongList);
+        ((AbstractTableModel) playlistSongTable.getModel()).fireTableDataChanged();
         playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
     }
 
     private void updateRight() {
         stm.setSongList(filteredList);
+        stm.fireTableDataChanged();
         updateLabels();
     }
 
@@ -590,6 +590,5 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         em.getTransaction().begin();
         em.merge(playlist);
         em.getTransaction().commit();
-
     }
 }
