@@ -21,6 +21,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
+import eap.pli24.rastaman.entities.PlaylistSong;
 import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import eap.pli24.rastaman.util.XmlHandler;
@@ -271,7 +272,10 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        controller.showPlaylistEditor(new Playlist());
+        Playlist newPlaylist = new Playlist();
+        newPlaylist.setCreationDate(new Date());
+        newPlaylist.setPlaylistSongList(Collections.emptyList());
+        controller.showPlaylistEditor(newPlaylist);
     }//GEN-LAST:event_newButtonActionPerformed
 
 

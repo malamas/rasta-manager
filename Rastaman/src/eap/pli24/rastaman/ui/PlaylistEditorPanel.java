@@ -30,18 +30,24 @@ import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -55,6 +61,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 /**
@@ -81,12 +89,35 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        GridBagConstraints gridBagConstraints;
 
-        namePanel = new JPanel();
-        nameLabel = new JLabel();
-        nameTextField = new JTextField();
         tablesPanel = new JPanel();
         filler8 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        selectedSongPanel = new JPanel();
+        filler13 = new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(120, 10));
+        namePanel = new JPanel();
+        filler23 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        nameLabel = new JLabel();
+        filler27 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        nameTextField = new JTextField();
+        filler18 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        filler16 = new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(120, 5));
+        datePanel = new JPanel();
+        filler24 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        dateabel = new JLabel();
+        filler26 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        dateTextField = new JTextField();
+        filler25 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        jComboBox1 = new JComboBox();
+        filler17 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        filler20 = new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(120, 5));
+        durationPanel = new JPanel();
+        filler28 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        durationLabel = new JLabel();
+        filler29 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
+        durationTextField = new JTextField();
+        filler30 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        filler31 = new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(120, 10));
         scrollPane1 = new JScrollPane();
         playlistSongTable = new JTable();
         songButtonPanel = new JPanel();
@@ -100,15 +131,18 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         removeButton = new JButton();
         filler7 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         availableSongPanel = new JPanel();
+        filler19 = new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(120, 10));
         filterPanel = new JPanel();
         filterLabel = new JLabel();
-        filler10 = new Box.Filler(new Dimension(10, 50), new Dimension(10, 50), new Dimension(10, 50));
+        filler10 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
         filterTextField = new JTextField();
-        filler11 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         filler12 = new Box.Filler(new Dimension(10, 50), new Dimension(10, 50), new Dimension(10, 50));
         filterCountLabel = new JLabel();
+        filler11 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        filler21 = new Box.Filler(new Dimension(5, 10), new Dimension(5, 10), new Dimension(120, 10));
         scrollPane2 = new JScrollPane();
         availableSongTable = new JTable();
+        filler22 = new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(120, 5));
         filler9 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
         buttonPanel = new JPanel();
         filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
@@ -119,27 +153,94 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        namePanel.setMaximumSize(new Dimension(32767, 50));
-        namePanel.setPreferredSize(new Dimension(0, 50));
-        namePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 12));
-
-        nameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-        nameLabel.setLabelFor(nameTextField);
-        nameLabel.setText("Όνομα:");
-        nameLabel.setPreferredSize(new Dimension(40, 14));
-        namePanel.add(nameLabel);
-
-        nameTextField.setPreferredSize(new Dimension(200, 20));
-        namePanel.add(nameTextField);
-
-        add(namePanel);
-
         tablesPanel.setPreferredSize(new Dimension(0, 200));
         tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.LINE_AXIS));
         tablesPanel.add(filler8);
 
-        scrollPane1.setMinimumSize(new Dimension(50, 0));
-        scrollPane1.setPreferredSize(new Dimension(300, 0));
+        selectedSongPanel.setMinimumSize(new Dimension(50, 0));
+        selectedSongPanel.setPreferredSize(new Dimension(300, 0));
+        selectedSongPanel.setLayout(new BoxLayout(selectedSongPanel, BoxLayout.PAGE_AXIS));
+        selectedSongPanel.add(filler13);
+
+        namePanel.setMaximumSize(new Dimension(32767, 20));
+        namePanel.setMinimumSize(new Dimension(0, 20));
+        namePanel.setPreferredSize(new Dimension(0, 20));
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
+        namePanel.add(filler23);
+
+        nameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        nameLabel.setLabelFor(nameTextField);
+        nameLabel.setText("Όνομα:");
+        nameLabel.setAlignmentX(0.5F);
+        nameLabel.setPreferredSize(new Dimension(60, 14));
+        namePanel.add(nameLabel);
+        namePanel.add(filler27);
+
+        nameTextField.setMaximumSize(new Dimension(220, 20));
+        nameTextField.setMinimumSize(new Dimension(220, 20));
+        nameTextField.setPreferredSize(new Dimension(220, 20));
+        namePanel.add(nameTextField);
+        namePanel.add(filler18);
+
+        selectedSongPanel.add(namePanel);
+        selectedSongPanel.add(filler16);
+
+        datePanel.setMaximumSize(new Dimension(32767, 20));
+        datePanel.setMinimumSize(new Dimension(0, 20));
+        datePanel.setPreferredSize(new Dimension(0, 20));
+        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.LINE_AXIS));
+        datePanel.add(filler24);
+
+        dateabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        dateabel.setLabelFor(dateTextField);
+        dateabel.setText("Ημερομηνία:");
+        dateabel.setAlignmentX(0.5F);
+        dateabel.setPreferredSize(new Dimension(60, 14));
+        datePanel.add(dateabel);
+        datePanel.add(filler26);
+
+        dateTextField.setEditable(false);
+        dateTextField.setMaximumSize(new Dimension(80, 20));
+        dateTextField.setMinimumSize(new Dimension(80, 20));
+        dateTextField.setPreferredSize(new Dimension(80, 20));
+        datePanel.add(dateTextField);
+        datePanel.add(filler25);
+
+        jComboBox1.setModel(new DefaultComboBoxModel(new String[] { "Διατήρηση αρχικής", "Ενημέρωση (σημερινή)" }));
+        jComboBox1.setMaximumSize(new Dimension(135, 32767));
+        jComboBox1.setMinimumSize(new Dimension(135, 20));
+        jComboBox1.setPreferredSize(new Dimension(135, 20));
+        datePanel.add(jComboBox1);
+        datePanel.add(filler17);
+
+        selectedSongPanel.add(datePanel);
+        selectedSongPanel.add(filler20);
+
+        durationPanel.setMaximumSize(new Dimension(32767, 20));
+        durationPanel.setMinimumSize(new Dimension(0, 20));
+        durationPanel.setPreferredSize(new Dimension(0, 20));
+        durationPanel.setLayout(new BoxLayout(durationPanel, BoxLayout.LINE_AXIS));
+        durationPanel.add(filler28);
+
+        durationLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+        durationLabel.setLabelFor(nameTextField);
+        durationLabel.setText("Διάρκεια:");
+        durationLabel.setAlignmentX(0.5F);
+        durationLabel.setPreferredSize(new Dimension(60, 14));
+        durationPanel.add(durationLabel);
+        durationPanel.add(filler29);
+
+        durationTextField.setEditable(false);
+        durationTextField.setMaximumSize(new Dimension(80, 20));
+        durationTextField.setMinimumSize(new Dimension(80, 20));
+        durationTextField.setPreferredSize(new Dimension(80, 20));
+        durationPanel.add(durationTextField);
+        durationPanel.add(filler30);
+
+        selectedSongPanel.add(durationPanel);
+        selectedSongPanel.add(filler31);
+
+        scrollPane1.setPreferredSize(new Dimension(300, 500));
 
         playlistSongTable.setModel(new DefaultTableModel(
             new Object [][] {
@@ -153,7 +254,9 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         playlistSongTable.getTableHeader().setReorderingAllowed(false);
         scrollPane1.setViewportView(playlistSongTable);
 
-        tablesPanel.add(scrollPane1);
+        selectedSongPanel.add(scrollPane1);
+
+        tablesPanel.add(selectedSongPanel);
 
         songButtonPanel.setMaximumSize(new Dimension(150, 32767));
         songButtonPanel.setMinimumSize(new Dimension(150, 0));
@@ -227,13 +330,15 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         tablesPanel.add(songButtonPanel);
 
+        availableSongPanel.setMaximumSize(new Dimension(32767, 32767));
         availableSongPanel.setMinimumSize(new Dimension(50, 0));
         availableSongPanel.setPreferredSize(new Dimension(300, 0));
         availableSongPanel.setLayout(new BoxLayout(availableSongPanel, BoxLayout.PAGE_AXIS));
+        availableSongPanel.add(filler19);
 
-        filterPanel.setMaximumSize(new Dimension(32767, 30));
-        filterPanel.setMinimumSize(new Dimension(0, 30));
-        filterPanel.setPreferredSize(new Dimension(0, 30));
+        filterPanel.setMaximumSize(new Dimension(32767, 20));
+        filterPanel.setMinimumSize(new Dimension(0, 20));
+        filterPanel.setPreferredSize(new Dimension(0, 20));
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.LINE_AXIS));
 
         filterLabel.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -247,7 +352,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filterTextField.setMinimumSize(new Dimension(150, 20));
         filterTextField.setPreferredSize(new Dimension(150, 20));
         filterPanel.add(filterTextField);
-        filterPanel.add(filler11);
         filterPanel.add(filler12);
 
         filterCountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -256,8 +360,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filterCountLabel.setMinimumSize(new Dimension(0, 14));
         filterCountLabel.setPreferredSize(new Dimension(40, 14));
         filterPanel.add(filterCountLabel);
+        filterPanel.add(filler11);
 
         availableSongPanel.add(filterPanel);
+        availableSongPanel.add(filler21);
 
         scrollPane2.setPreferredSize(new Dimension(300, 0));
 
@@ -274,6 +380,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         scrollPane2.setViewportView(availableSongTable);
 
         availableSongPanel.add(scrollPane2);
+        availableSongPanel.add(filler22);
 
         tablesPanel.add(availableSongPanel);
         tablesPanel.add(filler9);
@@ -350,14 +457,37 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JTable availableSongTable;
     private JPanel buttonPanel;
     private JButton cancelButton;
+    private JPanel datePanel;
+    private JTextField dateTextField;
+    private JLabel dateabel;
     private JButton downButton;
+    private JLabel durationLabel;
+    private JPanel durationPanel;
+    private JTextField durationTextField;
     private Box.Filler filler10;
     private Box.Filler filler11;
     private Box.Filler filler12;
+    private Box.Filler filler13;
     private Box.Filler filler14;
     private Box.Filler filler15;
+    private Box.Filler filler16;
+    private Box.Filler filler17;
+    private Box.Filler filler18;
+    private Box.Filler filler19;
     private Box.Filler filler2;
+    private Box.Filler filler20;
+    private Box.Filler filler21;
+    private Box.Filler filler22;
+    private Box.Filler filler23;
+    private Box.Filler filler24;
+    private Box.Filler filler25;
+    private Box.Filler filler26;
+    private Box.Filler filler27;
+    private Box.Filler filler28;
+    private Box.Filler filler29;
     private Box.Filler filler3;
+    private Box.Filler filler30;
+    private Box.Filler filler31;
     private Box.Filler filler4;
     private Box.Filler filler5;
     private Box.Filler filler6;
@@ -368,6 +498,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JLabel filterLabel;
     private JPanel filterPanel;
     private JTextField filterTextField;
+    private JComboBox jComboBox1;
     private JLabel nameLabel;
     private JPanel namePanel;
     private JTextField nameTextField;
@@ -376,6 +507,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JButton saveButton;
     private JScrollPane scrollPane1;
     private JScrollPane scrollPane2;
+    private JPanel selectedSongPanel;
     private JPanel songButtonPanel;
     private JPanel tablesPanel;
     private JButton upButton;
@@ -387,6 +519,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
     private Playlist playlist;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
     private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
     private List<Song> availableSongList;
     private List<Song> selectedSongList;
@@ -432,39 +565,36 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         updateLeft(-1);
 
         // Καθορισμός εμφάνισης στηλών πινάκων
-        TableColumnModel tcm;
-
         // Πίνακας τραγουδιών λίστας
-        tcm = playlistSongTable.getColumnModel();
-        for (int i = 0; i < tcm.getColumnCount(); i++) {
-            switch (i) {
-                case 0:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory
-                            .getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
-                    break;
-                case 3:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory
-                            .getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
-                    break;
-                default:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory
-                            .getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
-                    break;
-            }
+        TableColumnModel tcm1 = playlistSongTable.getColumnModel();
+        String[] headers1 = {"Σειρά", "Τίτλος", "Ερμηνευτής", "Διάρκεια"};
+        int[] widths1 = {40, 110, 110, 40};
+        TableCellRendererFactory.RendererType[] renderers1
+                = {TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED,
+                    TableCellRendererFactory.RendererType.GENERIC,
+                    TableCellRendererFactory.RendererType.GENERIC,
+                    TableCellRendererFactory.RendererType.DURATION
+                };
+        for (int i = 0; i < tcm1.getColumnCount(); i++) {
+            TableColumn col = tcm1.getColumn(i);
+            col.setCellRenderer(TableCellRendererFactory.getTableCellRenderer(renderers1[i]));
+            col.setHeaderValue(headers1[i]);
+            col.setPreferredWidth(widths1[i]);
         }
         // Πίνακας διαθέσιμων τραγουδιών
-        tcm = availableSongTable.getColumnModel();
-        for (int i = 0; i < tcm.getColumnCount(); i++) {
-            switch (i) {
-                case 2:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory
-                            .getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
-                    break;
-                default:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory
-                            .getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
-                    break;
-            }
+        TableColumnModel tcm2 = availableSongTable.getColumnModel();
+        String[] headers2 = {"Τίτλος", "Ερμηνευτής", "Διάρκεια"};
+        int[] widths2 = {130, 130, 40};
+        TableCellRendererFactory.RendererType[] renderers2
+                = {TableCellRendererFactory.RendererType.GENERIC,
+                    TableCellRendererFactory.RendererType.GENERIC,
+                    TableCellRendererFactory.RendererType.DURATION
+                };
+        for (int i = 0; i < tcm2.getColumnCount(); i++) {
+            TableColumn col = tcm2.getColumn(i);
+            col.setCellRenderer(TableCellRendererFactory.getTableCellRenderer(renderers2[i]));
+            col.setHeaderValue(headers2[i]);
+            col.setPreferredWidth(widths2[i]);
         }
     }
 
@@ -472,12 +602,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
-        namePanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
-        namePanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
-        namePanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
         saveButton.setEnabled(false);
         nameTextField.setText(playlist.getName());
+        dateTextField.setText(sdf.format(playlist.getCreationDate()));
 
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -563,6 +691,14 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }
 
     private void save() {
+        // remove old songs
+        em.getTransaction().begin();
+        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
+            em.remove(ps);
+        }
+        em.getTransaction().commit();
+
+        // construct the list of new songs
         List<PlaylistSong> psl = new ArrayList<>();
         for (int i = 0; i < selectedSongList.size(); i++) {
             PlaylistSong ps = new PlaylistSong();
@@ -571,9 +707,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
             ps.setSong(selectedSongList.get(i));
             psl.add(ps);
         }
-//        playlist.setName(boundPlaylist.getName());
+
+        playlist.setName(nameTextField.getText());
         playlist.setCreationDate(new Date());
         playlist.setPlaylistSongList(psl);
+
         em.getTransaction().begin();
         em.merge(playlist);
         em.getTransaction().commit();
@@ -585,7 +723,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         downButton.setEnabled(s != -1 && s < selectedSongList.size() - 1);
         removeButton.setEnabled(s != -1);
         addButton.setEnabled(availableSongTable.getSelectedRow() != -1);
-        //filterTextField.requestFocusInWindow();
     }
 
     private void test() {
