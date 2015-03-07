@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <NonVisualComponents>
-    <Component class="eap.pli24.rastaman.entities.Playlist" name="boundPlaylist">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="playlist"/>
-      </AuxValues>
-    </Component>
-  </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -58,11 +51,6 @@
               <Dimension value="[200, 20]"/>
             </Property>
           </Properties>
-          <BindingProperties>
-            <BindingProperty name="text" source="boundPlaylist" sourcePath="${name}" target="nameTextField" targetPath="text" updateStrategy="0" immediately="false">
-              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-            </BindingProperty>
-          </BindingProperties>
         </Component>
       </SubComponents>
     </Container>
@@ -170,9 +158,6 @@
                 </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
-              <BindingProperties>
-                <BindingProperty name="enabled" source="playlistSongTable" sourcePath="${selectedElement!=null}" target="upButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
-              </BindingProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="upButtonActionPerformed"/>
               </Events>
@@ -212,9 +197,6 @@
                 </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
-              <BindingProperties>
-                <BindingProperty name="enabled" source="playlistSongTable" sourcePath="${selectedElement!=null}" target="downButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
-              </BindingProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="downButtonActionPerformed"/>
               </Events>
@@ -248,9 +230,6 @@
                 </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
-              <BindingProperties>
-                <BindingProperty name="enabled" source="availableSongTable" sourcePath="${selectedElement!=null}" target="addButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
-              </BindingProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
               </Events>
@@ -290,9 +269,6 @@
                 </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
-              <BindingProperties>
-                <BindingProperty name="enabled" source="playlistSongTable" sourcePath="${selectedElement!=null}" target="removeButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
-              </BindingProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeButtonActionPerformed"/>
               </Events>
