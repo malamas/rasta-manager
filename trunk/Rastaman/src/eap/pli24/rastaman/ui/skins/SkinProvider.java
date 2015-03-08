@@ -20,7 +20,6 @@
  */
 package eap.pli24.rastaman.ui.skins;
 
-import eap.pli24.rastaman.ui.tablecellrenderers.GenericTableCellRenderer;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,7 +54,7 @@ public class SkinProvider {
 
     private static final SkinProvider INSTANCE = new SkinProvider();
     private Skins activeSkin;
-    private Set<GenericTableCellRenderer> observers;
+    private Set<SkinObserver> observers;
     private EnumMap<Skins, Skin> skinMap;
 
     private SkinProvider() {
@@ -92,14 +91,14 @@ public class SkinProvider {
     public void setActiveSkin(Skins skin) {
         if (activeSkin != skin) {
             activeSkin = skin;
-            for (GenericTableCellRenderer ob : observers) {
+            for (SkinObserver ob : observers) {
                 ob.update();
             }
         }
     }
 
-    public void addObserver(GenericTableCellRenderer gtr) {
-        observers.add(gtr);
+    public void addObserver(SkinObserver ob) {
+        observers.add(ob);
     }
 
 }

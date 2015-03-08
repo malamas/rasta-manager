@@ -25,6 +25,10 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
+ * Η κλάση {@code OrderedSongTableModel} είναι μοντέλο δεδομένων για ένα
+ * {@code JTable} που περιέχει εγγραφές με δεδομένα από στιγμιότυπα της
+ * οντότητας {@code Song}. Το μοντέλο προσθέτει μια στήλη με την αρίθμηση των
+ * σειρών (και συνεπώς και των εγγραφών).
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -36,21 +40,47 @@ public class OrderedSongTableModel extends AbstractTableModel {
     private static final int COLUMN_COUNT = 4;
     private final List<Song> songList;
 
+    /**
+     * Δημιουργεί ένα {@code OrderedSongTableModel} που αντλεί δεδομένα από τη
+     * λίστα τραγουδιών {@code songList}.
+     *
+     * @param songList η λίστα τραγουδιών που ορίζεται ως πηγή δεδομένων
+     */
     public OrderedSongTableModel(List<Song> songList) {
         super();
         this.songList = songList;
     }
 
+    /**
+     * Επιστρέφει το πλήθος σειρών αυτού του πίνακα.
+     *
+     * @return το πλήθος σειρών του πίνακα
+     */
     @Override
     public int getRowCount() {
         return ((songList == null) ? 1 : songList.size());
     }
 
+    /**
+     * Επιστρέφει το πλήθος στηλών αυτού του πίνακα.
+     *
+     * @return το πλήθος στηλών του πίνακα
+     */
     @Override
     public int getColumnCount() {
         return COLUMN_COUNT;
     }
 
+    /**
+     * Επιστρέφει το αντικείμενο προς εμφάνιση στη γραμμή {@code rowIndex} και
+     * τη στήλη {@code columnIndex}. Οι στήλες κατά σειρά περιέχουν αύξοντα
+     * αριθμό (ξεκινώντας από το 1), τίτλο, όνομα ερμηνευτή και διάρκεια
+     * τραγουδιού.
+     *
+     * @param rowIndex η γραμμή για την οποία ζητείται η τιμή
+     * @param columnIndex η στήλη για την οποία ζητείται η τιμή
+     * @return το αντίκειμενο προς εμφάνιση στο ζητούμενο κελί
+     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object value;

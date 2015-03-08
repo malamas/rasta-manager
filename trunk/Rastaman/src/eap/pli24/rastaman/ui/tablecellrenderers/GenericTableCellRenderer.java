@@ -20,6 +20,7 @@
  */
 package eap.pli24.rastaman.ui.tablecellrenderers;
 
+import eap.pli24.rastaman.ui.skins.SkinObserver;
 import eap.pli24.rastaman.ui.skins.SkinProvider;
 import java.awt.Color;
 import java.awt.Component;
@@ -33,7 +34,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class GenericTableCellRenderer extends DefaultTableCellRenderer {
+public class GenericTableCellRenderer extends DefaultTableCellRenderer implements SkinObserver {
 
     private Color oddRowColor;
     private Color evenRowColor;
@@ -52,6 +53,7 @@ public class GenericTableCellRenderer extends DefaultTableCellRenderer {
         return this;
     }
 
+    @Override
     public void update() {
         retrieveColors();
     }

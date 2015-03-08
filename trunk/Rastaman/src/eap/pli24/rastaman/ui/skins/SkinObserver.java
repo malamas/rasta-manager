@@ -18,27 +18,17 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eap.pli24.rastaman;
-
-import eap.pli24.rastaman.ui.MainFrameController;
+package eap.pli24.rastaman.ui.skins;
 
 /**
- * Η κλάση {@code Rastaman} περιέχει το σημείο εισόδου της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class Rastaman {
+public interface SkinObserver {
 
-    /**
-     * Το σημείο εισόδου της εφαρμογής. Τυχόν ορίσματα από τη γραμμή εντολών
-     * αγνοούνται.
-     *
-     * @param args τα ορίσματα από τη γραμμή εντολών
-     */
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new MainFrameController());
-    }
+    void update();
+
 }
