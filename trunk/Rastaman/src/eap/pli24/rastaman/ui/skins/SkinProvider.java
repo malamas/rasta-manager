@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Η κλάση {@code SkinProvider} παριστάνει το διαχειριστή θέματος εμφάνισης
+ * (skin) της εφαρμογής. Επιτρέπει να δημιουργείται μόνο ένα στιγμιότυπό της
+ * (singleton pattern).
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -33,6 +36,10 @@ import java.util.Set;
  */
 public class SkinProvider {
 
+    /**
+     * Το enum {@code Skins} περιέχει σταθερές για κάθε ένα διαθέσιμο και
+     * εγκατεστημένο θέμα εμφάνισης.
+     */
     public enum Skins {
 
         JAMAICA("Jamaica"),
@@ -57,21 +64,35 @@ public class SkinProvider {
     private Set<SkinObserver> observers;
     private EnumMap<Skins, Skin> skinMap;
 
+    // ιδιωτικός δημιουργός για την εξασφάλιση του singleton pattern
     private SkinProvider() {
         initialize();
 
     }
 
+    /**
+     * Επιστρέφει το μοναδικό στιγμιότυπο της κλάσης, και ταυτόχρονα αποτελεί
+     * ευπρόσιτο σημείο πρόσβασης για αυτό.
+     *
+     * @return το μοναδικό στιγμιότυπο της κλάσης
+     */
     public static SkinProvider getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Αρχικοποιεί το μοναδικό στιγμιότυπο της κλάσης.
+     */
     private void initialize() {
         observers = new HashSet<>();
         initSkinMap();
         activeSkin = Skins.JAMAICA;
     }
 
+    /**
+     * Αρχικοποιεί τον πίνακα (@code skinMap} με τα διαθέσιμα skin,
+     * δημιουργώντας ένα στιγμιότυπο του καθενός.
+     */
     private void initSkinMap() {
         skinMap = new EnumMap<>(Skins.class);
         skinMap.put(Skins.JAMAICA, new JamaicaSkin());
@@ -80,25 +101,50 @@ public class SkinProvider {
         skinMap.put(Skins.CABERNET, new CabernetSkin());
     }
 
+    /**
+     * Επιστρέφει το ενεργό {@code Skin}, ώστε ο καλών να αποκτήσει πρόσβαση
+     * στις ιδιότητες που αυτό παρέχει.
+     *
+     * @return το ενεργό {@code Skin}
+     */
     public Skin getSkin() {
         return skinMap.get(activeSkin);
     }
 
+    /**
+     * Επιστρέφει το μέλος του enum {@code Skins} που αντιστοιχεί στο ενεργό
+     * skin.
+     *
+     * @return η σταθερά (enum {@code Skins}) του ενεργού skin
+     */
     public Skins getActiveSkin() {
         return activeSkin;
     }
 
+    /**
+     * Ορίζει ως ενεργό θέμα εμφάνισης της εφαρμογής το skin που αντιστοιχεί στη
+     * σταθερά {@code skin} του enum {@code Skins}.
+     *
+     * @param skin το θέμα που ορίζεται ως ενεργό
+     */
     public void setActiveSkin(Skins skin) {
         if (activeSkin != skin) {
             activeSkin = skin;
+
+            // αλλαγή ενεργού skin, πρέπει να ενημερωθούν οι παρατηρητές
             for (SkinObserver ob : observers) {
                 ob.update();
             }
         }
     }
 
+    /**
+     * Προσθέτει έναν {@code SkinObserver} στη λίστα των παρατηρητών αυτού του
+     * {@code SkinProvider}.
+     *
+     * @param ob ο παρατηρητής που προστίθεται
+     */
     public void addObserver(SkinObserver ob) {
         observers.add(ob);
     }
-
 }
