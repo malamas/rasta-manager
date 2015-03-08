@@ -23,6 +23,8 @@ package eap.pli24.rastaman.ui.tablecellrenderers;
 import javax.swing.SwingConstants;
 
 /**
+ * Υποκλάση της {@code GenericTableCellRenderer} που προσθέτει επιπλέον δεξιά
+ * στοίχιση στο περιεχόμενο του κελιού.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -31,6 +33,9 @@ import javax.swing.SwingConstants;
  */
 public class RightAlignedTableCellRenderer extends GenericTableCellRenderer {
 
+    /**
+     * Δημιουργεί έναν {@code RightAlignedTableCellRenderer}.
+     */
     public RightAlignedTableCellRenderer() {
         super();
         this.setHorizontalAlignment(SwingConstants.RIGHT);

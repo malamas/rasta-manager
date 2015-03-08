@@ -21,6 +21,9 @@
 package eap.pli24.rastaman.ui.tablecellrenderers;
 
 /**
+ * Υποκλάση της {@code GenericTableCellRenderer} που εμφανίζει τα λεκτικά
+ * "Άνδρας"/"Γυναίκα" στο περιεχόμενο του κελιού, αντικαθιστώντας αντίστοιχα τα
+ * string "m"/"f".
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -29,10 +32,19 @@ package eap.pli24.rastaman.ui.tablecellrenderers;
  */
 public class SexTableCellRenderer extends GenericTableCellRenderer {
 
+    /**
+     * Δημιουργεί έναν {@code SexTableCellRenderer}.
+     */
     public SexTableCellRenderer() {
         super();
     }
 
+    /**
+     * Καθορίζει το string που θα απεικονιστεί στο κελί που σχεδιάζεται
+     * ("Άνδρας"/"Γυναίκα" αντί "m"/"f" αντίστοιχα).
+     *
+     * @param value η τιμή εισόδου
+     */
     @Override
     protected void setValue(Object value) {
         String v = (String) value;
