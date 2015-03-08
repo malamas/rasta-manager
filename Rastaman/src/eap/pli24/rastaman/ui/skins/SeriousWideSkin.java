@@ -25,6 +25,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 /**
+ * Η κλάση {@code SeriousWideSkin} παρέχει τιμές ιδιοτήτων που συναπαρτίζουν ένα
+ * θέμα εμφάνισης (skin) της γραφικής διεπαφής χρήστη της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -153,5 +155,4 @@ public class SeriousWideSkin implements Skin {
     public Color getTableSelectedRowBackground() {
         return TABLE_SELECTED_ROW_BACKGROUND;
     }
-
 }

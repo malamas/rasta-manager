@@ -21,6 +21,9 @@
 package eap.pli24.rastaman.ui.skins;
 
 /**
+ * Το interface {@code SkinObserver} προσδιορίζει τις μεθόδους που πρέπει να
+ * υλοποιούν οι κλάσεις που ενδιαφέρονται να παρακολουθούν τις αλλαγές skin της
+ * εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -29,6 +32,10 @@ package eap.pli24.rastaman.ui.skins;
  */
 public interface SkinObserver {
 
+    /**
+     * Αυτή η μέθοδος καλείται από τον παροχέα skin για να ειδοποίησει τους
+     * παρατηρητές του ότι το skin της εφαρμογής έχει αλλάξει.
+     */
     void update();
 
 }

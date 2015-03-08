@@ -25,6 +25,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 /**
+ * Το interface {@code Skin} προσδιορίζει τις μεθόδους που πρέπει να υλοποιούν
+ * οι κλάσεις που παριστάνουν skins (θέματα εμφάνισης) της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
