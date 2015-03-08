@@ -24,14 +24,20 @@ import java.util.EnumMap;
 import javax.swing.table.TableCellRenderer;
 
 /**
+ * Η κλάση {@code TableCellRendererFactory} διατηρεί από ένα στιγμιότυπο της
+ * κλάσης {@code GenericTableCellRenderer} και των υποκλάσεών της, και τα
+ * παρέχει στα {@code JTable} που τα ζητούν. Είναι static final (utility) class.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class TableCellRendererFactory {
+public final class TableCellRendererFactory {
 
+    /**
+     * enum με σταθερές για κάθε τύπο renderer που χρησιμοποιεί η εφαρμογή.
+     */
     public static enum RendererType {
 
         GENERIC,
@@ -47,6 +53,7 @@ public class TableCellRendererFactory {
     private static final TableCellRenderer durationTableCellRenderer = new DurationTableCellRenderer();
     private static final EnumMap<RendererType, TableCellRenderer> renderers = new EnumMap<>(RendererType.class);
 
+    // στατική αρχικοποίηση EnumMap με τα στιγμιότυπα των renderer
     static {
         renderers.put(RendererType.GENERIC, genericTableCellRenderer);
         renderers.put(RendererType.GENERIC_RIGHT_ALIGNED, rightAlignedTableCellRenderer);
@@ -55,9 +62,16 @@ public class TableCellRendererFactory {
         renderers.put(RendererType.DURATION, durationTableCellRenderer);
     }
 
+    // ιδιωτικός δημιουργός που εξασφαλίζει ότι δεν μπορεί να υπάρξει κανένα στιγμιότυπο της κλάσης
     private TableCellRendererFactory() {
     }
 
+    /**
+     * Επιστρέφει το στιγμιότυπο {@code TableCellRenderer} που ζητείται.
+     *
+     * @param type ο τύπος renderer που ζητείται ({@code RendererType})
+     * @return ο ζητούμενος renderer
+     */
     public static TableCellRenderer getTableCellRenderer(RendererType type) {
         return renderers.get(type);
     }

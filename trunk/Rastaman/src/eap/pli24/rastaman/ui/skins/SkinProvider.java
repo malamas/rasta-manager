@@ -34,7 +34,7 @@ import java.util.Set;
  * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
-public class SkinProvider {
+public final class SkinProvider {
 
     /**
      * Το enum {@code Skins} περιέχει σταθερές για κάθε ένα διαθέσιμο και

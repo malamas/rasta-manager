@@ -28,6 +28,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
+ * Η κλάση {@code GenericTableCellRenderer} υλοποιεί έναν
+ * {@code TableCellRenderer} με εναλλασσόμενα χρώματα σε διαδοχικές
+ * (άρτιες/περιττές) γραμμές ενός {@code JTable}. Υλοιποιεί το interface
+ * {@code SkinObserver} ώστε να ενημερώνεται σε περίπτωση αλλαγής του ενεργού
+ * skin της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -40,24 +45,48 @@ public class GenericTableCellRenderer extends DefaultTableCellRenderer implement
     private Color evenRowColor;
     private Color selectedColor;
 
+    /**
+     * Δημιουργεί έναν {@code GenericTableCellRenderer} και τον προσθέτει στη
+     * λίστα παρατηρητών του {@code SkinProvider}.
+     */
     public GenericTableCellRenderer() {
         super();
         retrieveColors();
         SkinProvider.getInstance().addObserver(this);
     }
 
+    /**
+     * Επιστρέφει το {@code Component} που θα χρησιμοποιηθεί σαν renderer.
+     *
+     * @param table ο πίνακας
+     * @param value η τιμή που θα απεικονιστεί
+     * @param isSelected true αν το κελί είναι επιλεγμένο
+     * @param hasFocus true αν το κελί έχει το focus
+     * @param row η σειρά του πίνακα
+     * @param column η στήλη του πίνακα
+     * @return το {@code Component} που θα χρησιμοποιηθεί σαν renderer
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+        // επιλογή χρώματος ανάλογα με τη σειρά (άρτια/περιττή) που σχεδιάζεται
         this.setBackground((isSelected ? selectedColor : (row % 2 == 0) ? oddRowColor : evenRowColor));
         return this;
     }
 
+    /**
+     * Η μέθοδος που καλείται για ειδοποιήσει αυτόν τον renderer ότι το ενεργό
+     * skin έχει αλλάξει.
+     */
     @Override
     public void update() {
         retrieveColors();
     }
 
+    /**
+     * Ανακτά από τον {@code SkinProvider} τα χρώματα που θα χρησιμοποιηθούν.
+     */
     private void retrieveColors() {
         oddRowColor = SkinProvider.getInstance().getSkin().getTableOddRowBackground();
         evenRowColor = SkinProvider.getInstance().getSkin().getTableEvenRowBackground();

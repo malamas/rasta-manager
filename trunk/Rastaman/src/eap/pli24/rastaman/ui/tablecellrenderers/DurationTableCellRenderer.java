@@ -24,6 +24,8 @@ import java.text.DecimalFormat;
 import javax.swing.SwingConstants;
 
 /**
+ * Υποκλάση της {@code GenericTableCellRenderer} που εμφανίζει στο περιεχόμενο
+ * του κελιού χρονικές διάρκειες στη μορφή [ω:]λλ:δδ.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -34,11 +36,21 @@ public class DurationTableCellRenderer extends GenericTableCellRenderer {
 
     private final DecimalFormat dcf = new DecimalFormat("#00");
 
+    /**
+     * Δημιουργεί έναν {@code DurationTableCellRenderer}.
+     */
     public DurationTableCellRenderer() {
         super();
+        // δεξιά στοίχιση
         this.setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
+    /**
+     * Καθορίζει το string που θα απεικονιστεί στο κελί που σχεδιάζεται
+     * (διάρκεια σε μορφή [ω:]λλ:δδ).
+     *
+     * @param value η ημερομηνία που θα απεικονιστεί
+     */
     @Override
     protected void setValue(Object value) {
         if (value == null) {
@@ -47,6 +59,7 @@ public class DurationTableCellRenderer extends GenericTableCellRenderer {
             int d = (int) value;
             int h = d / 3600;
             d = d % 3600;
+            // αν η διάρκεια υπερβαίνει τα 60 λεπτά τότε εμφανίζονται ώρες, αλλιώς μόνο λλ:δδ
             setText(((h > 0) ? h + ":" : "") + dcf.format(d / 60) + ":" + dcf.format(d % 60));
         }
     }

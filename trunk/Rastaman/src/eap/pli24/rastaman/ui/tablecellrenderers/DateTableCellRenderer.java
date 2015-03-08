@@ -26,6 +26,8 @@ import java.util.Locale;
 import javax.swing.SwingConstants;
 
 /**
+ * Υποκλάση της {@code GenericTableCellRenderer} που εμφανίζει στο περιεχόμενο
+ * του κελιού ημερομηνίες μορφοποιημένες σαν "ηη/μμ/εεεε".
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -36,11 +38,21 @@ public class DateTableCellRenderer extends GenericTableCellRenderer {
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
 
+    /**
+     * Δημιουργεί έναν {@code DateTableCellRenderer}.
+     */
     public DateTableCellRenderer() {
         super();
+        // δεξιά στοίχιση
         this.setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
+    /**
+     * Καθορίζει το string που θα απεικονιστεί στο κελί που σχεδιάζεται
+     * (ημερομηνία στη μορφή ηη/μμ/εεεε).
+     *
+     * @param value η ημερομηνία που θα απεικονιστεί
+     */
     @Override
     protected void setValue(Object value) {
         setText(value == null ? null : sdf.format((Date) value));
