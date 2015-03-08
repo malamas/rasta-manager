@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Η κλάση {@code Label} παριστάνει μια εταιρία μουσκής παραγωγής. Είναι κλάση
+ * οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -56,6 +58,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Label.findByAddress", query = "SELECT l FROM Label l WHERE l.address = :address"),
     @NamedQuery(name = "Label.findByTelephone", query = "SELECT l FROM Label l WHERE l.telephone = :telephone")})
 public class Label implements Serializable {
+
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
@@ -168,5 +171,4 @@ public class Label implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-
 }

@@ -45,6 +45,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Η κλάση {@code Album} παριστάνει ένα μουσικό άλμπουμ. Είναι κλάση οντότητας
+ * JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -198,6 +200,16 @@ public class Album implements Serializable {
         changeSupport.firePropertyChange("musicgroupmusicgroupid", oldMusicgroupmusicgroupid, musicgroupmusicgroupid);
     }
 
+    /**
+     * Επιστρέφει όνομα δημιουργού (ερμηνευτή) γι' αυτό το {@code Album}, με
+     * ενιαίο τρόπο, ανεξάρτητα αν αυτό ανήκει σε καλλιτέχνη ή σε συγκρότημα.
+     *
+     * @return το όνομα δημιουργού του άλμπουμ
+     */
+    public String getPerformerScreenName() {
+        return (artistartistid != null) ? artistartistid.getScreenName() : musicgroupmusicgroupid.getName();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -229,9 +241,5 @@ public class Album implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
-    }
-
-    public String getPerformerScreenName() {
-        return (artistartistid != null) ? artistartistid.getScreenName() : musicgroupmusicgroupid.getName();
     }
 }

@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Η κλάση {@code Artist} παριστάνει έναν καλλιτέχνη. Είναι κλάση οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -208,6 +209,21 @@ public class Artist implements Serializable {
         this.albumList = albumList;
     }
 
+    /**
+     * Επιστρέφει κανονικοποιημένο όνομα ερμηνευτή γι' αυτόν τον {@code Artist}.
+     * Ειδικότερα, επιστρέφει κατά προτεραιότητα το ψευδώνυμο του καλλιτέχνη (αν
+     * υπάρχει), αλλιώς επιστρέφει το ονοματεπώνυμο του (αν υπάρχει), ή, τέλος,
+     * null, αν όλα τα παραπάνω πεδία είναι null.
+     *
+     * @return το κανονικοποιημένο όνομα ερμηνευτή του καλλιτέχνη
+     */
+    public String getScreenName() {
+        if (artisticname == null && lastname == null) {
+            return null;
+        }
+        return ((artisticname != null) && !artisticname.equals("")) ? artisticname : (firstname + " " + lastname);
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -240,12 +256,5 @@ public class Artist implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
-    }
-
-    public String getScreenName() {
-        if (artisticname == null && lastname == null) {
-            return null;
-        }
-        return ((artisticname != null) && !artisticname.equals("") ) ? artisticname : (firstname + " " + lastname);
     }
 }

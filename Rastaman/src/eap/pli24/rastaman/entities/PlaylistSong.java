@@ -32,6 +32,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
+ * Η κλάση {@code PlaylistSong} παριστάνει ένα τραγούδι σε συγκεκριμένη θέση
+ * λίστας αναπαραγωγής. Είναι κλάση οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis

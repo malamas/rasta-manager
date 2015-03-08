@@ -45,6 +45,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Η κλάση {@code Musicgroup} παριστάνει ένα μουσικό συγκρότημα. Είναι κλάση
+ * οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -176,5 +178,4 @@ public class Musicgroup implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-
 }

@@ -40,6 +40,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
+ * Η κλάση {@code Playlist} παριστάνει μια λίστα αναπαραγωγής. Είναι κλάση
+ * οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis

@@ -49,7 +49,7 @@ public class DurationTableCellRenderer extends GenericTableCellRenderer {
      * Καθορίζει το string που θα απεικονιστεί στο κελί που σχεδιάζεται
      * (διάρκεια σε μορφή [ω:]λλ:δδ).
      *
-     * @param value η ημερομηνία που θα απεικονιστεί
+     * @param value η διάρκεια που θα απεικονιστεί
      */
     @Override
     protected void setValue(Object value) {
