@@ -40,6 +40,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
+ * Η κλάση {@code Song} παριστάνει ένα τραγούδι. Είναι κλάση οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis

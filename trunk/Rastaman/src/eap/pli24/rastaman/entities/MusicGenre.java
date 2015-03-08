@@ -36,6 +36,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
+ * Η κλάση {@code MusicGenre} παριστάνει ένα είδος μουσικής. Είναι κλάση
+ * οντότητας JPA.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
