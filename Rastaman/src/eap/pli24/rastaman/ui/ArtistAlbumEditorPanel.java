@@ -486,11 +486,11 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                 throw new Exception("To Αλμπουμ θα πρέπει να έχει \n τουλάχιστον ένα τραγούδι.");
             }
             for (int i = 0; i < model.getRowCount() - 1; i++) {
-                if ((model.getValueAt(i, 0) == null) || model.getValueAt(i, 0).equals(0)) {
+                if ((model.getValueAt(i, 0) == null) || (int)model.getValueAt(i, 0) <= 0) {
                     songTable.setColumnSelectionInterval(0, 0);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
-                    throw new Exception("Η Αριθμός Track στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν ή κενό");
+                    throw new Exception("Η Αριθμός Track στη " + i + "η γραμμή πρέπει να είναι ακέραιος μεγαλύτερος από μηδέν");
                 }
                 for (int j = i + 1; j < model.getRowCount(); j++) {
                     if (model.getValueAt(i, 0).equals(model.getValueAt(j, 0))) {
@@ -507,11 +507,11 @@ public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
                     i++;
                     throw new Exception("Ο τίτλος στη " + i + "η γραμμή δεν μπορεί να είναι κενός");
                 }
-                if ((model.getValueAt(i, 2) == null) || model.getValueAt(i, 2).equals(0)) {
+                if ((model.getValueAt(i, 2) == null) || (int)model.getValueAt(i, 2) <= 0) {
                     songTable.setColumnSelectionInterval(2, 2);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
-                    throw new Exception("Η Διάρκεια στη " + i + "η γραμμή δεν μπορεί να είναι μηδέν ή κενό");
+                    throw new Exception("Η Διάρκεια στη " + i + "η γραμμή πρέπει να είναι ακέραιος μεγαλύτερος από μηδέν");
                 }
                 found = false;
                 for (Song s : albumSongList) {
