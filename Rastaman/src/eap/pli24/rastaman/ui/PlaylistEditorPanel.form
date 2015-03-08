@@ -213,9 +213,6 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="&#x397;&#x3bc;&#x3b5;&#x3c1;&#x3bf;&#x3bc;&#x3b7;&#x3bd;&#x3af;&#x3b1;:"/>
                     <Property name="alignmentX" type="float" value="0.5"/>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[60, 14]"/>
-                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.Box$Filler" name="filler26">
@@ -620,9 +617,6 @@
         </Container>
         <Container class="javax.swing.JPanel" name="availableSongPanel">
           <Properties>
-            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[32767, 32767]"/>
-            </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[50, 0]"/>
             </Property>
