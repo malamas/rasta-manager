@@ -376,10 +376,13 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                     for (Playlist p : playlistList) {
                         String g = p.getName();
                         if (newName.toLowerCase().equals(g.toLowerCase())) {
-                            newName = newName + " [αντίγραφο]";
+                            newName = g + " [αντίγραφο]";
                             JOptionPane.showMessageDialog(this, "Υπάρχει ήδη λίστα με το όνομα '" + g + "'. Η λίστα θα εισαχθεί με όνομα '" + newName + "'", "Προσοχή!", JOptionPane.WARNING_MESSAGE);
                             newPl.setName(newName);
                         }
+                    }
+                    for (PlaylistSong ps : newPl.getPlaylistSongList()) {
+                        ps.getSong().getPlaylistSongList().add(ps);
                     }
                     em.getTransaction().begin();
                     em.persist(newPl);
