@@ -21,7 +21,6 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
-import eap.pli24.rastaman.entities.PlaylistSong;
 import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import eap.pli24.rastaman.util.XmlHandler;
@@ -73,6 +72,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
+ * Η κλάση {@code PlaylistTablePanel} είναι ένα {@code JPanel} για εμφάνιση
+ * πίνακα με λίστες αναπαραγωγής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -239,7 +240,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
+            // ανάκτηση λίστας προς επεξεργασία
             Playlist sp = playlistList.get(selectedIndex);
+            // αίτημα για μετάβαση στον PlaylistEditor
             controller.showPlaylistEditor(sp);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -272,9 +275,11 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        // δημιουργία νέας λίστας
         Playlist newPlaylist = new Playlist();
         newPlaylist.setCreationDate(new Date());
         newPlaylist.setPlaylistSongList(Collections.emptyList());
+        // αίτημα για μετάβαση στον PlaylistEditor
         controller.showPlaylistEditor(newPlaylist);
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -309,6 +314,14 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
 
+    /**
+     * Δημιουργεί ένα {@code PlaylistTablePanel} με ελεγκτή τον
+     * {@code controller}. Δέχεται αναφορά σε έναν {@code EntityManager} που θα
+     * χρησιμοποιήσει η φόρμα.
+     *
+     * @param controller ο ελεγκτής
+     * @param em ο EntityManager
+     */
     public PlaylistTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
         this.em = em;
@@ -316,6 +329,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         initFurther();
     }
 
+    /**
+     * Αρχικοποίεί περαιτέρω στοιχεία του UI.
+     */
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
@@ -339,6 +355,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Εισάγει μια λίστα αναπαραγωγής από αρχείο xml.
+     */
     private void importListFromXml() {
         File file = getUserSelectedFile(JFileChooser.OPEN_DIALOG, null);
         if (file != null) {
@@ -359,6 +378,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Εξάγει μια λίστα αναπαραγωγής σε αρχείο xml.
+     */
     private void exportListToXml(Playlist pl) {
         // Επιλογή αρχείου από το χρήστη
         File file = getUserSelectedFile(JFileChooser.SAVE_DIALOG, pl.getName());
@@ -384,6 +406,17 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Εμφανίζει {@code JFileChooser} για την επιλογή του αρχείου από τον χρήστη
+     * και επιστρέφει το επιλεγμένο αρχείο. Η παράμετρος {@code fileChooserType}
+     * δέχεται μόνο τις τιμές {@code JFileChooser.OPEN_DIALOG} ή
+     * {@code JFileChooser.SAVE_DIALOG} και καθορίζει τον τύπο του πλαισίου
+     * διαλόγου.
+     *
+     * @param fileChooserType ο τύπος του διαλόγου (άνοιγμα/κλείσιμο)
+     * @param filename το προτεινόμενο όνομα αρχείου σε περίπτωση αποθήκευσης
+     * @return File το επιλεγμένο αρχείο
+     */
     private File getUserSelectedFile(int fileChooserType, String filename) {
         if (fileChooserType != JFileChooser.OPEN_DIALOG && fileChooserType != JFileChooser.SAVE_DIALOG) {
             throw new IllegalArgumentException("fileChooserType should be either JFileChooser.OPEN_DIALOG or JFileChooser.SAVE_DIALOG");

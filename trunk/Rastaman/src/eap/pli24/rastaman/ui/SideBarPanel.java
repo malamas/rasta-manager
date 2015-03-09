@@ -30,6 +30,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
+ * Η κλάση {@code SideBarPanel} είναι ένα {@code JPanel} για το πλευρικό τμήμα
+ * του παραθύρου της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -38,6 +40,7 @@ import javax.swing.SwingConstants;
  */
 public class SideBarPanel extends javax.swing.JPanel {
 
+    // logger για την καταγραφή checked exceptions
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
 
     /**
@@ -96,6 +99,9 @@ public class SideBarPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
 
+    /**
+     * Αρχικοποίεί περαιτέρω στοιχεία του UI.
+     */
     private void initFurther() {
         this.setPreferredSize(new Dimension(SkinProvider.getInstance().getSkin().getSidebarWidth(), 0));
         this.setBackground(SkinProvider.getInstance().getSkin().getSidebarBackground());
@@ -104,9 +110,6 @@ public class SideBarPanel extends javax.swing.JPanel {
         rastamanLabel.setFont(SkinProvider.getInstance().getSkin().getRastamanFont());
         rastamanLabel.setForeground(SkinProvider.getInstance().getSkin().getRastamanForeground());
         String rastaman = "Rastaman!";
-        //String rastaman = "<html><font color=#55a035>Ra</font>"
-        //        + "<font color=#f0d52c>sta</font>"
-        //       + "<font color=#ff8855>man!</font>";
         rastamanLabel.setText(rastaman);
 
         String credits = "<html>a RAdio STAtion MANager application<br>"

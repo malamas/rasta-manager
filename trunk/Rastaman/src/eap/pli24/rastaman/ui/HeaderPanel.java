@@ -27,6 +27,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 
 /**
+ * Η κλάση {@code HeaderPanel} είναι ένα {@code JPanel} για την εμφάνιση
+ * επικεφαλίδων στο παράθυρο της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -72,10 +74,19 @@ public class HeaderPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
 
+    /**
+     * Εμφανίζει το κείμενο {@code text} σαν επικεφαλίδα σε αυτό το
+     * {@code HeaderPanel}.
+     *
+     * @param text το κείμενο της επικεφαλίδας
+     */
     public void setHeaderLabel(String text) {
         headerLabel.setText(text);
     }
 
+    /**
+     * Αρχικοποίεί περαιτέρω στοιχεία του UI.
+     */
     private void initFurther() {
         setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getHeaderHeight()));
         setBackground(SkinProvider.getInstance().getSkin().getHeaderBackground());

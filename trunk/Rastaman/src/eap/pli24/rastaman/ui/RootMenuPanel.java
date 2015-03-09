@@ -27,7 +27,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -39,6 +38,8 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.SwingConstants;
 
 /**
+ * Η κλάση {@code RootMenuPanel} είναι ένα {@code JPanel} με το κύριο μενού της
+ * εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -268,13 +269,21 @@ public class RootMenuPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private MainFrameController controller;
-    
+
+    /**
+     * Δημιουργεί ένα {@code RootMenuPanel} με ελεγκτή τον {@code controller}.
+     *
+     * @param controller ο ελεγκτής
+     */
     public RootMenuPanel(MainFrameController controller) {
         this.controller = controller;
         initComponents();
         initFurther();
     }
-    
+
+    /**
+     * Αρχικοποίεί περαιτέρω στοιχεία του UI.
+     */
     private void initFurther() {
         MutableComboBoxModel<SkinProvider.Skins> cbm = new DefaultComboBoxModel<>();
         for (SkinProvider.Skins s : SkinProvider.Skins.values()) {
@@ -282,6 +291,5 @@ public class RootMenuPanel extends javax.swing.JPanel {
         }
         cbm.setSelectedItem(SkinProvider.getInstance().getActiveSkin());
         skinComboBox.setModel(cbm);
-        
     }
 }

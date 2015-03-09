@@ -44,6 +44,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 /**
+ * Η κλάση {@code MainFrameController} παριστάνει τον ελεγκτή του κύριου
+ * παραθύρου της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -52,6 +54,9 @@ import javax.swing.WindowConstants;
  */
 public class MainFrameController implements Runnable {
 
+    /**
+     * enum με σταθερές για τα διαφορετικά {@code JPanel} του UI.
+     */
     public enum PanelType {
 
         ROOT_MENU("Αρχική"),
@@ -77,8 +82,12 @@ public class MainFrameController implements Runnable {
     private SideBarPanel sideBarPanel;
     private JPanel centerPanel;
     private JPanel activePanel;
-    private ImageIcon optionPaneIcon;
 
+    /**
+     * Το σημείο εισόδου του ελεγκτή. Ο ελεγκτής υλοποιεί το interface
+     * {@code Runnable}, ώστε η εκτέλεσή του να μπορεί να ξεκινήσει στο event
+     * dispatch thread του Swing.
+     */
     @Override
     public void run() {
         initLookAndFeel();
@@ -100,7 +109,8 @@ public class MainFrameController implements Runnable {
     }
 
     /**
-     *
+     * Αρχικοποιεί τη σύνδεση με τη ΒΔ. Σταματά την εκτέλεση αφού εμφανίσει
+     * μήνυμα αποτυχίας σε περίπτωση που η σύνδεση δεν είναι εφικτή.
      */
     private void initDatabase() {
         try {
@@ -112,21 +122,25 @@ public class MainFrameController implements Runnable {
 
     }
 
+    /**
+     * Αρχικοποιεί παραμέτρους εμφάνισης του παραθύρου.
+     */
     private void initMainFrame() {
+        // δημιουργία παραθύρου
         mainFrame = new MainFrame();
 
-        // Πέρασμα αναφοράς αυτού του ελεγκτή στο παράθυρο, για callbacks
+        // πέρασμα αναφοράς αυτού του ελεγκτή στο παράθυρο, για callbacks
         mainFrame.setController(this);
 
         // Ορισμός διαστάσεων παραθύρου
         mainFrame.setSize(SkinProvider.getInstance().getSkin().getMainFrameInitSize());
         mainFrame.setMinimumSize(SkinProvider.getInstance().getSkin().getMainFrameMinSize());
 
-        // Τοποθέτηση του παραθύρου στο κέντρο της οθόνης
+        // τοποθέτηση του παραθύρου στο κέντρο της οθόνης
         Point screenCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
         mainFrame.setLocation(screenCenter.x - mainFrame.getWidth() / 2, screenCenter.y - mainFrame.getHeight() / 2);
 
-        // Απενεργοποίηση αυτόματου κλεισίματος παραθύρου.
+        // απενεργοποίηση αυτόματου κλεισίματος παραθύρου.
         // Ο χειρισμός του κλεισίματος γίνεται με ειδικό listener,
         // ώστε να καλείται η μέθοδος shutdown() του ελεγκτή (για ελέγχους κλπ.)
         mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -145,9 +159,11 @@ public class MainFrameController implements Runnable {
 
         // Εμφάνιση παραθύρου
         mainFrame.setVisible(true);
-
     }
 
+    /**
+     * Αρχικοποιεί τα panel που αποτελούν το ui της εφαρμογής.
+     */
     private void initPanels() {
         centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
@@ -164,18 +180,23 @@ public class MainFrameController implements Runnable {
         activePanel = startPanel;
     }
 
+    /**
+     * Διαχειρίζεται τα αιτήματα για αλλαγή θέματος εμφάνισης (skin) της
+     * εφαρμογής.
+     *
+     * @param newSkin το νέο θέμα (σταθερά του enum {@code SkinProvider.Skins})
+     */
     public void switchToSkin(SkinProvider.Skins newSkin) {
         mainFrame.getContentPane().removeAll();
         SkinProvider.getInstance().setActiveSkin(newSkin);
         initPanels();
     }
 
+    /**
+     * Καλείται για τον τερματισμό της εφαρμογής. Εμφανίζει πλαίσιο διαλόγου για
+     * επιβεβαίωση.
+     */
     public void shutdown() {
-        // lazy init of the dialog icon
-        //if (optionPaneIcon == null) {
-        //java.net.URL imageURL = getClass().getResource("/eap/pli24/rastaman/resources/images/rastaman_48x48.png");
-        //optionPaneIcon = new ImageIcon(imageURL);
-        //}
         Object[] options = {"Ναι", "Όχι"};
         int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (selectedOption == JOptionPane.YES_OPTION) {
@@ -183,57 +204,112 @@ public class MainFrameController implements Runnable {
         }
     }
 
+    /**
+     * Αντικαθιστά το τρέχον panel με νέο panel τύπου {@code p}.
+     *
+     * @param p ο τύπος του panel που θα καταλάβει τον κύριο χώρο στο παράθυρο
+     */
     public void switchToPanel(PanelType p) {
         displayPanel(createPanel(p));
         headerPanel.setHeaderLabel(p.headerText);
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code ArtistEditorPanel} για επεξεργασία
+     * του καλλιτέχνη {@code artist}.
+     *
+     * @param artist ο καλλιτέχνης προς επεξεργασία
+     */
     public void showArtistEditor(Artist artist) {
         ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος Καλλιτέχνης"));
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code GroupEditorPanel} για επεξεργασία του
+     * συγκροτήματος {@code group}.
+     *
+     * @param group το συγκρότημα προς επεξεργασία
+     */
     public void showGroupEditor(Musicgroup group) {
         GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο Συγκρότημα"));
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code ArtistAlbumEditorPanel} για
+     * επεξεργασία του άλμπουμ καλλιτέχνη {@code album}.
+     *
+     * @param album το άλμπουμ προς επεξεργασία
+     */
     public void showArtistAlbumEditor(Album album) {
         ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code GroupAlbumEditorPanel} για
+     * επεξεργασία του άλμπουμ συγκροτήματος {@code album}.
+     *
+     * @param album το άλμπουμ προς επεξεργασία
+     */
     public void showGroupAlbumEditor(Album album) {
         GroupAlbumEditorPanel editor = new GroupAlbumEditorPanel(this, em, album);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code PlaylistEditorPanel} για επεξεργασία
+     * της λίστας αναπαραγωγής {@code playlist}.
+     *
+     * @param playlist η λίστα προς επεξεργασία
+     */
     public void showPlaylistEditor(Playlist playlist) {
         PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code LabelEditorPanel} για επεξεργασία της
+     * εταιρίας παραγωγής {@code label}.
+     *
+     * @param label η εταιρία προς επεξεργασία
+     */
     public void showLabelEditor(Label label) {
         LabelEditorPanel editor = new LabelEditorPanel(this, em, label);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
     }
 
+    /**
+     * Δημιουργεί και εμφανίζει ένα {@code GenreEditorPanel} για επεξεργασία του
+     * είδους μουσικής {@code musicgenre}.
+     *
+     * @param musicgenre το είδος προς επεξεργασία
+     */
     public void showGenreEditor(MusicGenre musicgenre) {
         GenreEditorPanel editor = new GenreEditorPanel(this, em, musicgenre);
         displayPanel(editor);
         headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((musicgenre.getName() != null) ? musicgenre.getName() : "Νέο Είδος Μουσικής"));
     }
 
+    /**
+     * Εμφανίζει το panel {@code panel} στο κύριο χώρο του παραθύρου,
+     * αντικαθιστώντας το προηγούμενο ενεργό panel.
+     *
+     * @param panel το panel προς εμφάνιση
+     */
     private void displayPanel(JPanel panel) {
         if (panel instanceof RootMenuPanel) {
+            // στην αρχική οθόνη το sidebar εμφανίζεται πάντα
             sideBarPanel.setPreferredSize(new Dimension(SkinProvider.getInstance().getSkin().getSidebarWidth(), 0));
         } else if (!SkinProvider.getInstance().getSkin().getSidebarVisibleOnNonRoot()) {
+            // στις υπόλοιπες, η εμφάνιση του sidebar καθορίζαται από το skin
             sideBarPanel.setPreferredSize(new Dimension(0, 0));
         }
         centerPanel.remove(activePanel);
@@ -243,6 +319,12 @@ public class MainFrameController implements Runnable {
         activePanel = panel;
     }
 
+    /**
+     * Δημιουργεί και επιστρέφει ένα panel τύπου {@code type}.
+     *
+     * @param type ο τύπος του panel
+     * @return το panel που δημιουργήθηκε
+     */
     private JPanel createPanel(PanelType type) {
         JPanel p;
         switch (type) {
