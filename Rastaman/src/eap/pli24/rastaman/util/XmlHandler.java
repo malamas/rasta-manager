@@ -38,6 +38,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * Η κλάση {@code XmlHandler} περιέχει βοηθητικές μεθόδους για τη δημιουργία xml
+ * {@code Document} από {@code Playlist} και αντίστροφα. Είναι static final
+ * (utility) class.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -46,9 +49,17 @@ import org.w3c.dom.NodeList;
  */
 public final class XmlHandler {
 
+    // ιδιωτικός δημιουργός που εξασφαλίζει ότι δεν μπορεί να υπάρξει κανένα στιγμιότυπο της κλάσης
     private XmlHandler() {
     }
 
+    /**
+     * Δημιουργεί xml {@code Document} από μία {@code Playlist}.
+     *
+     * @param pl η λίστα αναπαραγωγής
+     * @return το xml Document που δημιουργήθηκε
+     * @throws ParserConfigurationException
+     */
     public static Document buildDocumentFromPlaylist(Playlist pl) throws ParserConfigurationException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
 
@@ -100,6 +111,13 @@ public final class XmlHandler {
         return doc;
     }
 
+    /**
+     * Δημιουργεί μία {@code Playlist} από ένα xml {@code Document}.
+     *
+     * @param doc το xml Document
+     * @param em EntityManager για έλεγχους στη ΒΔ
+     * @return η δημιουργηθείσα λίστα αναπαραγωγής
+     */
     public static Playlist buildPlaylistFromDocument(Document doc, EntityManager em) {
         doc.getDocumentElement().normalize();
 

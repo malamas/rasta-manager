@@ -52,6 +52,8 @@ import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
 /**
+ * Η κλάση {@code LabelTablePanel} είναι ένα {@code JPanel} για την εμφάνιση
+ * πίνακα εταιριών παραγωγής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -228,6 +230,14 @@ public class LabelTablePanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
 
+    /**
+     * Δημιουργεί ένα {@code LabelTablePanel} με ελεγκτή τον {@code controller}.
+     * Δέχεται αναφορά σε έναν {@code EntityManager} που θα χρησιμοποιήσει η
+     * φόρμα.
+     *
+     * @param controller ο ελεγκτής
+     * @param em ο EntityManager
+     */
     public LabelTablePanel(MainFrameController controller, EntityManager em) {
         this.controller = controller;
         this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
@@ -235,6 +245,9 @@ public class LabelTablePanel extends javax.swing.JPanel {
         initFurther();
     }
 
+    /**
+     * Αρχικοποίεί περαιτέρω στοιχεία του UI.
+     */
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 

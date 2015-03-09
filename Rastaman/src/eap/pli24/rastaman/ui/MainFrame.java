@@ -25,6 +25,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.WindowConstants;
 
 /**
+ * Η κλάση {@code MainFrame} είναι το κύριο παράθυρο της εφαρμογής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -60,6 +61,7 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // το συμβάν κλεισίματος παραθύρου παραπέμπεται για ενέργεια στον ελεγκτή
         controller.shutdown();
     }//GEN-LAST:event_formWindowClosing
 
@@ -71,6 +73,11 @@ public class MainFrame extends javax.swing.JFrame {
     //
     private MainFrameController controller;
 
+    /**
+     * Δημιουργεί ένα {@code MainFrame} με ελεγκτή τον {@code controller}.
+     *
+     * @param controller ο ελεγκτής
+     */
     public void setController(MainFrameController controller) {
         this.controller = controller;
     }

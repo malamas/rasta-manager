@@ -39,6 +39,8 @@ public class Rastaman {
      * @param args τα ορίσματα από τη γραμμή εντολών
      */
     public static void main(String[] args) {
+        // ο ελεγκτής του κύριου παραθύρου της εφαρμογής καλείται έτσι ώστε
+        //  να τρέξει στο event dispatch thread του Swing
         javax.swing.SwingUtilities.invokeLater(new MainFrameController());
     }
 }
