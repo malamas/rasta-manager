@@ -21,6 +21,7 @@
 package eap.pli24.rastaman.ui;
 
 import eap.pli24.rastaman.entities.Playlist;
+import eap.pli24.rastaman.entities.PlaylistSong;
 import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import eap.pli24.rastaman.util.XmlHandler;
@@ -266,6 +267,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             Object[] options = {"Ναι", "Όχι"};
             int selectedOption = JOptionPane.showOptionDialog(this, "Να διαγραφεί η λίστα '" + sp.getName() + "';", "Επιβεβαίωση διαγραφής", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (selectedOption == JOptionPane.YES_OPTION) {
+                for (PlaylistSong ps : sp.getPlaylistSongList()) {
+                    ps.getSong().getPlaylistSongList().remove(ps);
+                }
                 em.getTransaction().begin();
                 em.remove(sp);
                 em.getTransaction().commit();
@@ -367,13 +371,27 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                 Document doc = docBuilder.parse(file);
 
                 Playlist newPl = XmlHandler.buildPlaylistFromDocument(doc, em);
-                em.getTransaction().begin();
-                em.persist(newPl);
-                em.getTransaction().commit();
-                playlistList.add(newPl);
+                if (newPl != null) {
+                    String newName = newPl.getName();
+                    for (Playlist p : playlistList) {
+                        String g = p.getName();
+                        if (newName.toLowerCase().equals(g.toLowerCase())) {
+                            newName = newName + " [αντίγραφο]";
+                            JOptionPane.showMessageDialog(this, "Υπάρχει ήδη λίστα με το όνομα '" + g + "'. Η λίστα θα εισαχθεί με όνομα '" + newName + "'", "Προσοχή!", JOptionPane.WARNING_MESSAGE);
+                            newPl.setName(newName);
+                        }
+                    }
+                    em.getTransaction().begin();
+                    em.persist(newPl);
+                    em.getTransaction().commit();
+                    playlistList.add(newPl);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Το αρχείο xml δεν είναι έγκυρο!", "Σφάλμα", JOptionPane.WARNING_MESSAGE);
+                }
 
             } catch (ParserConfigurationException | SAXException | IOException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Η εισαγωγή του αρχείου xml απέτυχε...", "Σφάλμα", JOptionPane.WARNING_MESSAGE);
             }
         }
     }

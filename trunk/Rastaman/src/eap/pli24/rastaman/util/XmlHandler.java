@@ -23,12 +23,18 @@ package eap.pli24.rastaman.util;
 import eap.pli24.rastaman.entities.Playlist;
 import eap.pli24.rastaman.entities.PlaylistSong;
 import eap.pli24.rastaman.entities.Song;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,6 +55,9 @@ import org.w3c.dom.NodeList;
  */
 public final class XmlHandler {
 
+    private static final Logger LOGGER = Logger.getLogger(XmlHandler.class.getName());
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
+
     // ιδιωτικός δημιουργός που εξασφαλίζει ότι δεν μπορεί να υπάρξει κανένα στιγμιότυπο της κλάσης
     private XmlHandler() {
     }
@@ -61,8 +70,6 @@ public final class XmlHandler {
      * @throws ParserConfigurationException
      */
     public static Document buildDocumentFromPlaylist(Playlist pl) throws ParserConfigurationException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
-
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
@@ -123,26 +130,54 @@ public final class XmlHandler {
 
         Playlist playlist = new Playlist();
 
-        String name = doc.getElementsByTagName("name").item(0).getTextContent();
+        Node nameNode = doc.getElementsByTagName("name").item(0);
+        if (nameNode == null) {
+            return null;
+        }
+        String name = nameNode.getTextContent();
         playlist.setName(name);
-        playlist.setCreationDate(new Date());
 
-        //Node songList = doc.getElementsByTagName("songlist").item(0);
+        Node dateNode = doc.getElementsByTagName("creationdate").item(0);
+        if (dateNode == null) {
+            return null;
+        }
+        String date = dateNode.getTextContent();
+        try {
+            playlist.setCreationDate(sdf.parse(date));
+        } catch (ParseException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+            return null;
+        }
+
         NodeList nl = doc.getElementsByTagName("song");
 
+        List<Song> songList = new ArrayList<>();
         List<PlaylistSong> psList = new ArrayList();
+
+        // δημιουργία λίστας με τα προς εισαγωγή τραγούδια, ώστε να αποφευχθούν διπλοεισαγωγές
         for (int i = 0; i < nl.getLength(); i++) {
             Node n = nl.item(i);
-            long songId = Long.parseLong(((Element) n).getElementsByTagName("id").item(0).getTextContent());
-            Song song = em.find(Song.class, songId);
-            if (song != null) {
-                PlaylistSong ps = new PlaylistSong();
-                ps.setPlaylist(playlist);
-                ps.setSlot(i + 1);
-                ps.setSong(song);
-                psList.add(ps);
+            try {
+                long songId = Long.parseLong(((Element) n).getElementsByTagName("id").item(0).getTextContent());
+                Song song = em.find(Song.class, songId);
+                if (song != null && !songList.contains(song)) {
+                    songList.add(song);
+                }
+            } catch (Exception ex) {
+                return null;
             }
         }
+        
+        // δημιουργία Playlist
+        for (int i = 0; i < songList.size(); i++) {
+            Song song = songList.get(i);
+            PlaylistSong ps = new PlaylistSong();
+            ps.setPlaylist(playlist);
+            ps.setSlot(i + 1);
+            ps.setSong(song);
+            psList.add(ps);
+        }
+
         playlist.setPlaylistSongList(psList);
         return playlist;
     }

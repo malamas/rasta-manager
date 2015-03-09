@@ -28,9 +28,9 @@ import eap.pli24.rastaman.entities.Song;
 import eap.pli24.rastaman.ui.skins.SkinProvider;
 import eap.pli24.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,6 +47,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -63,6 +64,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 /**
+ * Η κλάση {@code PlaylistEditorPanel} είναι ένα {@code JPanel} για εμφάνιση ui
+ * για επεξεργασία μιας λίστας αναπαραγωγής.
  *
  * @author Apostolis Iakovakis
  * @author Nikos Karagiannis
@@ -86,7 +89,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        GridBagConstraints gridBagConstraints;
 
         tablesPanel = new JPanel();
         filler8 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
@@ -105,7 +107,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filler26 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
         dateTextField = new JTextField();
         filler25 = new Box.Filler(new Dimension(5, 50), new Dimension(5, 50), new Dimension(5, 50));
-        jComboBox1 = new JComboBox();
+        dateChangeComboBox = new JComboBox();
         filler17 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         filler20 = new Box.Filler(new Dimension(5, 5), new Dimension(5, 5), new Dimension(120, 5));
         durationPanel = new JPanel();
@@ -192,7 +194,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         dateabel.setLabelFor(dateTextField);
         dateabel.setText("Ημερομηνία:");
         dateabel.setAlignmentX(0.5F);
-        dateabel.setPreferredSize(new Dimension(60, 14));
         datePanel.add(dateabel);
         datePanel.add(filler26);
 
@@ -203,11 +204,16 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         datePanel.add(dateTextField);
         datePanel.add(filler25);
 
-        jComboBox1.setModel(new DefaultComboBoxModel(new String[] { "Διατήρηση αρχικής", "Ενημέρωση (σημερινή)" }));
-        jComboBox1.setMaximumSize(new Dimension(135, 32767));
-        jComboBox1.setMinimumSize(new Dimension(135, 20));
-        jComboBox1.setPreferredSize(new Dimension(135, 20));
-        datePanel.add(jComboBox1);
+        dateChangeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Διατήρηση αρχικής", "Ενημέρωση (σημερινή)" }));
+        dateChangeComboBox.setMaximumSize(new Dimension(135, 32767));
+        dateChangeComboBox.setMinimumSize(new Dimension(135, 20));
+        dateChangeComboBox.setPreferredSize(new Dimension(135, 20));
+        dateChangeComboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                dateChangeComboBoxActionPerformed(evt);
+            }
+        });
+        datePanel.add(dateChangeComboBox);
         datePanel.add(filler17);
 
         selectedSongPanel.add(datePanel);
@@ -228,6 +234,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         durationPanel.add(filler29);
 
         durationTextField.setEditable(false);
+        durationTextField.setHorizontalAlignment(JTextField.TRAILING);
         durationTextField.setMaximumSize(new Dimension(80, 20));
         durationTextField.setMinimumSize(new Dimension(80, 20));
         durationTextField.setPreferredSize(new Dimension(80, 20));
@@ -327,7 +334,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
         tablesPanel.add(songButtonPanel);
 
-        availableSongPanel.setMaximumSize(new Dimension(32767, 32767));
         availableSongPanel.setMinimumSize(new Dimension(50, 0));
         availableSongPanel.setPreferredSize(new Dimension(300, 0));
         availableSongPanel.setLayout(new BoxLayout(availableSongPanel, BoxLayout.PAGE_AXIS));
@@ -427,8 +433,9 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        save();
-        controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
+        if (save()) {
+            controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void upButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
@@ -447,6 +454,17 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_downButtonActionPerformed
 
+    private void dateChangeComboBoxActionPerformed(ActionEvent evt) {//GEN-FIRST:event_dateChangeComboBoxActionPerformed
+        switch (dateChangeComboBox.getSelectedIndex()) {
+            case 0:
+                dateTextField.setText(sdf.format(playlist.getCreationDate()));
+                break;
+            case 1:
+                dateTextField.setText(sdf.format(new Date()));
+                break;
+        }
+    }//GEN-LAST:event_dateChangeComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton addButton;
@@ -454,6 +472,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JTable availableSongTable;
     private JPanel buttonPanel;
     private JButton cancelButton;
+    private JComboBox dateChangeComboBox;
     private JPanel datePanel;
     private JTextField dateTextField;
     private JLabel dateabel;
@@ -495,7 +514,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private JLabel filterLabel;
     private JPanel filterPanel;
     private JTextField filterTextField;
-    private JComboBox jComboBox1;
     private JLabel nameLabel;
     private JPanel namePanel;
     private JTextField nameTextField;
@@ -517,6 +535,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Playlist playlist;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
+    private final DecimalFormat dcf = new DecimalFormat("#00");
     private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
     private Predicate<Song> titleOrPerformerContains;
     private List<Song> availableSongList;
@@ -525,6 +544,15 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private SongTableModel stm;
     private String filterString;
 
+    /**
+     * Δημιουργεί ένα {@code PlaylistEditorPanel} για επεξεργασία της λίστας
+     * {@code playlist} με ελεγκτή τον {@code controller}. Δέχεται αναφορά σε
+     * έναν {@code EntityManager} που θα χρησιμοποιήσει η φόρμα.
+     *
+     * @param controller ο ελεγκτής
+     * @param em ο EntityManager
+     * @param playlist η λίστα προς επεξεργασία
+     */
     public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
         this.controller = controller;
         this.em = em;
@@ -534,9 +562,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         initLists();
         initTables();
         initFurther();
-        test();
     }
 
+    /**
+     * Αρχικοποίεί τις λίστες επιλεγμένων και διαθέσιμων τραγουδιών.
+     */
     private void initLists() {
         // αρχικοποίηση λιστών (επιλεγμένων και διαθέσιμων)
         selectedSongList = new ArrayList<>();
@@ -612,17 +642,31 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         // ανανέωση πινάκων
         updateSelectedSongTable(-1);
         updateAvailableSongTable(-1);
+
+        // εγκατάσταση listener για παρακολούθηση μεταβολών επιλογής στους πίνακες
+        ListSelectionListener lsl = new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                updateButtons();
+            }
+        };
+        playlistSongTable.getSelectionModel().addListSelectionListener(lsl);
+        availableSongTable.getSelectionModel().addListSelectionListener(lsl);
     }
 
+    /**
+     * Αρχικοποίεί περαιτέρω στοιχεία του UI.
+     */
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
-        saveButton.setEnabled(false);
         nameTextField.setText(playlist.getName());
         dateTextField.setText(sdf.format(playlist.getCreationDate()));
 
+        // εγκατάσταση listener για παρακολούθηση μεταβολών του κειμένου του φίλτρου
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
@@ -640,6 +684,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
 
             }
         });
+
+        updateButtons();
     }
 
     /**
@@ -672,7 +718,6 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         // ανανέωση πινάκων
         updateSelectedSongTable(ins);
         updateAvailableSongTable(avSel);
-        saveButton.setEnabled(true);
     }
 
     /**
@@ -693,30 +738,48 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         updateSelectedSongTable(newSel);
 
         updateAvailableSongTable(0);
-        saveButton.setEnabled(true);
     }
 
     /**
-     * Εναλλάσει 
-     * @param firstIndex 
+     * Αντιμεταθέτει το τραγούδι στη θέση {@code firstIndex} της λίστας των
+     * επιλεγμένων με το επόμενο του.
+     *
+     * @param firstIndex η θέση του πρώτου τραγουδιού που θα αντιμετατεθεί
      */
     private void swapSelectedSongs(int firstIndex) {
         Song song = selectedSongList.remove(firstIndex);
         selectedSongList.add(firstIndex + 1, song);
-        saveButton.setEnabled(true);
     }
 
+    /**
+     * Καλείται για να ανανεώσει τα σχετικά στοιχεία του ui σε κάθε μεταβολή του
+     * κειμένου του φίλτρου.
+     */
     private void updateForFilterChange() {
         filterString = filterTextField.getText().toLowerCase();
         filteredList = getFilteredList();
         updateAvailableSongTable(0);
     }
 
+    /**
+     * Ανανεώνει την εμφάνιση του πίνακα των επιλεγμένων τραγουδιών, ορίζοντας
+     * ως επιλεγμένη σειρά την {@code newSel}.
+     *
+     * @param newSel η σειρά που ορίζεται ως επιλεγμένη
+     */
     private void updateSelectedSongTable(int newSel) {
         ((AbstractTableModel) playlistSongTable.getModel()).fireTableDataChanged();
         playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
+        durationTextField.setText(getFormattedTotalDuration());
     }
 
+    /**
+     * Ανανεώνει την εμφάνιση του πίνακα των διαθέσιμων τραγουδιών, ορίζοντας ως
+     * επιλεγμένη σειρά την {@code newSel}. Ανανεώνει επίσης την ετικέτα με το
+     * αποτέλεσμα (πλήθος εγγραφών) του φίλτρου.
+     *
+     * @param newSel η σειρά που ορίζεται ως επιλεγμένη
+     */
     private void updateAvailableSongTable(int newSel) {
         stm.setSongList(filteredList);
         stm.fireTableDataChanged();
@@ -727,33 +790,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filterCountLabel.setText("(" + Integer.toString(filteredList.size()) + "/" + availableSongList.size() + ")");
     }
 
-    private void save() {
-        // remove old songs
-        em.getTransaction().begin();
-        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
-            em.remove(ps);
-        }
-        em.getTransaction().commit();
-
-        // construct the list of new songs
-        List<PlaylistSong> psl = new ArrayList<>();
-        for (int i = 0; i < selectedSongList.size(); i++) {
-            PlaylistSong ps = new PlaylistSong();
-            ps.setSlot(i + 1);
-            ps.setPlaylist(playlist);
-            ps.setSong(selectedSongList.get(i));
-            psl.add(ps);
-        }
-
-        playlist.setName(nameTextField.getText());
-        playlist.setCreationDate(new Date());
-        playlist.setPlaylistSongList(psl);
-
-        em.getTransaction().begin();
-        em.merge(playlist);
-        em.getTransaction().commit();
-    }
-
+    /**
+     * Ενημερώνει την κατάσταση ενεργοποίησης των πλήκτρων προσθήκης/αφαίρεσης
+     * και μετακίνησης πάνω/κάτω, ανάλογα με τις επιλεγμένες σειρές στους δύο
+     * πίνακες.
+     */
     private void updateButtons() {
         int s = playlistSongTable.getSelectedRow();
         upButton.setEnabled(s > 0);
@@ -762,17 +803,86 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         addButton.setEnabled(availableSongTable.getSelectedRow() != -1);
     }
 
-    private void test() {
-        updateButtons();
+    /**
+     * Επιστρέφει τη συνολική διάρκεια των επιλεγμένων τραγουδιών στη μορφή
+     * [ω:]λλ:δδ.
+     *
+     * @return η συνολική διάρκεια
+     */
+    private String getFormattedTotalDuration() {
+        int d = selectedSongList.stream().mapToInt(s -> s.getDuration()).sum();
+        int h = d / 3600;
+        d = d % 3600;
+        // αν η διάρκεια υπερβαίνει τα 60 λεπτά τότε εμφανίζονται ώρες, αλλιώς μόνο λλ:δδ
+        return (((h > 0) ? h + ":" : "") + dcf.format(d / 60) + ":" + dcf.format(d % 60));
+    }
 
-        ListSelectionListener lsl = new ListSelectionListener() {
+    /**
+     * Επιχειρεί αποθήκευση της λίστας. Πραγματοποιεί ελέγχους νομιμότητας της
+     * λίστας, και επιστρέφει true/false αν η αποθήκευση ήταν επιτυχής ή όχι
+     * αντίστοιχα.
+     *
+     * @return true για επιτυχή αποθήκευση, false διαφορετικά
+     */
+    private boolean save() {
+        // έλεγχος ονόματος λίστας
+        String newName = nameTextField.getText();
+        if (newName.equals("")) {
+            JOptionPane.showMessageDialog(this, "Το όνομα της λίστας είναι κενό!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
 
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                updateButtons();
+        List<Playlist> playlistList = em.createQuery("SELECT p FROM Playlist p", Playlist.class).getResultList();
+        playlistList.remove(playlist);
+        for (Playlist p : playlistList) {
+            if (newName.toLowerCase().equals(p.getName().toLowerCase())) {
+                JOptionPane.showMessageDialog(this, "Υπάρχει ήδη λίστα με αυτό το όνομα!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
+                return false;
             }
-        };
-        playlistSongTable.getSelectionModel().addListSelectionListener(lsl);
-        availableSongTable.getSelectionModel().addListSelectionListener(lsl);
+        }
+
+        // έλεγχος διάρκειας λίστας
+        int d = selectedSongList.stream().mapToInt(s -> s.getDuration()).sum();
+        if (d < 1800) {
+            JOptionPane.showMessageDialog(this, "Η λίστα πρέπει να έχει διάρκεια τουλάχιστον 30 λεπτών!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        playlist.setName(nameTextField.getText());
+
+        // ορισμός ημερομηνίας δημιουργίας λίστας
+        if (dateChangeComboBox.getSelectedIndex() == 1) {
+            playlist.setCreationDate(new Date());
+        }
+
+        // αφαίρεση των τραγουδιών που τυχόν περιείχε η λίστα
+        em.getTransaction().begin();
+        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
+            ps.getSong().getPlaylistSongList().remove(ps);
+            em.remove(ps);
+        }
+        playlist.getPlaylistSongList().clear();
+        em.getTransaction().commit();
+
+        // δημιουργία νέας λίστας (<PlaylistSong>) τραγουδιών
+        List<PlaylistSong> psl = new ArrayList<>();
+        for (int i = 0; i < selectedSongList.size(); i++) {
+            PlaylistSong ps = new PlaylistSong();
+            ps.setSlot(i + 1);
+            ps.setPlaylist(playlist);
+            ps.setSong(selectedSongList.get(i));
+            ps.getSong().getPlaylistSongList().add(ps);
+            psl.add(ps);
+        }
+
+        playlist.setPlaylistSongList(psl);
+
+        em.getTransaction().begin();
+        em.persist(playlist);
+        em.getTransaction().commit();
+
+        em.clear();
+
+        return true;
     }
 }
