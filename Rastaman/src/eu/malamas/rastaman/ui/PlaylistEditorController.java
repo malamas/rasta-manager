@@ -42,10 +42,10 @@ public class PlaylistEditorController {
 
     private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
     private final DecimalFormat dcf = new DecimalFormat("#00");
-    private MainFrameController controller;
-    private EntityManager em;
-    private Playlist playlist;
-    private PlaylistEditorPanel panel;
+    private final MainFrameController controller;
+    private final EntityManager em;
+    private final Playlist playlist;
+    private final PlaylistEditorPanel panel;
     private Predicate<Song> titleOrPerformerContains;
     private List<Song> availableSongList;
     private List<Song> selectedSongList;
@@ -58,8 +58,15 @@ public class PlaylistEditorController {
         this.playlist = playlist;
         this.filterString = "";
         initLists();
+        this.panel = new PlaylistEditorPanel(this);
+    }
 
-        this.panel = new PlaylistEditorPanel(this, playlist);
+    public String getPlaylistName() {
+        return playlist.getName();
+    }
+
+    public Date getPlaylistCreationDate() {
+        return new Date(playlist.getCreationDate().getTime());
     }
 
     public PlaylistEditorPanel getPanel() {
@@ -71,11 +78,11 @@ public class PlaylistEditorController {
     }
 
     public List<Song> getSelectedSongList() {
-        return selectedSongList;
+        return Collections.unmodifiableList(selectedSongList);
     }
 
     public List<Song> getFilteredSongList() {
-        return filteredList;
+        return Collections.unmodifiableList(filteredList);
     }
 
     /**

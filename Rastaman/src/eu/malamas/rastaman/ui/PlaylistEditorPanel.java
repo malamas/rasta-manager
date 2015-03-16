@@ -447,7 +447,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private void dateChangeComboBoxActionPerformed(ActionEvent evt) {//GEN-FIRST:event_dateChangeComboBoxActionPerformed
         switch (dateChangeComboBox.getSelectedIndex()) {
             case 0:
-                dateTextField.setText(sdf.format(playlist.getCreationDate()));
+                dateTextField.setText(sdf.format(controller.getPlaylistCreationDate()));
                 break;
             case 1:
                 dateTextField.setText(sdf.format(new Date()));
@@ -522,21 +522,17 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
     private PlaylistEditorController controller;
-    private Playlist playlist;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
     private SongTableModel stm;
 
     /**
-     * Δημιουργεί ένα {@code PlaylistEditorPanel} για επεξεργασία της λίστας
-     * {@code playlist} με ελεγκτή τον {@code controller}. Δέχεται αναφορά σε
-     * έναν {@code EntityManager} που θα χρησιμοποιήσει η φόρμα.
+     * Δημιουργεί ένα {@code PlaylistEditorPanel} για επεξεργασία μιας λίστας με
+     * ελεγκτή τον {@code controller}.
      *
      * @param controller ο ελεγκτής
-     * @param playlist η λίστα προς επεξεργασία
      */
-    public PlaylistEditorPanel(PlaylistEditorController controller, Playlist playlist) {
+    public PlaylistEditorPanel(PlaylistEditorController controller) {
         this.controller = controller;
-        this.playlist = playlist;
         initComponents();
         initTables();
         initFurther();
@@ -612,8 +608,8 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         buttonPanel.setMaximumSize(new Dimension(32767, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
         buttonPanel.setMinimumSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
-        nameTextField.setText(playlist.getName());
-        dateTextField.setText(sdf.format(playlist.getCreationDate()));
+        nameTextField.setText(controller.getPlaylistName());
+        dateTextField.setText(sdf.format(controller.getPlaylistCreationDate()));
 
         // εγκατάσταση listener για παρακολούθηση μεταβολών του κειμένου του φίλτρου
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
