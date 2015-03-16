@@ -58,7 +58,7 @@ public class OrderedSongTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return ((songList == null) ? 1 : songList.size());
+        return ((songList == null) ? 0 : songList.size());
     }
 
     /**

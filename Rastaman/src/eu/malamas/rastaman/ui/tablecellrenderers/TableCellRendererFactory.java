@@ -46,20 +46,15 @@ public final class TableCellRendererFactory {
         SEX,
         DURATION
     }
-    private static final TableCellRenderer genericTableCellRenderer = new GenericTableCellRenderer();
-    private static final TableCellRenderer rightAlignedTableCellRenderer = new RightAlignedTableCellRenderer();
-    private static final TableCellRenderer dateTableCellRenderer = new DateTableCellRenderer();
-    private static final TableCellRenderer sexTableCellRenderer = new SexTableCellRenderer();
-    private static final TableCellRenderer durationTableCellRenderer = new DurationTableCellRenderer();
     private static final EnumMap<RendererType, TableCellRenderer> renderers = new EnumMap<>(RendererType.class);
 
     // στατική αρχικοποίηση EnumMap με τα στιγμιότυπα των renderer
     static {
-        renderers.put(RendererType.GENERIC, genericTableCellRenderer);
-        renderers.put(RendererType.GENERIC_RIGHT_ALIGNED, rightAlignedTableCellRenderer);
-        renderers.put(RendererType.DATE, dateTableCellRenderer);
-        renderers.put(RendererType.SEX, sexTableCellRenderer);
-        renderers.put(RendererType.DURATION, durationTableCellRenderer);
+        renderers.put(RendererType.GENERIC, new GenericTableCellRenderer());
+        renderers.put(RendererType.GENERIC_RIGHT_ALIGNED, new RightAlignedTableCellRenderer());
+        renderers.put(RendererType.DATE, new DateTableCellRenderer());
+        renderers.put(RendererType.SEX, new SexTableCellRenderer());
+        renderers.put(RendererType.DURATION, new DurationTableCellRenderer());
     }
 
     // ιδιωτικός δημιουργός που εξασφαλίζει ότι δεν μπορεί να υπάρξει κανένα στιγμιότυπο της κλάσης
