@@ -132,9 +132,11 @@ public final class SkinProvider {
             activeSkin = skin;
 
             // αλλαγή ενεργού skin, πρέπει να ενημερωθούν οι παρατηρητές
-            for (SkinObserver ob : observers) {
-                ob.update();
-            }
+            observers
+                    .stream()
+                    .forEach((ob) -> {
+                        ob.update();
+                    });
         }
     }
 

@@ -63,15 +63,6 @@ public class PlaylistSong implements Serializable {
     public PlaylistSong() {
     }
 
-    public PlaylistSong(Long playlistSongId) {
-        this.playlistSongId = playlistSongId;
-    }
-
-    public PlaylistSong(Long playlistSongId, int slot) {
-        this.playlistSongId = playlistSongId;
-        this.slot = slot;
-    }
-
     public Long getPlaylistSongId() {
         return playlistSongId;
     }

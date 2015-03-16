@@ -74,16 +74,6 @@ public class Playlist implements Serializable {
     public Playlist() {
     }
 
-    public Playlist(Long playlistId) {
-        this.playlistId = playlistId;
-    }
-
-    public Playlist(Long playlistId, String name, Date creationDate) {
-        this.playlistId = playlistId;
-        this.name = name;
-        this.creationDate = creationDate;
-    }
-
     public Long getPlaylistId() {
         return playlistId;
     }

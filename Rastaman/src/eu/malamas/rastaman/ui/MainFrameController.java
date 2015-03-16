@@ -263,7 +263,8 @@ public class MainFrameController implements Runnable {
                 break;
             case PLAYLIST_EDITOR:
                 Playlist playlist = (Playlist) o;
-                editor = new PlaylistEditorPanel(this, em, playlist);
+                PlaylistEditorController pec = new PlaylistEditorController(this, em, playlist);
+                editor = pec.getPanel();
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
                 break;

@@ -23,24 +23,14 @@ package eu.malamas.rastaman.ui;
 import eu.malamas.rastaman.ui.tablemodels.SongTableModel;
 import eu.malamas.rastaman.ui.tablemodels.OrderedSongTableModel;
 import eu.malamas.rastaman.model.Playlist;
-import eu.malamas.rastaman.model.PlaylistSong;
-import eu.malamas.rastaman.model.Song;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -48,7 +38,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -422,7 +411,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
+        controller.goBack();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void removeButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
@@ -434,23 +423,23 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if (save()) {
-            controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
+        if (controller.save()) {
+            controller.goBack();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void upButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
         int s = playlistSongTable.getSelectedRow();
         if (s > 0) {
-            Collections.swap(selectedSongList, s, s - 1);
+            controller.swapSongs(s, s - 1);
             updateSelectedSongTable(s - 1);
         }
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
         int s = playlistSongTable.getSelectedRow();
-        if (s < selectedSongList.size() - 1) {
-            Collections.swap(selectedSongList, s, s + 1);
+        if (s < controller.getSelectedSongList().size() - 1) {
+            controller.swapSongs(s, s + 1);
             updateSelectedSongTable(s + 1);
         }
     }//GEN-LAST:event_downButtonActionPerformed
@@ -532,18 +521,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     // Ο δικός μας κώδικας αρχίζει εδώ, για να είναι
     // εμφανώς διαχωρισμένος από τον αυτόματα δημιουργούμενο
     //
-    private MainFrameController controller;
-    private EntityManager em;
+    private PlaylistEditorController controller;
     private Playlist playlist;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
-    private final DecimalFormat dcf = new DecimalFormat("#00");
-    private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
-    private Predicate<Song> titleOrPerformerContains;
-    private List<Song> availableSongList;
-    private List<Song> selectedSongList;
-    private List<Song> filteredList;
     private SongTableModel stm;
-    private String filterString;
 
     /**
      * Δημιουργεί ένα {@code PlaylistEditorPanel} για επεξεργασία της λίστας
@@ -551,47 +532,14 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      * έναν {@code EntityManager} που θα χρησιμοποιήσει η φόρμα.
      *
      * @param controller ο ελεγκτής
-     * @param em ο EntityManager
      * @param playlist η λίστα προς επεξεργασία
      */
-    public PlaylistEditorPanel(MainFrameController controller, EntityManager em, Playlist playlist) {
+    public PlaylistEditorPanel(PlaylistEditorController controller, Playlist playlist) {
         this.controller = controller;
-        this.em = em;
         this.playlist = playlist;
-        this.filterString = "";
         initComponents();
-        initLists();
         initTables();
         initFurther();
-    }
-
-    /**
-     * Αρχικοποίεί τις λίστες επιλεγμένων και διαθέσιμων τραγουδιών.
-     */
-    private void initLists() {
-        // αρχικοποίηση λιστών (επιλεγμένων και διαθέσιμων)
-        selectedSongList = new ArrayList<>();
-        availableSongList = new ArrayList<>();
-
-        // τα διαθέσιμα προέρχονται από τη ΒΔ
-        availableSongList.addAll(em.createNamedQuery("Song.findAll", Song.class).getResultList());
-
-        // Προσθήκη τραγουδιών λίστας σε επιλεγμένα και αφαίρεση από τα διαθέσιμα
-        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
-            availableSongList.remove(ps.getSong());
-            selectedSongList.add(ps.getSong());
-        }
-
-        // αλφαβητική ταξινόμηση λίστας διαθέσιμων
-        availableSongList.sort(songTitleComparator);
-
-        // αρχικοποίηση λίστας φίλτρου
-        filteredList = new ArrayList<>(availableSongList);
-
-        // Δημιουργία Predicate<Song> για έλεγχο εμφάνισης κειμένου φίλτρου σε τίτλο ή ερμηνευτή (Java 8 feature)
-        Predicate<Song> titleContains = (Song t) -> t.getTitle().toLowerCase().contains(filterString);
-        Predicate<Song> performerContains = (Song t) -> t.getAlbumId().getPerformerScreenName().toLowerCase().contains(filterString);
-        titleOrPerformerContains = titleContains.or(performerContains);
     }
 
     /**
@@ -601,10 +549,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      */
     private void initTables() {
         // εγκατάσταση μοντέλου πίνακα επιλεγμένων
-        playlistSongTable.setModel(new OrderedSongTableModel(selectedSongList));
+        playlistSongTable.setModel(new OrderedSongTableModel(controller.getSelectedSongList()));
 
         // εγκατάσταση μοντέλου πίνακα διαθέσιμων
-        stm = new SongTableModel(selectedSongList);
+        stm = new SongTableModel(controller.getFilteredSongList());
         availableSongTable.setModel(stm);
 
         // ρύθμιση στηλών πίνακα επιλεγμένων (επικεφαλίδες, πλάτη, renderers)
@@ -690,34 +638,14 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Επιστρέφει {@code List<Song>} που περιέχει εκείνα τα στοιχεία της λίστας
-     * διαθέσιμων που περιέχουν το {@code filterString} είτε στον τίτλο είτε στο
-     * όνομα του ερμηνευτή.
-     *
-     * @return η φιλτραρισμένη λίστα
-     */
-    private List<Song> getFilteredList() {
-        return availableSongList
-                .stream()
-                .filter(titleOrPerformerContains)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * Προσθέτει το επιλεγμένο στον πίνακα διαθέσιμων τραγούδι στη λίστα των
      * επιλεγμένων και το αφαιρεί από τη λίστα των διαθέσιμων.
      */
     private void addSongToList() {
         int avSel = availableSongTable.getSelectedRow();
-        Song song = filteredList.remove(avSel);
-        availableSongList.remove(song);
-
-        // η προσθήκη γίνεται στην επιλεγμένη σειρά του πίνακα επιλεγμένων,
-        // ή στο τέλος της λίστας (και του πίνακα) αν δεν υπάρχει επιλογή
         int s = playlistSongTable.getSelectedRow();
-        int e = selectedSongList.size();
-        int ins = ((s == -1) ? e : s);
-        selectedSongList.add(ins, song);
+
+        int ins = controller.addSongToList(avSel, s);
 
         // ανανέωση πινάκων
         updateSelectedSongTable(ins);
@@ -730,17 +658,9 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      */
     private void removeSongFromList() {
         int sel = playlistSongTable.getSelectedRow();
-        Song song = selectedSongList.remove(sel);
-        availableSongList.add(song);
-        availableSongList.sort(songTitleComparator);
-        filteredList = getFilteredList();
+        int newSel = controller.removeSongFromList(sel);
 
-        int newSel = -1;
-        if (!selectedSongList.isEmpty()) {
-            newSel = ((sel < selectedSongList.size()) ? sel : sel - 1);
-        }
         updateSelectedSongTable(newSel);
-
         updateAvailableSongTable(0);
     }
 
@@ -749,8 +669,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      * κειμένου του φίλτρου.
      */
     private void updateForFilterChange() {
-        filterString = filterTextField.getText().toLowerCase();
-        filteredList = getFilteredList();
+        controller.updateForFilterChange(filterTextField.getText().toLowerCase());
         updateAvailableSongTable(0);
     }
 
@@ -763,7 +682,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private void updateSelectedSongTable(int newSel) {
         ((AbstractTableModel) playlistSongTable.getModel()).fireTableDataChanged();
         playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
-        durationTextField.setText(getFormattedTotalDuration());
+        durationTextField.setText(controller.getFormattedTotalDuration());
     }
 
     /**
@@ -774,13 +693,14 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      * @param newSel η σειρά που ορίζεται ως επιλεγμένη
      */
     private void updateAvailableSongTable(int newSel) {
-        stm.setSongList(filteredList);
+        stm.setSongList(controller.getFilteredSongList());
         stm.fireTableDataChanged();
-        if (newSel >= filteredList.size()) {
-            newSel = filteredList.size() - 1;
+        int fs = controller.getFilteredSongList().size();
+        if (newSel >= fs) {
+            newSel = fs - 1;
         }
         availableSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
-        filterCountLabel.setText("(" + Integer.toString(filteredList.size()) + "/" + availableSongList.size() + ")");
+        filterCountLabel.setText("(" + fs + "/" + controller.getAvailableSongCount() + ")");
     }
 
     /**
@@ -791,99 +711,16 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private void updateButtons() {
         int s = playlistSongTable.getSelectedRow();
         upButton.setEnabled(s > 0);
-        downButton.setEnabled(s != -1 && s < selectedSongList.size() - 1);
+        downButton.setEnabled(s != -1 && s < controller.getSelectedSongList().size() - 1);
         removeButton.setEnabled(s != -1);
         addButton.setEnabled(availableSongTable.getSelectedRow() != -1);
     }
 
-    /**
-     * Επιστρέφει τη συνολική διάρκεια των επιλεγμένων τραγουδιών στη μορφή
-     * [ω:]λλ:δδ.
-     *
-     * @return η συνολική διάρκεια
-     */
-    private String getFormattedTotalDuration() {
-        int d = selectedSongList
-                .stream()
-                .mapToInt(s -> s.getDuration())
-                .sum();
-
-        int h = d / 3600;
-        d = d % 3600;
-        // αν η διάρκεια υπερβαίνει τα 60 λεπτά τότε εμφανίζονται ώρες, αλλιώς μόνο λλ:δδ
-        return (((h > 0) ? h + ":" : "") + dcf.format(d / 60) + ":" + dcf.format(d % 60));
+    public int getDateChangeComboBoxSelectedIndex() {
+        return dateChangeComboBox.getSelectedIndex();
     }
 
-    /**
-     * Επιχειρεί αποθήκευση της λίστας. Πραγματοποιεί ελέγχους νομιμότητας της
-     * λίστας, και επιστρέφει true/false αν η αποθήκευση ήταν επιτυχής ή όχι
-     * αντίστοιχα.
-     *
-     * @return true για επιτυχή αποθήκευση, false διαφορετικά
-     */
-    private boolean save() {
-        // έλεγχος ονόματος λίστας
-        String newName = nameTextField.getText();
-        if (newName.equals("")) {
-            JOptionPane.showMessageDialog(this, "Το όνομα της λίστας είναι κενό!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        List<Playlist> playlistList = em.createQuery("SELECT p FROM Playlist p", Playlist.class).getResultList();
-        playlistList.remove(playlist);
-        for (Playlist p : playlistList) {
-            if (newName.toLowerCase().equals(p.getName().toLowerCase())) {
-                JOptionPane.showMessageDialog(this, "Υπάρχει ήδη λίστα με αυτό το όνομα!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
-                return false;
-            }
-        }
-
-        // έλεγχος διάρκειας λίστας
-        int d = selectedSongList
-                .stream()
-                .mapToInt(s -> s.getDuration())
-                .sum();
-
-        if (d < 1800) {
-            JOptionPane.showMessageDialog(this, "Η λίστα πρέπει να έχει διάρκεια τουλάχιστον 30 λεπτών!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        playlist.setName(nameTextField.getText());
-
-        // ορισμός ημερομηνίας δημιουργίας λίστας
-        if (dateChangeComboBox.getSelectedIndex() == 1) {
-            playlist.setCreationDate(new Date());
-        }
-
-        // αφαίρεση των τραγουδιών που τυχόν περιείχε η λίστα
-        em.getTransaction().begin();
-        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
-            ps.getSong().getPlaylistSongList().remove(ps);
-            em.remove(ps);
-        }
-        playlist.getPlaylistSongList().clear();
-        em.getTransaction().commit();
-
-        // δημιουργία νέας λίστας (<PlaylistSong>) τραγουδιών
-        List<PlaylistSong> psl = new ArrayList<>();
-        for (int i = 0; i < selectedSongList.size(); i++) {
-            PlaylistSong ps = new PlaylistSong();
-            ps.setSlot(i + 1);
-            ps.setPlaylist(playlist);
-            ps.setSong(selectedSongList.get(i));
-            ps.getSong().getPlaylistSongList().add(ps);
-            psl.add(ps);
-        }
-
-        playlist.setPlaylistSongList(psl);
-
-        em.getTransaction().begin();
-        em.persist(playlist);
-        em.getTransaction().commit();
-
-        em.clear();
-
-        return true;
+    public String getNameTextFieldText() {
+        return nameTextField.getText();
     }
 }
