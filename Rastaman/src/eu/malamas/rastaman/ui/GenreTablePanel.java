@@ -174,7 +174,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         //¨Ανοιγμα της φόρμας επεξεργασίας Είδους μουσικής με
         // παράμετρο νέο είδος μουσικής
-        controller.showGenreEditor(new MusicGenre());
+        controller.switchToEditor(MainFrameController.EditorType.GENRE_EDITOR, new MusicGenre());
     }//GEN-LAST:event_newButtonActionPerformed
 
     //κλίκ στο πληκτρο Επεξεργασία Είδους Μουσικής
@@ -185,7 +185,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
         int selectedIndex = genreTable.getSelectedRow();
         if (selectedIndex != -1) {
             MusicGenre selectedGenre = musicgenreList.get(selectedIndex);
-            controller.showGenreEditor(selectedGenre);
+            controller.switchToEditor(MainFrameController.EditorType.GENRE_EDITOR, selectedGenre);
         }
     }//GEN-LAST:event_editButtonActionPerformed
     //κλίκ στο πλήκτρο Διαγραφή Ειδους Μουσικής

@@ -199,7 +199,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         //¨Ανοιγμα της φόρμας επεξεργασίας καλιτέχνη με
         // παράμετρο νέο καλιτέχνη
-        controller.showArtistEditor(new Artist());
+        controller.switchToEditor(MainFrameController.EditorType.ARTIST_EDITOR, new Artist());
     }//GEN-LAST:event_newButtonActionPerformed
 
     //κλίκ στο πληκτρο Επεξεργασία Καλιτέχνη
@@ -210,7 +210,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         int selectedIndex = artistTable.getSelectedRow();
         if (selectedIndex != -1) {
             Artist selectedArtist = artistList.get(selectedIndex);
-            controller.showArtistEditor(selectedArtist);
+            controller.switchToEditor(MainFrameController.EditorType.ARTIST_EDITOR, selectedArtist);
         }
     }//GEN-LAST:event_editButtonActionPerformed
     //κλίκ στο πλήκτρο Διαγραφή καλιτέχνη

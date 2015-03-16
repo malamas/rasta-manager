@@ -75,6 +75,20 @@ public class MainFrameController implements Runnable {
         }
     }
 
+    /**
+     * enum με σταθερές για τα διαφορετικά editor {@code JPanel} του UI.
+     */
+    public enum EditorType {
+
+        ARTIST_EDITOR,
+        GROUP_EDITOR,
+        ARTIST_ALBUM_EDITOR,
+        GROUP_ALBUM_EDITOR,
+        PLAYLIST_EDITOR,
+        LABEL_EDITOR,
+        GENRE_EDITOR
+    }
+
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
     private EntityManager em;
     private MainFrame mainFrame;
@@ -215,87 +229,58 @@ public class MainFrameController implements Runnable {
     }
 
     /**
-     * Δημιουργεί και εμφανίζει ένα {@code ArtistEditorPanel} για επεξεργασία
-     * του καλλιτέχνη {@code artist}.
+     * Αντικαθιστά το τρέχον panel με νέο editor panel τύπου {@code et}.
      *
-     * @param artist ο καλλιτέχνης προς επεξεργασία
+     * @param et ο τύπος του editor που θα καταλάβει τον κύριο χώρο στο παράθυρο
+     * @param o το αντικείμενο που προωθείται για επεξεργασία στον νέο editor
      */
-    public void showArtistEditor(Artist artist) {
-        ArtistEditorPanel editor = new ArtistEditorPanel(this, em, artist);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος Καλλιτέχνης"));
-    }
+    public void switchToEditor(EditorType et, Object o) {
+        JPanel editor;
+        switch (et) {
+            case ARTIST_EDITOR:
+                Artist artist = (Artist) o;
+                editor = new ArtistEditorPanel(this, em, artist);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος Καλλιτέχνης"));
+                break;
+            case GROUP_EDITOR:
+                Musicgroup group = (Musicgroup) o;
+                editor = new GroupEditorPanel(this, em, group);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο Συγκρότημα"));
+                break;
+            case ARTIST_ALBUM_EDITOR:
+                Album album1 = (Album) o;
+                editor = new ArtistAlbumEditorPanel(this, em, album1);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album1.getTitle() != null) ? album1.getTitle() : "Νέο Άλμπουμ"));
+                break;
+            case GROUP_ALBUM_EDITOR:
+                Album album2 = (Album) o;
+                editor = new GroupAlbumEditorPanel(this, em, album2);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album2.getTitle() != null) ? album2.getTitle() : "Νέο Άλμπουμ"));
+                break;
+            case PLAYLIST_EDITOR:
+                Playlist playlist = (Playlist) o;
+                editor = new PlaylistEditorPanel(this, em, playlist);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
+                break;
+            case LABEL_EDITOR:
+                Label label = (Label) o;
+                editor = new LabelEditorPanel(this, em, label);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
+                break;
+            case GENRE_EDITOR:
+                MusicGenre genre = (MusicGenre) o;
+                editor = new GenreEditorPanel(this, em, genre);
+                displayPanel(editor);
+                headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((genre.getName() != null) ? genre.getName() : "Νέο Είδος Μουσικής"));
+                break;
+        }
 
-    /**
-     * Δημιουργεί και εμφανίζει ένα {@code GroupEditorPanel} για επεξεργασία του
-     * συγκροτήματος {@code group}.
-     *
-     * @param group το συγκρότημα προς επεξεργασία
-     */
-    public void showGroupEditor(Musicgroup group) {
-        GroupEditorPanel editor = new GroupEditorPanel(this, em, group);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο Συγκρότημα"));
-    }
-
-    /**
-     * Δημιουργεί και εμφανίζει ένα {@code ArtistAlbumEditorPanel} για
-     * επεξεργασία του άλμπουμ καλλιτέχνη {@code album}.
-     *
-     * @param album το άλμπουμ προς επεξεργασία
-     */
-    public void showArtistAlbumEditor(Album album) {
-        ArtistAlbumEditorPanel editor = new ArtistAlbumEditorPanel(this, em, album);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
-    }
-
-    /**
-     * Δημιουργεί και εμφανίζει ένα {@code GroupAlbumEditorPanel} για
-     * επεξεργασία του άλμπουμ συγκροτήματος {@code album}.
-     *
-     * @param album το άλμπουμ προς επεξεργασία
-     */
-    public void showGroupAlbumEditor(Album album) {
-        GroupAlbumEditorPanel editor = new GroupAlbumEditorPanel(this, em, album);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album.getTitle() != null) ? album.getTitle() : "Νέο Άλμπουμ"));
-    }
-
-    /**
-     * Δημιουργεί και εμφανίζει ένα {@code PlaylistEditorPanel} για επεξεργασία
-     * της λίστας αναπαραγωγής {@code playlist}.
-     *
-     * @param playlist η λίστα προς επεξεργασία
-     */
-    public void showPlaylistEditor(Playlist playlist) {
-        PlaylistEditorPanel editor = new PlaylistEditorPanel(this, em, playlist);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
-    }
-
-    /**
-     * Δημιουργεί και εμφανίζει ένα {@code LabelEditorPanel} για επεξεργασία της
-     * εταιρίας παραγωγής {@code label}.
-     *
-     * @param label η εταιρία προς επεξεργασία
-     */
-    public void showLabelEditor(Label label) {
-        LabelEditorPanel editor = new LabelEditorPanel(this, em, label);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
-    }
-
-    /**
-     * Δημιουργεί και εμφανίζει ένα {@code GenreEditorPanel} για επεξεργασία του
-     * είδους μουσικής {@code musicgenre}.
-     *
-     * @param musicgenre το είδος προς επεξεργασία
-     */
-    public void showGenreEditor(MusicGenre musicgenre) {
-        GenreEditorPanel editor = new GenreEditorPanel(this, em, musicgenre);
-        displayPanel(editor);
-        headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((musicgenre.getName() != null) ? musicgenre.getName() : "Νέο Είδος Μουσικής"));
     }
 
     /**

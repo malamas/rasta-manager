@@ -203,7 +203,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
     // κλικ στο πλήκτρο Εισαγωγή νέου Αλμπουμ
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         // Ανοιγμα της φόρμας επεξεργασίας Αλμπουμ για νέο Αλμπουμ
-        controller.showArtistAlbumEditor(new Album());
+        controller.switchToEditor(MainFrameController.EditorType.ARTIST_ALBUM_EDITOR, new Album());
     }//GEN-LAST:event_newButtonActionPerformed
 
     // κλικ στο πλήκτρο Επεξεργασία Αλμπουμ
@@ -212,7 +212,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         int selectedIndex = artistAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
             Album selectedAlbum = albumList.get(selectedIndex);
-            controller.showArtistAlbumEditor(selectedAlbum);
+            controller.switchToEditor(MainFrameController.EditorType.ARTIST_ALBUM_EDITOR, selectedAlbum);
         }
     }//GEN-LAST:event_editButtonActionPerformed
 

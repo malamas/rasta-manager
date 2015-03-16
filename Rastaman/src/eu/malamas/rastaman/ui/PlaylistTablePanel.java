@@ -244,7 +244,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
             // ανάκτηση λίστας προς επεξεργασία
             Playlist sp = playlistList.get(selectedIndex);
             // αίτημα για μετάβαση στον PlaylistEditor
-            controller.showPlaylistEditor(sp);
+            controller.switchToEditor(MainFrameController.EditorType.PLAYLIST_EDITOR, sp);
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -284,7 +284,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         newPlaylist.setCreationDate(new Date());
         newPlaylist.setPlaylistSongList(Collections.emptyList());
         // αίτημα για μετάβαση στον PlaylistEditor
-        controller.showPlaylistEditor(newPlaylist);
+        controller.switchToEditor(MainFrameController.EditorType.PLAYLIST_EDITOR, newPlaylist);
     }//GEN-LAST:event_newButtonActionPerformed
 
 

@@ -196,7 +196,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {
             Musicgroup selectedMusicgroup = musicgroupList.get(selectedIndex);
-            controller.showGroupEditor(selectedMusicgroup);
+            controller.switchToEditor(MainFrameController.EditorType.GROUP_EDITOR, selectedMusicgroup);
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -204,7 +204,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         //¨Ανοιγμα της φόρμας επεξεργασίας συγκροτήματος με
         // παράμετρο νέο συγκρότημα
-        controller.showGroupEditor(new Musicgroup());
+        controller.switchToEditor(MainFrameController.EditorType.GROUP_EDITOR, new Musicgroup());
     }//GEN-LAST:event_newButtonActionPerformed
 
 
@@ -262,7 +262,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
     // Μέθοδος deleteGroup()
     // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή συγκροτήματος και αφου κάνει τους 
     // απαραίτητους ελέγχους διαγράφει το επιλεγμένο συγκρότημα
-
     private void deleteGroup() {
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {

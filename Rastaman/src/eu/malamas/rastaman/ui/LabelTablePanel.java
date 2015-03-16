@@ -181,7 +181,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         //¨Ανοιγμα της φόρμας επεξεργασίας Εταιρίας με
         // παράμετρο νέο Εταιρία
-        controller.showLabelEditor(new Label());
+        controller.switchToEditor(MainFrameController.EditorType.LABEL_EDITOR, new Label());
     }//GEN-LAST:event_newButtonActionPerformed
 
     //κλίκ στο πληκτρο Επεξεργασία Εταιρίας
@@ -192,7 +192,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
         int selectedIndex = labelTable.getSelectedRow();
         if (selectedIndex != -1) {
             Label selectedLabel = labelList.get(selectedIndex);
-            controller.showLabelEditor(selectedLabel);
+            controller.switchToEditor(MainFrameController.EditorType.LABEL_EDITOR, selectedLabel);
         }
     }//GEN-LAST:event_editButtonActionPerformed
     //κλίκ στο πλήκτρο Διαγραφή Εταιρίας
