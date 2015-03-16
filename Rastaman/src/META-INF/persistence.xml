@@ -2,14 +2,14 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="RastamanPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>eap.pli24.rastaman.entities.Artist</class>
-    <class>eap.pli24.rastaman.entities.Song</class>
-    <class>eap.pli24.rastaman.entities.Playlist</class>
-    <class>eap.pli24.rastaman.entities.Album</class>
-    <class>eap.pli24.rastaman.entities.Label</class>
-    <class>eap.pli24.rastaman.entities.Musicgroup</class>
-    <class>eap.pli24.rastaman.entities.PlaylistSong</class>
-    <class>eap.pli24.rastaman.entities.MusicGenre</class>
+    <class>eu.malamas.rastaman.model.Artist</class>
+    <class>eu.malamas.rastaman.model.Musicgroup</class>
+    <class>eu.malamas.rastaman.model.Label</class>
+    <class>eu.malamas.rastaman.model.MusicGenre</class>
+    <class>eu.malamas.rastaman.model.Song</class>
+    <class>eu.malamas.rastaman.model.Playlist</class>
+    <class>eu.malamas.rastaman.model.PlaylistSong</class>
+    <class>eu.malamas.rastaman.model.Album</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rastaman"/>
       <property name="javax.persistence.jdbc.user" value="rastaman"/>
