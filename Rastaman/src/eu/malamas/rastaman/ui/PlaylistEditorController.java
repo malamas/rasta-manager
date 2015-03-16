@@ -23,7 +23,6 @@ package eu.malamas.rastaman.ui;
 import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.model.PlaylistSong;
 import eu.malamas.rastaman.model.Song;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,7 +40,6 @@ import javax.swing.JOptionPane;
 public class PlaylistEditorController {
 
     private final Comparator<Song> songTitleComparator = (Song s1, Song s2) -> (s1.getTitle().compareTo(s2.getTitle()));
-    private final DecimalFormat dcf = new DecimalFormat("#00");
     private final MainFrameController controller;
     private final EntityManager em;
     private final Playlist playlist;
@@ -139,21 +137,16 @@ public class PlaylistEditorController {
     }
 
     /**
-     * Επιστρέφει τη συνολική διάρκεια των επιλεγμένων τραγουδιών στη μορφή
-     * [ω:]λλ:δδ.
+     * Επιστρέφει τη συνολική διάρκεια των επιλεγμένων τραγουδιών σε
+     * δευτερόλεπτα.
      *
      * @return η συνολική διάρκεια
      */
-    public String getFormattedTotalDuration() {
-        int d = selectedSongList
+    public int getSelectedTotalDuration() {
+        return selectedSongList
                 .stream()
                 .mapToInt(s -> s.getDuration())
                 .sum();
-
-        int h = d / 3600;
-        d = d % 3600;
-        // αν η διάρκεια υπερβαίνει τα 60 λεπτά τότε εμφανίζονται ώρες, αλλιώς μόνο λλ:δδ
-        return (((h > 0) ? h + ":" : "") + dcf.format(d / 60) + ":" + dcf.format(d % 60));
     }
 
     /**
@@ -228,12 +221,7 @@ public class PlaylistEditorController {
         }
 
         // έλεγχος διάρκειας λίστας
-        int d = selectedSongList
-                .stream()
-                .mapToInt(s -> s.getDuration())
-                .sum();
-
-        if (d < 1800) {
+        if (getSelectedTotalDuration() < 1800) {
             JOptionPane.showMessageDialog(panel, "Η λίστα πρέπει να έχει διάρκεια τουλάχιστον 30 λεπτών!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
             return false;
         }

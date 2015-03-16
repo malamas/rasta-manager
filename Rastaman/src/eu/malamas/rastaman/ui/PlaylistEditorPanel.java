@@ -22,12 +22,12 @@ package eu.malamas.rastaman.ui;
 
 import eu.malamas.rastaman.ui.tablemodels.SongTableModel;
 import eu.malamas.rastaman.ui.tablemodels.OrderedSongTableModel;
-import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -523,6 +523,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     //
     private PlaylistEditorController controller;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR"));
+    private final DecimalFormat dcf = new DecimalFormat("#00");
     private SongTableModel stm;
 
     /**
@@ -678,7 +679,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private void updateSelectedSongTable(int newSel) {
         ((AbstractTableModel) playlistSongTable.getModel()).fireTableDataChanged();
         playlistSongTable.getSelectionModel().setSelectionInterval(newSel, newSel);
-        durationTextField.setText(controller.getFormattedTotalDuration());
+        durationTextField.setText(getFormattedTotalDuration());
     }
 
     /**
@@ -710,6 +711,20 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         downButton.setEnabled(s != -1 && s < controller.getSelectedSongList().size() - 1);
         removeButton.setEnabled(s != -1);
         addButton.setEnabled(availableSongTable.getSelectedRow() != -1);
+    }
+
+    /**
+     * Επιστρέφει τη συνολική διάρκεια των επιλεγμένων τραγουδιών στη μορφή
+     * [ω:]λλ:δδ.
+     *
+     * @return η συνολική διάρκεια
+     */
+    private String getFormattedTotalDuration() {
+        int d = controller.getSelectedTotalDuration();
+        int h = d / 3600;
+        d = d % 3600;
+        // αν η διάρκεια υπερβαίνει τα 60 λεπτά τότε εμφανίζονται ώρες, αλλιώς μόνο λλ:δδ
+        return (((h > 0) ? h + ":" : "") + dcf.format(d / 60) + ":" + dcf.format(d % 60));
     }
 
     public int getDateChangeComboBoxSelectedIndex() {
