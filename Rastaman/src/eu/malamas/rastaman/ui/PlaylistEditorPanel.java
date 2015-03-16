@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -441,7 +442,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private void upButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
         int s = playlistSongTable.getSelectedRow();
         if (s > 0) {
-            swapSelectedSongs(s - 1);
+            Collections.swap(selectedSongList, s, s - 1);
             updateSelectedSongTable(s - 1);
         }
     }//GEN-LAST:event_upButtonActionPerformed
@@ -449,7 +450,7 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
     private void downButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
         int s = playlistSongTable.getSelectedRow();
         if (s < selectedSongList.size() - 1) {
-            swapSelectedSongs(s);
+            Collections.swap(selectedSongList, s, s + 1);
             updateSelectedSongTable(s + 1);
         }
     }//GEN-LAST:event_downButtonActionPerformed
@@ -696,7 +697,10 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      * @return η φιλτραρισμένη λίστα
      */
     private List<Song> getFilteredList() {
-        return availableSongList.stream().filter(titleOrPerformerContains).collect(Collectors.toList());
+        return availableSongList
+                .stream()
+                .filter(titleOrPerformerContains)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -732,23 +736,12 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         filteredList = getFilteredList();
 
         int newSel = -1;
-        if (selectedSongList.size() != 0) {
+        if (!selectedSongList.isEmpty()) {
             newSel = ((sel < selectedSongList.size()) ? sel : sel - 1);
         }
         updateSelectedSongTable(newSel);
 
         updateAvailableSongTable(0);
-    }
-
-    /**
-     * Αντιμεταθέτει το τραγούδι στη θέση {@code firstIndex} της λίστας των
-     * επιλεγμένων με το επόμενο του.
-     *
-     * @param firstIndex η θέση του πρώτου τραγουδιού που θα αντιμετατεθεί
-     */
-    private void swapSelectedSongs(int firstIndex) {
-        Song song = selectedSongList.remove(firstIndex);
-        selectedSongList.add(firstIndex + 1, song);
     }
 
     /**
@@ -810,7 +803,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
      * @return η συνολική διάρκεια
      */
     private String getFormattedTotalDuration() {
-        int d = selectedSongList.stream().mapToInt(s -> s.getDuration()).sum();
+        int d = selectedSongList
+                .stream()
+                .mapToInt(s -> s.getDuration())
+                .sum();
+
         int h = d / 3600;
         d = d % 3600;
         // αν η διάρκεια υπερβαίνει τα 60 λεπτά τότε εμφανίζονται ώρες, αλλιώς μόνο λλ:δδ
@@ -842,7 +839,11 @@ public class PlaylistEditorPanel extends javax.swing.JPanel {
         }
 
         // έλεγχος διάρκειας λίστας
-        int d = selectedSongList.stream().mapToInt(s -> s.getDuration()).sum();
+        int d = selectedSongList
+                .stream()
+                .mapToInt(s -> s.getDuration())
+                .sum();
+
         if (d < 1800) {
             JOptionPane.showMessageDialog(this, "Η λίστα πρέπει να έχει διάρκεια τουλάχιστον 30 λεπτών!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
             return false;
