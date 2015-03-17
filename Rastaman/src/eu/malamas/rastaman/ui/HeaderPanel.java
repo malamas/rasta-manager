@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -30,9 +30,6 @@ import javax.swing.JLabel;
  * Η κλάση {@code HeaderPanel} είναι ένα {@code JPanel} για την εμφάνιση
  * επικεφαλίδων στο παράθυρο της εφαρμογής.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class HeaderPanel extends javax.swing.JPanel {

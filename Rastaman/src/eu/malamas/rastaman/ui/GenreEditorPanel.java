@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -20,19 +20,13 @@
  */
 package eu.malamas.rastaman.ui;
 
-import eu.malamas.rastaman.model.Artist;
-import eu.malamas.rastaman.model.Label;
 import eu.malamas.rastaman.model.MusicGenre;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
-import org.jdesktop.beansbinding.Converter;
 
 /*
  *
  * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
- * @author Malamas Malamidis
  */
 public class GenreEditorPanel extends javax.swing.JPanel {
 
@@ -166,11 +160,9 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private MusicGenre musicgenre;
 
-
     /**
      * Δημιουργεί ένα {@code GenreEditorPanel} για την επεξεργασία ενός
-     * {@code MusicGenre}, και με ορισμένο {@code MainFrameController} και ξεκινάει
-     * ένα transaction
+     * {@code MusicGenre}, και με ορισμένο {@code MainFrameController}.
      *
      * @param controller ο ελεγκτής
      * @param em
@@ -180,14 +172,9 @@ public class GenreEditorPanel extends javax.swing.JPanel {
         this.controller = controller;
         this.em = em;
         this.musicgenre = musicgenre;
-        initialize();
         initComponents();
         localEm.getTransaction().begin();
         localEm.persist(boundMusicgenre);
-
-    }
-
-    private void initialize() {
 
     }
 
@@ -199,10 +186,10 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     private void saveAndExit() {
         try {
             //Ελεγχος Ονόματος. Πρέπει να συμπληρωθεί!!
-            if (genreNameField.getText().isEmpty() ) {
+            if (genreNameField.getText().isEmpty()) {
                 throw new Exception("Πρέπει να συμπληρώσετε Όνομα");
             }
-          
+
             localEm.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
             controller.switchToPanel(MainFrameController.PanelType.GENRE_TABLE);
         } catch (Exception e) {

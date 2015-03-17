@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -55,9 +55,6 @@ import org.jdesktop.swingbinding.SwingBindings;
 /**
  *
  * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
- * @author Malamas Malamidis
  */
 public class ArtistTablePanel extends javax.swing.JPanel {
 

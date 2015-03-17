@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -76,9 +76,6 @@ import org.xml.sax.SAXException;
  * Η κλάση {@code PlaylistTablePanel} είναι ένα {@code JPanel} για εμφάνιση
  * πίνακα με λίστες αναπαραγωγής.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class PlaylistTablePanel extends javax.swing.JPanel {

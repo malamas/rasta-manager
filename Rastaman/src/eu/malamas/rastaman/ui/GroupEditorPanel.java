@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -63,9 +63,6 @@ import org.jdesktop.swingbinding.SwingBindings;
 /*
  *
  * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
- * @author Malamas Malamidis
  */
 public class GroupEditorPanel extends javax.swing.JPanel {
 
@@ -325,10 +322,10 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     private void groupArtistTableMouseClicked(MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMouseClicked
 
     }//GEN-LAST:event_groupArtistTableMouseClicked
-  
+
     //κλίκ στον πίνακα καλλιτεχνών Συγγκροτήματος
     private void groupArtistTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_groupArtistTableMousePressed
-         // ενεργοποίηση κατάλληλων πλήκτρων
+        // ενεργοποίηση κατάλληλων πλήκτρων
         availArtistTable.clearSelection();
         newButton.setEnabled(false);
         deleteButton.setEnabled(true);
@@ -438,10 +435,10 @@ public class GroupEditorPanel extends javax.swing.JPanel {
                 throw new Exception("To Συγκρότημα πρέπει να έχει \nτουλάχιστον δύο μέλη");
             }
             localEm.getTransaction().commit(); //Αποθήκευση στη Βάση
-            for (Artist a:groupArtistList ) {
+            for (Artist a : groupArtistList) {
                 localEm.refresh(a);
             }
-            for (Artist a:availArtistList){
+            for (Artist a : availArtistList) {
                 localEm.refresh(a);
             }
             controller.switchToPanel(MainFrameController.PanelType.GROUP_TABLE);

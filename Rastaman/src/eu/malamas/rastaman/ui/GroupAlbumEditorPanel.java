@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -36,9 +36,6 @@ import java.util.Comparator;
 /*
  *
  * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
- * @author Malamas Malamidis
  */
 public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
@@ -366,7 +363,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     private Album album;
     private DefaultTableModel model;
     private Comparator<Song> songComparator;
-    
+
     public GroupAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
         this.controller = controller;
         this.em = em;
@@ -387,7 +384,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         }
 
         model = (DefaultTableModel) songTable.getModel();
-        songComparator = (Song s1, Song s2) -> (Integer.compare(s1.getTrackNo() , s2.getTrackNo()));
+        songComparator = (Song s1, Song s2) -> (Integer.compare(s1.getTrackNo(), s2.getTrackNo()));
         //Εισαγωγή τραγουδιών στον πίνακα
         if (boundAlbum.getSongList() != null) {
             List<Song> mySongList = new ArrayList<>();
@@ -418,12 +415,14 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (!found)  break;
+            if (!found) {
+                break;
+            }
         }
         model.addRow(new Object[]{i, null, 0});
         //μετακίνηση του κέρσορα στην καινούρια γραμμή
         songTable.setColumnSelectionInterval(0, 0);
-        songTable.setRowSelectionInterval(model.getRowCount()-1, model.getRowCount()-1);
+        songTable.setRowSelectionInterval(model.getRowCount() - 1, model.getRowCount() - 1);
     }
 
     // Μέθοδος deleteSong()
@@ -480,7 +479,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                 throw new Exception("To Αλμπουμ θα πρέπει να έχει \n τουλάχιστον ένα τραγούδι.");
             }
             for (int i = 0; i < model.getRowCount() - 1; i++) {
-                if ((model.getValueAt(i, 0) == null) || (int)model.getValueAt(i, 0) <= 0) {
+                if ((model.getValueAt(i, 0) == null) || (int) model.getValueAt(i, 0) <= 0) {
                     songTable.setColumnSelectionInterval(0, 0);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
@@ -502,7 +501,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                     i++;
                     throw new Exception("Ο τίτλος στη " + i + "η γραμμή δεν μπορεί να είναι κενός");
                 }
-                if ((model.getValueAt(i, 2) == null) || (int)model.getValueAt(i, 2) <= 0) {
+                if ((model.getValueAt(i, 2) == null) || (int) model.getValueAt(i, 2) <= 0) {
                     songTable.setColumnSelectionInterval(2, 2);
                     songTable.setRowSelectionInterval(i, i);
                     i++;
@@ -525,12 +524,10 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
             }
             boundAlbum.setSongList(albumSongList);
 
-
-            
             localEm.getTransaction().commit();
             localEm.refresh(boundAlbum.getMusicgroupmusicgroupid());
             localEm.refresh(boundAlbum.getLabelid());
-            for (Song s:albumSongList){
+            for (Song s : albumSongList) {
                 localEm.refresh(s);
             }
             controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -57,9 +57,6 @@ import javax.swing.table.TableColumnModel;
  * Η κλάση {@code PlaylistEditorPanel} είναι ένα {@code JPanel} για εμφάνιση ui
  * για επεξεργασία μιας λίστας αναπαραγωγής.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class PlaylistEditorPanel extends javax.swing.JPanel {
