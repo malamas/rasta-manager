@@ -27,6 +27,7 @@ import eu.malamas.rastaman.model.MusicGenre;
 import eu.malamas.rastaman.model.Musicgroup;
 import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -120,17 +121,10 @@ public class MainFrameController implements Runnable {
     }
 
     /**
-     * Αρχικοποιεί τη σύνδεση με τη ΒΔ. Σταματά την εκτέλεση αφού εμφανίσει
-     * μήνυμα αποτυχίας σε περίπτωση που η σύνδεση δεν είναι εφικτή.
+     * Αρχικοποιεί τη σύνδεση με τη ΒΔ.
      */
     private void initDatabase() {
-        try {
-            em = Persistence.createEntityManagerFactory("RastamanPU").createEntityManager();
-        } catch (PersistenceException ex) {
-            JOptionPane.showMessageDialog(null, "Η σύνδεση με τη βάση δεδομένων απέτυχε! Η εφαρμογή δεν μπορεί να ξεκινήσει...", "Rastaman", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        }
-
+        em = DatabaseHandler.getInstance().getEm();
     }
 
     /**
@@ -211,6 +205,7 @@ public class MainFrameController implements Runnable {
         Object[] options = {"Ναι", "Όχι"};
         int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (selectedOption == JOptionPane.YES_OPTION) {
+            DatabaseHandler.getInstance().close();
             mainFrame.dispose();
         }
     }
