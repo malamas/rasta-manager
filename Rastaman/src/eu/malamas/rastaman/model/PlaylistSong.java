@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -35,9 +35,6 @@ import javax.persistence.Table;
  * Η κλάση {@code PlaylistSong} παριστάνει ένα τραγούδι σε συγκεκριμένη θέση
  * λίστας αναπαραγωγής. Είναι κλάση οντότητας JPA.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 @Entity
