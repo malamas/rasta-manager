@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -26,9 +26,6 @@ import javax.swing.SwingConstants;
  * Υποκλάση της {@code GenericTableCellRenderer} που προσθέτει επιπλέον δεξιά
  * στοίχιση στο περιεχόμενο του κελιού.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class RightAlignedTableCellRenderer extends GenericTableCellRenderer {

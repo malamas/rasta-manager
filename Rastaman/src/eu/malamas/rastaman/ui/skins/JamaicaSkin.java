@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -28,9 +28,6 @@ import java.awt.Font;
  * Η κλάση {@code JamaicaSkin} παρέχει τιμές ιδιοτήτων που συναπαρτίζουν ένα
  * θέμα εμφάνισης (skin) της γραφικής διεπαφής χρήστη της εφαρμογής.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class JamaicaSkin implements Skin {

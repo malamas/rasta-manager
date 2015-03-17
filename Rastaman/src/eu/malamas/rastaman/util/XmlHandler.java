@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -44,9 +44,6 @@ import org.w3c.dom.NodeList;
  * {@code Document} από {@code Playlist} και αντίστροφα. Είναι static final
  * (utility) class.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public final class XmlHandler {
@@ -163,7 +160,7 @@ public final class XmlHandler {
                 return null;
             }
         }
-        
+
         // δημιουργία Playlist
         for (int i = 0; i < songList.size(); i++) {
             Song song = songList.get(i);

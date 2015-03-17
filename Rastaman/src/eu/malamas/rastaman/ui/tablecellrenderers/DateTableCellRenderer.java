@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -29,9 +29,6 @@ import javax.swing.SwingConstants;
  * Υποκλάση της {@code GenericTableCellRenderer} που εμφανίζει στο περιεχόμενο
  * του κελιού ημερομηνίες μορφοποιημένες σαν "ηη/μμ/εεεε".
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class DateTableCellRenderer extends GenericTableCellRenderer {

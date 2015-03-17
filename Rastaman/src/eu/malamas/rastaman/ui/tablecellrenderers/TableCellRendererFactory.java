@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -28,9 +28,6 @@ import javax.swing.table.TableCellRenderer;
  * κλάσης {@code GenericTableCellRenderer} και των υποκλάσεών της, και τα
  * παρέχει στα {@code JTable} που τα ζητούν. Είναι static final (utility) class.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public final class TableCellRendererFactory {

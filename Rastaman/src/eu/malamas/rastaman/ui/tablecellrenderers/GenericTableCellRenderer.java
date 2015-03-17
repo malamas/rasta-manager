@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -34,9 +34,6 @@ import javax.swing.table.DefaultTableCellRenderer;
  * {@code SkinObserver} ώστε να ενημερώνεται σε περίπτωση αλλαγής του ενεργού
  * skin της εφαρμογής.
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class GenericTableCellRenderer extends DefaultTableCellRenderer implements SkinObserver {

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2015 Apostolis Iakovakis, Nikos Karagiannis,
- * Nikos Krommydas & Malamas Malamidis. All rights reserved.
+ * Copyright (c) 2015 Apostolis Iakovakis & Malamas Malamidis.
+ * All rights reserved.
  *
  * This file is part of Rastaman.
  *
@@ -30,9 +30,6 @@ import javax.swing.table.AbstractTableModel;
  * οντότητας {@code Song}. Το μοντέλο προσθέτει μια στήλη με την αρίθμηση των
  * σειρών (και συνεπώς και των εγγραφών).
  *
- * @author Apostolis Iakovakis
- * @author Nikos Karagiannis
- * @author Nikos Krommydas
  * @author Malamas Malamidis
  */
 public class OrderedSongTableModel extends AbstractTableModel {
