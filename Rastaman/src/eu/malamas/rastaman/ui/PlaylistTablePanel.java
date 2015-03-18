@@ -24,6 +24,7 @@ import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.model.PlaylistSong;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import eu.malamas.rastaman.util.XmlHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -321,11 +322,10 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
      * χρησιμοποιήσει η φόρμα.
      *
      * @param controller ο ελεγκτής
-     * @param em ο EntityManager
      */
-    public PlaylistTablePanel(MainFrameController controller, EntityManager em) {
+    public PlaylistTablePanel(MainFrameController controller) {
         this.controller = controller;
-        this.em = em;
+        this.em = DatabaseHandler.getInstance().getEm();
         initComponents();
         initFurther();
     }

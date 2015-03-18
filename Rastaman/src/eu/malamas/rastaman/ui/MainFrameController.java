@@ -35,8 +35,6 @@ import java.awt.Point;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -255,7 +253,7 @@ public class MainFrameController implements Runnable {
                 break;
             case PLAYLIST_EDITOR:
                 Playlist playlist = (Playlist) o;
-                PlaylistEditorController pec = new PlaylistEditorController(this, em, playlist);
+                PlaylistEditorController pec = new PlaylistEditorController(this, playlist);
                 editor = pec.getPanel();
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία λίστας: " + ((playlist.getName() != null) ? playlist.getName() : "Νέα λίστα"));
@@ -319,7 +317,7 @@ public class MainFrameController implements Runnable {
                 p = new GroupAlbumTablePanel(this, em);
                 break;
             case PLAYLIST_TABLE:
-                p = new PlaylistTablePanel(this, em);
+                p = new PlaylistTablePanel(this);
                 break;
             case LABEL_TABLE:
                 p = new LabelTablePanel(this, em);

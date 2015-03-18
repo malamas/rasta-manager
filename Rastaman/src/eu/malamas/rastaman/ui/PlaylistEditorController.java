@@ -23,6 +23,7 @@ package eu.malamas.rastaman.ui;
 import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.model.PlaylistSong;
 import eu.malamas.rastaman.model.Song;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,10 +51,15 @@ public class PlaylistEditorController {
     private List<Song> filteredList;
     private String filterString;
 
-    public PlaylistEditorController(MainFrameController controller, EntityManager em, Playlist playlist) {
+    public PlaylistEditorController(MainFrameController controller, Playlist playlist) {
         this.controller = controller;
-        this.em = em;
-        this.playlist = playlist;
+        em = DatabaseHandler.getInstance().getEm();
+        if (playlist.getPlaylistId() == null) {
+            this.playlist = playlist;
+            em.persist(this.playlist);
+        } else {
+            this.playlist = em.merge(playlist);
+        }
         this.filterString = "";
         initLists();
         this.panel = new PlaylistEditorPanel(this);
@@ -163,6 +169,9 @@ public class PlaylistEditorController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     *
+     */
     public void goBack() {
         controller.switchToPanel(MainFrameController.PanelType.PLAYLIST_TABLE);
     }
@@ -177,7 +186,6 @@ public class PlaylistEditorController {
 
         // τα διαθέσιμα προέρχονται από τη ΒΔ
         availableSongList.addAll(em.createNamedQuery("Song.findAll", Song.class).getResultList());
-
         // Προσθήκη τραγουδιών λίστας σε επιλεγμένα και αφαίρεση από τα διαθέσιμα
         for (PlaylistSong ps : playlist.getPlaylistSongList()) {
             availableSongList.remove(ps.getSong());
@@ -234,13 +242,15 @@ public class PlaylistEditorController {
         }
 
         // αφαίρεση των τραγουδιών που τυχόν περιείχε η λίστα
-        em.getTransaction().begin();
-        for (PlaylistSong ps : playlist.getPlaylistSongList()) {
-            ps.getSong().getPlaylistSongList().remove(ps);
-            em.remove(ps);
+        if (playlist.getPlaylistId() != null) {
+            em.getTransaction().begin();
+            for (PlaylistSong ps : playlist.getPlaylistSongList()) {
+                ps.getSong().getPlaylistSongList().remove(ps);
+                em.remove(ps);
+            }
+            playlist.getPlaylistSongList().clear();
+            em.getTransaction().commit();
         }
-        playlist.getPlaylistSongList().clear();
-        em.getTransaction().commit();
 
         // δημιουργία νέας λίστας (<PlaylistSong>) τραγουδιών
         List<PlaylistSong> psl = new ArrayList<>();
@@ -256,14 +266,17 @@ public class PlaylistEditorController {
         playlist.setPlaylistSongList(psl);
 
         em.getTransaction().begin();
-        em.persist(playlist);
+        //em.persist(playlist);
         em.getTransaction().commit();
-
-        em.clear();
 
         return true;
     }
 
+    /**
+     *
+     * @param s1
+     * @param s2
+     */
     public void swapSongs(int s1, int s2) {
         Collections.swap(selectedSongList, s1, s2);
     }
