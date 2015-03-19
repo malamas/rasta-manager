@@ -20,6 +20,7 @@
  */
 package eu.malamas.rastaman.ui;
 
+import eu.malamas.rastaman.ui.playlist.PlaylistTablePanel;
 import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Label;
