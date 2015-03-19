@@ -18,7 +18,7 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eu.malamas.rastaman.ui.tablemodels;
+package eu.malamas.rastaman.ui.playlist;
 
 import eu.malamas.rastaman.model.Song;
 import java.util.List;

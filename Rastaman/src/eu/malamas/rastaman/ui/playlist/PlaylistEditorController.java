@@ -18,11 +18,12 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eu.malamas.rastaman.ui;
+package eu.malamas.rastaman.ui.playlist;
 
 import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.model.PlaylistSong;
 import eu.malamas.rastaman.model.Song;
+import eu.malamas.rastaman.ui.MainFrameController;
 import eu.malamas.rastaman.util.DatabaseHandler;
 import java.util.ArrayList;
 import java.util.Collections;
