@@ -130,7 +130,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, groupComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${group}"), groupComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${musicGroup}"), groupComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${title}"), titleField, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -525,7 +525,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
             boundAlbum.setSongList(albumSongList);
 
             localEm.getTransaction().commit();
-            localEm.refresh(boundAlbum.getGroup());
+            localEm.refresh(boundAlbum.getMusicGroup());
             localEm.refresh(boundAlbum.getLabel());
             for (Song s : albumSongList) {
                 localEm.refresh(s);

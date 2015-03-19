@@ -3,13 +3,13 @@
   <persistence-unit name="RastamanPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>eu.malamas.rastaman.model.Artist</class>
-    <class>eu.malamas.rastaman.model.Musicgroup</class>
     <class>eu.malamas.rastaman.model.Label</class>
     <class>eu.malamas.rastaman.model.Song</class>
     <class>eu.malamas.rastaman.model.Playlist</class>
     <class>eu.malamas.rastaman.model.PlaylistSong</class>
     <class>eu.malamas.rastaman.model.Album</class>
     <class>eu.malamas.rastaman.model.Genre</class>
+    <class>eu.malamas.rastaman.model.Musicgroup</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rastaman"/>
       <property name="javax.persistence.jdbc.user" value="rastaman"/>

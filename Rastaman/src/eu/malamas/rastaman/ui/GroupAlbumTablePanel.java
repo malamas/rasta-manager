@@ -80,7 +80,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         localEm = em;
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.group is not null");
+        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.musicGroup is not null");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         scrollPane1 = new JScrollPane();
         groupAlbumTable = new JTable();
@@ -97,7 +97,6 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
-        groupAlbumTable.setColumnSelectionAllowed(true);
         groupAlbumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupAlbumTable.getTableHeader().setReorderingAllowed(false);
 
@@ -106,7 +105,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${group.name}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${musicGroup.name}"));
         columnBinding.setColumnName("Ονομα Συγκροτήματος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
@@ -303,7 +302,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                     localEm.getTransaction().begin();
                     localEm.remove(albumList.remove(selectedIndex));
                     localEm.getTransaction().commit();
-                    localEm.refresh(a.getGroup());
+                    localEm.refresh(a.getMusicGroup());
                     localEm.refresh(a.getLabel());
                     groupAlbumTable.updateUI();
                 }

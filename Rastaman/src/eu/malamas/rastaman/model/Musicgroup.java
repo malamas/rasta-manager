@@ -52,7 +52,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "MUSICGROUP")
+@Table(name = "MUSIC_GROUP")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Musicgroup.findAll", query = "SELECT m FROM Musicgroup m"),
@@ -67,20 +67,20 @@ public class Musicgroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "MUSICGROUPID")
+    @Column(name = "ID")
     private Long musicgroupid;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
-    @Column(name = "FORMATIONDATE")
+    @Column(name = "FORMATION_DATE")
     @Temporal(TemporalType.DATE)
     private Date formationdate;
-    @JoinTable(name = "ARTIST_GROUP", joinColumns = {
-        @JoinColumn(name = "GROUP_ID", referencedColumnName = "MUSICGROUPID")}, inverseJoinColumns = {
+    @JoinTable(name = "ARTIST_MUSIC_GROUP", joinColumns = {
+        @JoinColumn(name = "MUSIC_GROUP_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ARTISTID")})
     @ManyToMany
     private List<Artist> artistList;
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "musicGroup")
     private List<Album> albumList;
 
     public Musicgroup() {

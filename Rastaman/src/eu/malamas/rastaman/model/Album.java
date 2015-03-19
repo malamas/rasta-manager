@@ -82,9 +82,9 @@ public class Album implements Serializable {
     @JoinColumn(name = "LABEL_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Label label;
-    @JoinColumn(name = "GROUP_ID", referencedColumnName = "MUSICGROUPID")
+    @JoinColumn(name = "MUSIC_GROUP_ID", referencedColumnName = "ID")
     @ManyToOne
-    private Musicgroup group;
+    private Musicgroup musicGroup;
 
     public Album() {
     }
@@ -167,14 +167,14 @@ public class Album implements Serializable {
         changeSupport.firePropertyChange("label", oldLabel, label);
     }
 
-    public Musicgroup getGroup() {
-        return group;
+    public Musicgroup getMusicGroup() {
+        return musicGroup;
     }
 
-    public void setGroup(Musicgroup group) {
-        Musicgroup oldGroup = this.group;
-        this.group = group;
-        changeSupport.firePropertyChange("group", oldGroup, group);
+    public void setMusicGroup(Musicgroup musicGroup) {
+        Musicgroup oldMusicGroup = this.musicGroup;
+        this.musicGroup = musicGroup;
+        changeSupport.firePropertyChange("musicGroup", oldMusicGroup, musicGroup);
     }
 
     /**
@@ -184,7 +184,7 @@ public class Album implements Serializable {
      * @return το όνομα δημιουργού του άλμπουμ
      */
     public String getPerformerScreenName() {
-        return (artist != null) ? artist.getScreenName() : group.getName();
+        return (artist != null) ? artist.getScreenName() : musicGroup.getName();
     }
 
     @Override
