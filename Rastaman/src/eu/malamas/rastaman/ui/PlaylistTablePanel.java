@@ -98,22 +98,22 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         bindingGroup = new BindingGroup();
 
         boundPlaylistList = playlists;
-        scrollPane1 = new JScrollPane();
+        JScrollPane scrollPane1 = new JScrollPane();
         playlistTable = new JTable();
         buttonPanel = new JPanel();
-        filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        Box.Filler filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         backButton = new JButton();
-        filler8 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        Box.Filler filler8 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         importButton = new JButton();
-        filler7 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        Box.Filler filler7 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         exportButton = new JButton();
-        filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
+        Box.Filler filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(32767, 32767));
         newButton = new JButton();
-        filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        Box.Filler filler4 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         editButton = new JButton();
-        filler5 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        Box.Filler filler5 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         deleteButton = new JButton();
-        filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
+        Box.Filler filler6 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
 
         setLayout(new BorderLayout());
 
@@ -290,17 +290,9 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private JButton deleteButton;
     private JButton editButton;
     private JButton exportButton;
-    private Box.Filler filler2;
-    private Box.Filler filler3;
-    private Box.Filler filler4;
-    private Box.Filler filler5;
-    private Box.Filler filler6;
-    private Box.Filler filler7;
-    private Box.Filler filler8;
     private JButton importButton;
     private JButton newButton;
     private JTable playlistTable;
-    private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     //
