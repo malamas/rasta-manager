@@ -75,9 +75,9 @@ public class Musicgroup implements Serializable {
     @Column(name = "FORMATIONDATE")
     @Temporal(TemporalType.DATE)
     private Date formationdate;
-    @JoinTable(name = "ARTIST_MUSICGROUP", joinColumns = {
-        @JoinColumn(name = "MUSICGROUPMUSICGROUPID", referencedColumnName = "MUSICGROUPID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")})
+    @JoinTable(name = "ARTIST_GROUP", joinColumns = {
+        @JoinColumn(name = "GROUP_ID", referencedColumnName = "MUSICGROUPID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ARTISTID")})
     @ManyToMany
     private List<Artist> artistList;
     @OneToMany(mappedBy = "group")
