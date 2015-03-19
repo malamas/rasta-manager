@@ -213,7 +213,7 @@
                                   <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="disknumberTextField" min="-2" max="-2" attributes="0"/>
+                                  <Component id="disknumberTextField" min="-2" pref="27" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -300,19 +300,19 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="value" source="boundAlbum" sourcePath="${releasedate}" target="releasedateField" targetPath="value" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="value" source="boundAlbum" sourcePath="${releaseDate}" target="releasedateField" targetPath="value" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="labelComboBox">
           <BindingProperties>
             <BindingProperty name="elements" source="labelList" target="labelComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${labelid}" target="labelComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${label}" target="labelComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="groupComboBox">
           <BindingProperties>
             <BindingProperty name="elements" source="musicgroupList" target="groupComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${musicgroupmusicgroupid}" target="groupComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="boundAlbum" sourcePath="${group}" target="groupComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
@@ -379,7 +379,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="disknumberTextField">
           <BindingProperties>
-            <BindingProperty name="text" source="boundAlbum" sourcePath="${disknumber}" target="disknumberTextField" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="boundAlbum" sourcePath="${diskNo}" target="disknumberTextField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>

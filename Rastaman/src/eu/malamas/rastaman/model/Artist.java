@@ -91,7 +91,7 @@ public class Artist implements Serializable {
     @JoinColumn(name = "MUSCIGENREID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Genre muscigenreid;
-    @OneToMany(mappedBy = "artistartistid")
+    @OneToMany(mappedBy = "artist")
     private List<Album> albumList;
 
     public Artist() {

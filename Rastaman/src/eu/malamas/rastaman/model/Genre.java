@@ -111,10 +111,8 @@ public class Genre implements Serializable {
     }
 
     @Override
-    // TODO: fix this hack
     public String toString() {
-        return name;
-        //return "eap.pli24.rastaman.entities.Genre[ id=" + id + " ]";
+        return "eu.malamas.rastaman.model.Genre[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

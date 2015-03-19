@@ -80,7 +80,7 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         localEm = em;
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.artistartistid is not null");
+        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.artist is not null");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         scrollPane1 = new JScrollPane();
         artistAlbumTable = new JTable();
@@ -105,15 +105,15 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artistartistid.firstname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.firstname}"));
         columnBinding.setColumnName("Ονομα Καλιτέχνη");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artistartistid.lastname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.lastname}"));
         columnBinding.setColumnName("Επίθετο Καλλιτέχνη");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artistartistid.artisticname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.artisticname}"));
         columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
@@ -121,16 +121,18 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τύπος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${disknumber}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${diskNo}"));
         columnBinding.setColumnName("No Δίσκου");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${labelid.name}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${label.name}"));
         columnBinding.setColumnName("Εταιρία");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${releasedate}"));
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${releaseDate}"));
         columnBinding.setColumnName("Ημ.Κυκλοφορίας");
         columnBinding.setColumnClass(Date.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         scrollPane1.setViewportView(artistAlbumTable);
@@ -307,8 +309,8 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
                     localEm.getTransaction().begin();
                     localEm.remove(albumList.remove(selectedIndex));
                     localEm.getTransaction().commit();
-                    localEm.refresh(a.getArtistartistid());
-                    localEm.refresh(a.getLabelid());
+                    localEm.refresh(a.getArtist());
+                    localEm.refresh(a.getLabel());
                     artistAlbumTable.updateUI();
                 }
             } else { // Εαν συμμετέχει σε PlayList δεν διαγράφεται

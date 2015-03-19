@@ -30,7 +30,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="albumQuery">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT a FROM Album a where a.artistartistid is not null"/>
+        <Property name="query" type="java.lang.String" value="SELECT a FROM Album a where a.artist is not null"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="localEm"/>
         </Property>
@@ -134,17 +134,17 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${artistartistid.firstname}">
+              <Subbinding sourcePath="${artist.firstname}">
                 <BindingParameter name="NAME" value="&#x39f;&#x3bd;&#x3bf;&#x3bc;&#x3b1; &#x39a;&#x3b1;&#x3bb;&#x3b9;&#x3c4;&#x3ad;&#x3c7;&#x3bd;&#x3b7;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${artistartistid.lastname}">
+              <Subbinding sourcePath="${artist.lastname}">
                 <BindingParameter name="NAME" value="&#x395;&#x3c0;&#x3af;&#x3b8;&#x3b5;&#x3c4;&#x3bf; &#x39a;&#x3b1;&#x3bb;&#x3bb;&#x3b9;&#x3c4;&#x3ad;&#x3c7;&#x3bd;&#x3b7;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${artistartistid.artisticname}">
+              <Subbinding sourcePath="${artist.artisticname}">
                 <BindingParameter name="NAME" value="&#x39a;&#x3b1;&#x3bb;&#x3b9;&#x3c4;&#x3b5;&#x3c7;&#x3bd;&#x3b9;&#x3ba;&#x3cc; &#x38c;&#x3bd;&#x3bf;&#x3bc;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
@@ -154,18 +154,20 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${disknumber}">
+              <Subbinding sourcePath="${diskNo}">
                 <BindingParameter name="NAME" value="No &#x394;&#x3af;&#x3c3;&#x3ba;&#x3bf;&#x3c5;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${labelid.name}">
+              <Subbinding sourcePath="${label.name}">
                 <BindingParameter name="NAME" value="&#x395;&#x3c4;&#x3b1;&#x3b9;&#x3c1;&#x3af;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${releasedate}">
+              <Subbinding sourcePath="${releaseDate}">
                 <BindingParameter name="NAME" value="&#x397;&#x3bc;.&#x39a;&#x3c5;&#x3ba;&#x3bb;&#x3bf;&#x3c6;&#x3bf;&#x3c1;&#x3af;&#x3b1;&#x3c2;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

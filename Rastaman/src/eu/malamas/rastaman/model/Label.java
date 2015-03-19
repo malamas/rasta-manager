@@ -41,7 +41,6 @@ import javax.persistence.Transient;
  * Η κλάση {@code Label} παριστάνει μια εταιρία μουσικής παραγωγής. Είναι κλάση
  * οντότητας JPA.
  *
- * @author Apostolis Iakovakis
  * @author Malamas Malamidis
  */
 @Entity
@@ -66,7 +65,7 @@ public class Label implements Serializable {
     private String address;
     @Column(name = "TELEPHONE_NO")
     private String telephoneNo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "labelid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "label")
     private List<Album> albumList;
 
     public Label() {
@@ -141,9 +140,8 @@ public class Label implements Serializable {
     }
 
     @Override
-    // TODO: fix this hack
     public String toString() {
-        return name;
+        return "eu.malamas.rastaman.model.Label[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

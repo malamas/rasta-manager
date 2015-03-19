@@ -42,7 +42,6 @@ import javax.persistence.Transient;
 /**
  * Η κλάση {@code Song} παριστάνει ένα τραγούδι. Είναι κλάση οντότητας JPA.
  *
- * @author Apostolis Iakovakis
  * @author Malamas Malamidis
  */
 @Entity
@@ -68,9 +67,9 @@ public class Song implements Serializable {
     @Basic(optional = false)
     @Column(name = "TRACK_NO")
     private int trackNo;
-    @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ALBUMID")
+    @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Album albumId;
+    private Album album;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "song")
     private List<PlaylistSong> playlistSongList;
 
@@ -119,19 +118,19 @@ public class Song implements Serializable {
     }
 
     public void setTrackNo(int trackNo) {
-        int oldTracknr = this.trackNo;
+        int oldTrackNo = this.trackNo;
         this.trackNo = trackNo;
-        changeSupport.firePropertyChange("tracknr", oldTracknr, trackNo);
+        changeSupport.firePropertyChange("trackNo", oldTrackNo, trackNo);
     }
 
-    public Album getAlbumId() {
-        return albumId;
+    public Album getAlbum() {
+        return album;
     }
 
-    public void setAlbumId(Album albumId) {
-        Album oldAlbumid = this.albumId;
-        this.albumId = albumId;
-        changeSupport.firePropertyChange("albumid", oldAlbumid, albumId);
+    public void setAlbum(Album album) {
+        Album oldAlbum = this.album;
+        this.album = album;
+        changeSupport.firePropertyChange("album", oldAlbum, album);
     }
 
     public List<PlaylistSong> getPlaylistSongList() {

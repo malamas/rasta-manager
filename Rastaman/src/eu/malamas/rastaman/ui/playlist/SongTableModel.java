@@ -84,7 +84,7 @@ public class SongTableModel extends AbstractTableModel {
                 value = song.getTitle();
                 break;
             case 1:
-                value = song.getAlbumId().getPerformerScreenName();
+                value = song.getAlbum().getPerformerScreenName();
                 break;
             case 2:
                 value = song.getDuration();

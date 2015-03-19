@@ -80,7 +80,7 @@ public class Musicgroup implements Serializable {
         @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")})
     @ManyToMany
     private List<Artist> artistList;
-    @OneToMany(mappedBy = "musicgroupmusicgroupid")
+    @OneToMany(mappedBy = "group")
     private List<Album> albumList;
 
     public Musicgroup() {

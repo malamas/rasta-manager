@@ -41,26 +41,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Η κλάση {@code Album} παριστάνει ένα μουσικό άλμπουμ. Είναι κλάση οντότητας
  * JPA.
  *
- * @author Apostolis Iakovakis
  * @author Malamas Malamidis
  */
 @Entity
 @Table(name = "ALBUM")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a"),
-    @NamedQuery(name = "Album.findByAlbumid", query = "SELECT a FROM Album a WHERE a.albumid = :albumid"),
-    @NamedQuery(name = "Album.findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title"),
-    @NamedQuery(name = "Album.findByReleasedate", query = "SELECT a FROM Album a WHERE a.releasedate = :releasedate"),
-    @NamedQuery(name = "Album.findByType", query = "SELECT a FROM Album a WHERE a.type = :type"),
-    @NamedQuery(name = "Album.findByDisknumber", query = "SELECT a FROM Album a WHERE a.disknumber = :disknumber")})
+    @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a")})
 public class Album implements Serializable {
 
     @Transient
@@ -69,54 +60,43 @@ public class Album implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ALBUMID")
-    private Long albumid;
+    @Column(name = "ID")
+    private Long id;
     @Basic(optional = false)
     @Column(name = "TITLE")
     private String title;
-    @Column(name = "RELEASEDATE")
+    @Column(name = "RELEASE_DATE")
     @Temporal(TemporalType.DATE)
-    private Date releasedate;
+    private Date releaseDate;
     @Basic(optional = false)
     @Column(name = "TYPE")
     private String type;
     @Basic(optional = false)
-    @Column(name = "DISKNUMBER")
-    private int disknumber;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "albumId")
+    @Column(name = "DISK_NO")
+    private int diskNo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
     private List<Song> songList;
-    @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")
+    @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ARTISTID")
     @ManyToOne
-    private Artist artistartistid;
-    @JoinColumn(name = "LABELID", referencedColumnName = "ID")
+    private Artist artist;
+    @JoinColumn(name = "LABEL_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Label labelid;
-    @JoinColumn(name = "MUSICGROUPMUSICGROUPID", referencedColumnName = "MUSICGROUPID")
+    private Label label;
+    @JoinColumn(name = "GROUP_ID", referencedColumnName = "MUSICGROUPID")
     @ManyToOne
-    private Musicgroup musicgroupmusicgroupid;
+    private Musicgroup group;
 
     public Album() {
     }
 
-    public Album(Long albumid) {
-        this.albumid = albumid;
+    public Long getId() {
+        return id;
     }
 
-    public Album(Long albumid, String title, String type, int disknumber) {
-        this.albumid = albumid;
-        this.title = title;
-        this.type = type;
-        this.disknumber = disknumber;
-    }
-
-    public Long getAlbumid() {
-        return albumid;
-    }
-
-    public void setAlbumid(Long albumid) {
-        Long oldAlbumid = this.albumid;
-        this.albumid = albumid;
-        changeSupport.firePropertyChange("albumid", oldAlbumid, albumid);
+    public void setId(Long id) {
+        Long oldId = this.id;
+        this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getTitle() {
@@ -129,14 +109,14 @@ public class Album implements Serializable {
         changeSupport.firePropertyChange("title", oldTitle, title);
     }
 
-    public Date getReleasedate() {
-        return releasedate;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setReleasedate(Date releasedate) {
-        Date oldReleasedate = this.releasedate;
-        this.releasedate = releasedate;
-        changeSupport.firePropertyChange("releasedate", oldReleasedate, releasedate);
+    public void setReleaseDate(Date releaseDate) {
+        Date oldReleaseDate = this.releaseDate;
+        this.releaseDate = releaseDate;
+        changeSupport.firePropertyChange("releaseDate", oldReleaseDate, releaseDate);
     }
 
     public String getType() {
@@ -149,17 +129,16 @@ public class Album implements Serializable {
         changeSupport.firePropertyChange("type", oldType, type);
     }
 
-    public int getDisknumber() {
-        return disknumber;
+    public int getDiskNo() {
+        return diskNo;
     }
 
-    public void setDisknumber(int disknumber) {
-        int oldDisknumber = this.disknumber;
-        this.disknumber = disknumber;
-        changeSupport.firePropertyChange("disknumber", oldDisknumber, disknumber);
+    public void setDiskNo(int diskNo) {
+        int oldDiskNo = this.diskNo;
+        this.diskNo = diskNo;
+        changeSupport.firePropertyChange("diskNo", oldDiskNo, diskNo);
     }
 
-    @XmlTransient
     public List<Song> getSongList() {
         return songList;
     }
@@ -168,34 +147,34 @@ public class Album implements Serializable {
         this.songList = songList;
     }
 
-    public Artist getArtistartistid() {
-        return artistartistid;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtistartistid(Artist artistartistid) {
-        Artist oldArtistartistid = this.artistartistid;
-        this.artistartistid = artistartistid;
-        changeSupport.firePropertyChange("artistartistid", oldArtistartistid, artistartistid);
+    public void setArtist(Artist artist) {
+        Artist oldArtist = this.artist;
+        this.artist = artist;
+        changeSupport.firePropertyChange("artist", oldArtist, artist);
     }
 
-    public Label getLabelid() {
-        return labelid;
+    public Label getLabel() {
+        return label;
     }
 
-    public void setLabelid(Label labelid) {
-        Label oldLabelid = this.labelid;
-        this.labelid = labelid;
-        changeSupport.firePropertyChange("labelid", oldLabelid, labelid);
+    public void setLabel(Label label) {
+        Label oldLabel = this.label;
+        this.label = label;
+        changeSupport.firePropertyChange("label", oldLabel, label);
     }
 
-    public Musicgroup getMusicgroupmusicgroupid() {
-        return musicgroupmusicgroupid;
+    public Musicgroup getGroup() {
+        return group;
     }
 
-    public void setMusicgroupmusicgroupid(Musicgroup musicgroupmusicgroupid) {
-        Musicgroup oldMusicgroupmusicgroupid = this.musicgroupmusicgroupid;
-        this.musicgroupmusicgroupid = musicgroupmusicgroupid;
-        changeSupport.firePropertyChange("musicgroupmusicgroupid", oldMusicgroupmusicgroupid, musicgroupmusicgroupid);
+    public void setGroup(Musicgroup group) {
+        Musicgroup oldGroup = this.group;
+        this.group = group;
+        changeSupport.firePropertyChange("group", oldGroup, group);
     }
 
     /**
@@ -205,13 +184,13 @@ public class Album implements Serializable {
      * @return το όνομα δημιουργού του άλμπουμ
      */
     public String getPerformerScreenName() {
-        return (artistartistid != null) ? artistartistid.getScreenName() : musicgroupmusicgroupid.getName();
+        return (artist != null) ? artist.getScreenName() : group.getName();
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (albumid != null ? albumid.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -222,7 +201,7 @@ public class Album implements Serializable {
             return false;
         }
         Album other = (Album) object;
-        if ((this.albumid == null && other.albumid != null) || (this.albumid != null && !this.albumid.equals(other.albumid))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -230,7 +209,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Album[ albumid=" + albumid + " ]";
+        return "eu.malamas.rastaman.model.Album[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

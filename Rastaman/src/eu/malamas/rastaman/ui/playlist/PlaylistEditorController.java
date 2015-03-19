@@ -201,7 +201,7 @@ public class PlaylistEditorController {
 
         // Δημιουργία Predicate<Song> για έλεγχο εμφάνισης κειμένου φίλτρου σε τίτλο ή ερμηνευτή (Java 8 feature)
         Predicate<Song> titleContains = (Song t) -> t.getTitle().toLowerCase().contains(filterString);
-        Predicate<Song> performerContains = (Song t) -> t.getAlbumId().getPerformerScreenName().toLowerCase().contains(filterString);
+        Predicate<Song> performerContains = (Song t) -> t.getAlbum().getPerformerScreenName().toLowerCase().contains(filterString);
         titleOrPerformerContains = titleContains.or(performerContains);
     }
 

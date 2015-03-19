@@ -80,7 +80,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         localEm = em;
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.musicgroupmusicgroupid is not null");
+        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.group is not null");
         albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         scrollPane1 = new JScrollPane();
         groupAlbumTable = new JTable();
@@ -97,6 +97,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
+        groupAlbumTable.setColumnSelectionAllowed(true);
         groupAlbumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupAlbumTable.getTableHeader().setReorderingAllowed(false);
 
@@ -105,7 +106,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${musicgroupmusicgroupid.name}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${group.name}"));
         columnBinding.setColumnName("Ονομα Συγκροτήματος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
@@ -113,15 +114,15 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τύπος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${disknumber}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${diskNo}"));
         columnBinding.setColumnName("No Δίσκου");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${labelid.name}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${label.name}"));
         columnBinding.setColumnName("Εταιρία");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${releasedate}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${releaseDate}"));
         columnBinding.setColumnName("Ημ.Κυκλοφορίας");
         columnBinding.setColumnClass(Date.class);
         columnBinding.setEditable(false);
@@ -302,8 +303,8 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                     localEm.getTransaction().begin();
                     localEm.remove(albumList.remove(selectedIndex));
                     localEm.getTransaction().commit();
-                    localEm.refresh(a.getMusicgroupmusicgroupid());
-                    localEm.refresh(a.getLabelid());
+                    localEm.refresh(a.getGroup());
+                    localEm.refresh(a.getLabel());
                     groupAlbumTable.updateUI();
                 }
             } else { // Εαν συμμετέχει σε PlayList δεν διαγράφεται

@@ -120,17 +120,17 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
         releasedateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${releasedate}"), releasedateField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${releaseDate}"), releasedateField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, labelList, labelComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${labelid}"), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${label}"), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, groupComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${musicgroupmusicgroupid}"), groupComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${group}"), groupComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${title}"), titleField, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -157,7 +157,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
         jLabel7.setText("Νο Δίσκου:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${disknumber}"), disknumberTextField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${diskNo}"), disknumberTextField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         songTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -227,7 +227,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                                 .addGap(48, 48, 48)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(disknumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(disknumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(222, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -518,15 +518,15 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                 }
                 if (!found) {
                     Song newSong = new Song(null, (String) model.getValueAt(i, 1), (Integer) model.getValueAt(i, 2), (Integer) model.getValueAt(i, 0));
-                    newSong.setAlbumId(boundAlbum);
+                    newSong.setAlbum(boundAlbum);
                     albumSongList.add(newSong);
                 }
             }
             boundAlbum.setSongList(albumSongList);
 
             localEm.getTransaction().commit();
-            localEm.refresh(boundAlbum.getMusicgroupmusicgroupid());
-            localEm.refresh(boundAlbum.getLabelid());
+            localEm.refresh(boundAlbum.getGroup());
+            localEm.refresh(boundAlbum.getLabel());
             for (Song s : albumSongList) {
                 localEm.refresh(s);
             }

@@ -60,13 +60,13 @@ INSERT INTO Artist_MusicGroup VALUES (9, 2);
 --
 
 -- albums
-INSERT INTO Album VALUES (1, 'The Dark Side Of The Moon', 1, '1973-03-01', 'lp', 1, NULL, 1);
-INSERT INTO Album VALUES (2, 'Celebration Day', 2, '2012-11-16', 'lp', 1, NULL, 2);
-INSERT INTO Album VALUES (3, 'Celebration Day', 2, '2012-11-16', 'lp', 2, NULL, 2);
-INSERT INTO Album VALUES (4, 'Reflections', 3, '1970-01-01', 'lp', 1, 10, NULL);
-INSERT INTO Album VALUES (5, 'Rastaman Vibration', 7, '1976-04-30', 'lp', 1, 12, NULL);
-INSERT INTO Album VALUES (6, 'Reliquias - Instrumentales inolvidables Vol. 3', 8, '1999-01-01', 'lp', 1, 13, NULL);
-ALTER TABLE Album ALTER COLUMN albumID RESTART WITH 7;
+INSERT INTO ALBUM VALUES (1, 'The Dark Side Of The Moon', 1, '1973-03-01', 'lp', 1, NULL, 1);
+INSERT INTO ALBUM VALUES (2, 'Celebration Day', 2, '2012-11-16', 'lp', 1, NULL, 2);
+INSERT INTO ALBUM VALUES (3, 'Celebration Day', 2, '2012-11-16', 'lp', 2, NULL, 2);
+INSERT INTO ALBUM VALUES (4, 'Reflections', 3, '1970-01-01', 'lp', 1, 10, NULL);
+INSERT INTO ALBUM VALUES (5, 'Rastaman Vibration', 7, '1976-04-30', 'lp', 1, 12, NULL);
+INSERT INTO ALBUM VALUES (6, 'Reliquias - Instrumentales inolvidables Vol. 3', 8, '1999-01-01', 'lp', 1, 13, NULL);
+ALTER TABLE ALBUM ALTER COLUMN ID RESTART WITH 7;
 
 -- songs
 INSERT INTO SONG VALUES (1, 'Speak To Me', 90, 1, 1);

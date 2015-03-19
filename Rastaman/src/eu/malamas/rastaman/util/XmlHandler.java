@@ -101,7 +101,7 @@ public final class XmlHandler {
 
             // Ερμηνευτής (καλλιτέχνης ή συγκρότημα
             Element performerEl = doc.createElement("performer");
-            performerEl.appendChild(doc.createTextNode(s.getAlbumId().getPerformerScreenName()));
+            performerEl.appendChild(doc.createTextNode(s.getAlbum().getPerformerScreenName()));
             songEl.appendChild(performerEl);
 
             songlistEl.appendChild(songEl);

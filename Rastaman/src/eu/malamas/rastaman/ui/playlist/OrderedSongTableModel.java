@@ -90,7 +90,7 @@ public class OrderedSongTableModel extends AbstractTableModel {
                 value = song.getTitle();
                 break;
             case 2:
-                value = song.getAlbumId().getPerformerScreenName();
+                value = song.getAlbum().getPerformerScreenName();
                 break;
             case 3:
                 value = song.getDuration();
