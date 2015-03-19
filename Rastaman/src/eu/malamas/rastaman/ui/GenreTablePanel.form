@@ -12,7 +12,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="musicgenreQuery">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT m FROM MusicGenre m"/>
+        <Property name="query" type="java.lang.String" value="SELECT g FROM Genre g"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="localEm"/>
         </Property>
@@ -25,7 +25,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.MusicGenre&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Genre&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>

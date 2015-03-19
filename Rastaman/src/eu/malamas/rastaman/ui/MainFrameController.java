@@ -25,7 +25,7 @@ import eu.malamas.rastaman.ui.playlist.PlaylistTablePanel;
 import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Label;
-import eu.malamas.rastaman.model.MusicGenre;
+import eu.malamas.rastaman.model.Genre;
 import eu.malamas.rastaman.model.Musicgroup;
 import eu.malamas.rastaman.model.Playlist;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
@@ -267,7 +267,7 @@ public class MainFrameController implements Runnable {
                 headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
                 break;
             case GENRE_EDITOR:
-                MusicGenre genre = (MusicGenre) o;
+                Genre genre = (Genre) o;
                 editor = new GenreEditorPanel(this, em, genre);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((genre.getName() != null) ? genre.getName() : "Νέο Είδος Μουσικής"));

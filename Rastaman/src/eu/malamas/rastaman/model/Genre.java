@@ -36,15 +36,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Η κλάση {@code MusicGenre} παριστάνει ένα είδος μουσικής. Είναι κλάση
- * οντότητας JPA.
+ * Η κλάση {@code Genre} παριστάνει ένα είδος μουσικής. Είναι κλάση οντότητας
+ * JPA.
  *
- * @author Apostolis Iakovakis
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "MUSIC_GENRE")
-public class MusicGenre implements Serializable {
+@Table(name = "GENRE")
+public class Genre implements Serializable {
 
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -52,34 +51,25 @@ public class MusicGenre implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "MUSIC_GENRE_ID")
-    private Integer musicGenreId;
+    @Column(name = "ID")
+    private Long id;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "muscigenreid")
     private List<Artist> artistList;
 
-    public MusicGenre() {
+    public Genre() {
     }
 
-    public MusicGenre(Integer musicGenreId) {
-        this.musicGenreId = musicGenreId;
+    public Long getId() {
+        return id;
     }
 
-    public MusicGenre(Integer musicGenreId, String name) {
-        this.musicGenreId = musicGenreId;
-        this.name = name;
-    }
-
-    public Integer getMusicGenreId() {
-        return musicGenreId;
-    }
-
-    public void setMusicGenreId(Integer musicGenreId) {
-        Integer oldMusicGenreId = this.musicGenreId;
-        this.musicGenreId = musicGenreId;
-        changeSupport.firePropertyChange("musicgenreid", oldMusicGenreId, musicGenreId);
+    public void setId(Long id) {
+        Long oldId = this.id;
+        this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getName() {
@@ -103,27 +93,28 @@ public class MusicGenre implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (musicGenreId != null ? musicGenreId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MusicGenre)) {
+        if (!(object instanceof Genre)) {
             return false;
         }
-        MusicGenre other = (MusicGenre) object;
-        if ((this.musicGenreId == null && other.musicGenreId != null) || (this.musicGenreId != null && !this.musicGenreId.equals(other.musicGenreId))) {
+        Genre other = (Genre) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
     @Override
+    // TODO: fix this hack
     public String toString() {
         return name;
-        //return "eap.pli24.rastaman.entities.MusicGenre[ musicGenreId=" + musicGenreId + " ]";
+        //return "eap.pli24.rastaman.entities.Genre[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

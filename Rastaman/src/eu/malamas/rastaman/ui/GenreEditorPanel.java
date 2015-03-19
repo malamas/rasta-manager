@@ -20,7 +20,7 @@
  */
 package eu.malamas.rastaman.ui;
 
-import eu.malamas.rastaman.model.MusicGenre;
+import eu.malamas.rastaman.model.Genre;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
@@ -143,7 +143,7 @@ public class GenreEditorPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private eu.malamas.rastaman.model.MusicGenre boundMusicgenre;
+    private eu.malamas.rastaman.model.Genre boundMusicgenre;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField genreNameField;
     private javax.swing.JLabel jLabel2;
@@ -158,17 +158,17 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
-    private MusicGenre musicgenre;
+    private Genre musicgenre;
 
     /**
      * Δημιουργεί ένα {@code GenreEditorPanel} για την επεξεργασία ενός
-     * {@code MusicGenre}, και με ορισμένο {@code MainFrameController}.
+     * {@code Genre}, και με ορισμένο {@code MainFrameController}.
      *
      * @param controller ο ελεγκτής
      * @param em
      * @param musicgenre Tο είδος μουσικής προς επεξεργασία
      */
-    public GenreEditorPanel(MainFrameController controller, EntityManager em, MusicGenre musicgenre) {
+    public GenreEditorPanel(MainFrameController controller, EntityManager em, Genre musicgenre) {
         this.controller = controller;
         this.em = em;
         this.musicgenre = musicgenre;

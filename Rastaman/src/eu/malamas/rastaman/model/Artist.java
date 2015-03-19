@@ -88,9 +88,9 @@ public class Artist implements Serializable {
     private String birthplace;
     @ManyToMany(mappedBy = "artistList")
     private List<Musicgroup> musicgroupList;
-    @JoinColumn(name = "MUSCIGENREID", referencedColumnName = "MUSIC_GENRE_ID")
+    @JoinColumn(name = "MUSCIGENREID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private MusicGenre muscigenreid;
+    private Genre muscigenreid;
     @OneToMany(mappedBy = "artistartistid")
     private List<Album> albumList;
 
@@ -188,12 +188,12 @@ public class Artist implements Serializable {
         this.musicgroupList = musicgroupList;
     }
 
-    public MusicGenre getMuscigenreid() {
+    public Genre getMuscigenreid() {
         return muscigenreid;
     }
 
-    public void setMuscigenreid(MusicGenre muscigenreid) {
-        MusicGenre oldMuscigenreid = this.muscigenreid;
+    public void setMuscigenreid(Genre muscigenreid) {
+        Genre oldMuscigenreid = this.muscigenreid;
         this.muscigenreid = muscigenreid;
         changeSupport.firePropertyChange("muscigenreid", oldMuscigenreid, muscigenreid);
     }

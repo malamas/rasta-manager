@@ -5,11 +5,11 @@
     <class>eu.malamas.rastaman.model.Artist</class>
     <class>eu.malamas.rastaman.model.Musicgroup</class>
     <class>eu.malamas.rastaman.model.Label</class>
-    <class>eu.malamas.rastaman.model.MusicGenre</class>
     <class>eu.malamas.rastaman.model.Song</class>
     <class>eu.malamas.rastaman.model.Playlist</class>
     <class>eu.malamas.rastaman.model.PlaylistSong</class>
     <class>eu.malamas.rastaman.model.Album</class>
+    <class>eu.malamas.rastaman.model.Genre</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/rastaman"/>
       <property name="javax.persistence.jdbc.user" value="rastaman"/>

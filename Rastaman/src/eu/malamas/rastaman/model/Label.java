@@ -141,6 +141,7 @@ public class Label implements Serializable {
     }
 
     @Override
+    // TODO: fix this hack
     public String toString() {
         return name;
     }

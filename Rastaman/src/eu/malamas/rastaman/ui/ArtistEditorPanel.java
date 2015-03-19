@@ -21,7 +21,7 @@
 package eu.malamas.rastaman.ui;
 
 import eu.malamas.rastaman.model.Artist;
-import eu.malamas.rastaman.model.MusicGenre;
+import eu.malamas.rastaman.model.Genre;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -81,7 +81,7 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
 
         localEm = em;
         boundArtist = artist;
-        musicGenreQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM MusicGenre m");
+        musicGenreQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT g FROM Genre g");
         musicGenreList = Beans.isDesignTime() ? Collections.emptyList() : musicGenreQuery.getResultList();
         saveButton = new JButton();
         cancelButton = new JButton();
@@ -311,7 +311,7 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
     private JPanel jPanel1;
     private JTextField lastNameField;
     private EntityManager localEm;
-    private List<MusicGenre> musicGenreList;
+    private List<Genre> musicGenreList;
     private Query musicGenreQuery;
     private JButton saveButton;
     private JComboBox sexComboBox;
