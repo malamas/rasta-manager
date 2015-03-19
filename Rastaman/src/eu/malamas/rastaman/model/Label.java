@@ -36,11 +36,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Η κλάση {@code Label} παριστάνει μια εταιρία μουσκής παραγωγής. Είναι κλάση
+ * Η κλάση {@code Label} παριστάνει μια εταιρία μουσικής παραγωγής. Είναι κλάση
  * οντότητας JPA.
  *
  * @author Apostolis Iakovakis
@@ -48,54 +46,40 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "LABEL")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Label.findAll", query = "SELECT l FROM Label l"),
-    @NamedQuery(name = "Label.findByLabelid", query = "SELECT l FROM Label l WHERE l.labelid = :labelid"),
-    @NamedQuery(name = "Label.findByName", query = "SELECT l FROM Label l WHERE l.name = :name"),
-    @NamedQuery(name = "Label.findByAddress", query = "SELECT l FROM Label l WHERE l.address = :address"),
-    @NamedQuery(name = "Label.findByTelephone", query = "SELECT l FROM Label l WHERE l.telephone = :telephone")})
+    @NamedQuery(name = "Label.findAll", query = "SELECT l FROM Label l")})
 public class Label implements Serializable {
 
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
-
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "LABELID")
-    private Long labelid;
+    @Column(name = "ID")
+    private Long id;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
     @Column(name = "ADDRESS")
     private String address;
-    @Column(name = "TELEPHONE")
-    private String telephone;
+    @Column(name = "TELEPHONE_NO")
+    private String telephoneNo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "labelid")
     private List<Album> albumList;
 
     public Label() {
     }
 
-    public Label(Long labelid) {
-        this.labelid = labelid;
+    public Long getId() {
+        return id;
     }
 
-    public Label(Long labelid, String name) {
-        this.labelid = labelid;
-        this.name = name;
-    }
-
-    public Long getLabelid() {
-        return labelid;
-    }
-
-    public void setLabelid(Long labelid) {
-        Long oldLabelid = this.labelid;
-        this.labelid = labelid;
-        changeSupport.firePropertyChange("labelid", oldLabelid, labelid);
+    public void setId(Long id) {
+        Long oldId = this.id;
+        this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getName() {
@@ -118,17 +102,16 @@ public class Label implements Serializable {
         changeSupport.firePropertyChange("address", oldAddress, address);
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getTelephoneNo() {
+        return telephoneNo;
     }
 
-    public void setTelephone(String telephone) {
-        String oldTelephone = this.telephone;
-        this.telephone = telephone;
-        changeSupport.firePropertyChange("telephone", oldTelephone, telephone);
+    public void setTelephoneNo(String telephoneNo) {
+        String oldTelephoneNo = this.telephoneNo;
+        this.telephoneNo = telephoneNo;
+        changeSupport.firePropertyChange("telephoneNo", oldTelephoneNo, telephoneNo);
     }
 
-    @XmlTransient
     public List<Album> getAlbumList() {
         return albumList;
     }
@@ -140,7 +123,7 @@ public class Label implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (labelid != null ? labelid.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -151,7 +134,7 @@ public class Label implements Serializable {
             return false;
         }
         Label other = (Label) object;
-        if ((this.labelid == null && other.labelid != null) || (this.labelid != null && !this.labelid.equals(other.labelid))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;

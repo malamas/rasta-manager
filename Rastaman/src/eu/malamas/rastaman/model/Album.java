@@ -88,7 +88,7 @@ public class Album implements Serializable {
     @JoinColumn(name = "ARTISTARTISTID", referencedColumnName = "ARTISTID")
     @ManyToOne
     private Artist artistartistid;
-    @JoinColumn(name = "LABELID", referencedColumnName = "LABELID")
+    @JoinColumn(name = "LABELID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Label labelid;
     @JoinColumn(name = "MUSICGROUPMUSICGROUPID", referencedColumnName = "MUSICGROUPID")
