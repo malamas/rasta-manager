@@ -91,7 +91,7 @@ public final class XmlHandler {
 
             // Στοιχείο με το id του τραγουδιού στη ΒΔ.
             Element idEl = doc.createElement("id");
-            idEl.appendChild(doc.createTextNode(Long.toString(s.getSongId())));
+            idEl.appendChild(doc.createTextNode(Long.toString(s.getId())));
             songEl.appendChild(idEl);
 
             // Τίτλος τραγουδιού
@@ -145,7 +145,7 @@ public final class XmlHandler {
         NodeList nl = doc.getElementsByTagName("song");
 
         List<Song> songList = new ArrayList<>();
-        List<PlaylistSong> psList = new ArrayList();
+        List<PlaylistSong> psList = new ArrayList<>();
 
         // δημιουργία λίστας με τα προς εισαγωγή τραγούδια, ώστε να αποφευχθούν διπλοεισαγωγές
         for (int i = 0; i < nl.getLength(); i++) {

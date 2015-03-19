@@ -45,27 +45,27 @@ public class PlaylistSong implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "PLAYLIST_SONG_ID")
-    private Long playlistSongId;
+    @Column(name = "ID")
+    private Long id;
     @Basic(optional = false)
     @Column(name = "SLOT")
     private int slot;
-    @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "PLAYLIST_ID")
+    @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Playlist playlist;
-    @JoinColumn(name = "SONG_ID", referencedColumnName = "SONG_ID")
+    @JoinColumn(name = "SONG_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Song song;
 
     public PlaylistSong() {
     }
 
-    public Long getPlaylistSongId() {
-        return playlistSongId;
+    public Long getId() {
+        return id;
     }
 
-    public void setPlaylistSongId(Long playlistSongId) {
-        this.playlistSongId = playlistSongId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getSlot() {
@@ -95,7 +95,7 @@ public class PlaylistSong implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (playlistSongId != null ? playlistSongId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -106,7 +106,7 @@ public class PlaylistSong implements Serializable {
             return false;
         }
         PlaylistSong other = (PlaylistSong) object;
-        if ((this.playlistSongId == null && other.playlistSongId != null) || (this.playlistSongId != null && !this.playlistSongId.equals(other.playlistSongId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -114,6 +114,6 @@ public class PlaylistSong implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.PlaylistSong[ playlistSongId=" + playlistSongId + " ]";
+        return "eu.malamas.rastaman.model.PlaylistSong[ id=" + id + " ]";
     }
 }

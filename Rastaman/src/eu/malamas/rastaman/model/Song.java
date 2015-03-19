@@ -57,8 +57,8 @@ public class Song implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "SONG_ID")
-    private Long songId;
+    @Column(name = "ID")
+    private Long id;
     @Basic(optional = false)
     @Column(name = "TITLE")
     private String title;
@@ -77,25 +77,21 @@ public class Song implements Serializable {
     public Song() {
     }
 
-    public Song(Long songid) {
-        this.songId = songid;
-    }
-
-    public Song(Long songid, String title, int duration, int trackNo) {
-        this.songId = songid;
+    public Song(Long id, String title, int duration, int trackNo) {
+        this.id = id;
         this.title = title;
         this.duration = duration;
         this.trackNo = trackNo;
     }
 
-    public Long getSongId() {
-        return songId;
+    public Long getId() {
+        return id;
     }
 
-    public void setSongId(Long songId) {
-        Long oldSongid = this.songId;
-        this.songId = songId;
-        changeSupport.firePropertyChange("songid", oldSongid, songId);
+    public void setId(Long id) {
+        Long oldId = this.id;
+        this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getTitle() {
@@ -149,7 +145,7 @@ public class Song implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (songId != null ? songId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -160,7 +156,7 @@ public class Song implements Serializable {
             return false;
         }
         Song other = (Song) object;
-        if ((this.songId == null && other.songId != null) || (this.songId != null && !this.songId.equals(other.songId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -168,7 +164,7 @@ public class Song implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Song[ songId=" + songId + " ]";
+        return "eu.malamas.rastaman.model.Song[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

@@ -54,7 +54,7 @@ public class PlaylistEditorController {
     public PlaylistEditorController(MainFrameController controller, Playlist playlist) {
         this.controller = controller;
         em = DatabaseHandler.getInstance().getEm();
-        if (playlist.getPlaylistId() == null) {
+        if (playlist.getId() == null) {
             this.playlist = playlist;
             em.persist(this.playlist);
         } else {
@@ -242,7 +242,7 @@ public class PlaylistEditorController {
         }
 
         // αφαίρεση των τραγουδιών που τυχόν περιείχε η λίστα
-        if (playlist.getPlaylistId() != null) {
+        if (playlist.getId() != null) {
             em.getTransaction().begin();
             for (PlaylistSong ps : playlist.getPlaylistSongList()) {
                 ps.getSong().getPlaylistSongList().remove(ps);

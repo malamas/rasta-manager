@@ -55,8 +55,8 @@ public class Playlist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "PLAYLIST_ID")
-    private Long playlistId;
+    @Column(name = "ID")
+    private Long id;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
@@ -71,14 +71,14 @@ public class Playlist implements Serializable {
     public Playlist() {
     }
 
-    public Long getPlaylistId() {
-        return playlistId;
+    public Long getId() {
+        return id;
     }
 
-    public void setPlaylistId(Long playlistId) {
-        Long oldPlaylistid = this.playlistId;
-        this.playlistId = playlistId;
-        changeSupport.firePropertyChange("playlistId", oldPlaylistid, playlistId);
+    public void setId(Long id) {
+        Long oldId = this.id;
+        this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getName() {
@@ -135,7 +135,7 @@ public class Playlist implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (playlistId != null ? playlistId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -146,7 +146,7 @@ public class Playlist implements Serializable {
             return false;
         }
         Playlist other = (Playlist) object;
-        if ((this.playlistId == null && other.playlistId != null) || (this.playlistId != null && !this.playlistId.equals(other.playlistId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -154,7 +154,7 @@ public class Playlist implements Serializable {
 
     @Override
     public String toString() {
-        return "eap.pli24.rastaman.entities.Playlist[ playlistid=" + playlistId + " ]";
+        return "eu.malamas.rastaman.model.Playlist[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
