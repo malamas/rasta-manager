@@ -2,30 +2,15 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="localEm">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="playlistQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT p FROM Playlist p"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="playlistList">
+    <Component class="java.util.List" name="boundPlaylistList">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="playlistQuery"/>
+          <ComponentRef name="null"/>
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="playlists"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Playlist&gt;"/>
       </AuxValues>
     </Component>
@@ -88,7 +73,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="playlistList" target="playlistTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="boundPlaylistList" target="playlistTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${name}">
                 <BindingParameter name="NAME" value="&#x38c;&#x3bd;&#x3bf;&#x3bc;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

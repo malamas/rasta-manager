@@ -219,11 +219,11 @@ public class PlaylistEditorController {
             return false;
         }
 
-        List<Playlist> playlistList = em.createQuery("SELECT p FROM Playlist p", Playlist.class).getResultList();
+        List<Playlist> playlistList = em.createNamedQuery("Playlist.findAll", Playlist.class).getResultList();
         playlistList.remove(playlist);
         for (Playlist p : playlistList) {
             if (newName.toLowerCase().equals(p.getName().toLowerCase())) {
-                JOptionPane.showMessageDialog(panel, "Υπάρχει ήδη λίστα με αυτό το όνομα!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(panel, "Υπάρχει ήδη λίστα με το όνομα '" + newName + "'!", "Αδυναμία αποθήκευσης", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
         }

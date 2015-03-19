@@ -30,7 +30,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -39,7 +38,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -51,6 +49,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -98,9 +97,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        localEm = em;
-        playlistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT p FROM Playlist p");
-        playlistList = Beans.isDesignTime() ? Collections.emptyList() : ObservableCollections.observableList(playlistQuery.getResultList());
+        boundPlaylistList = playlists;
         scrollPane1 = new JScrollPane();
         playlistTable = new JTable();
         buttonPanel = new JPanel();
@@ -122,7 +119,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
         playlistTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, playlistList, playlistTable);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundPlaylistList, playlistTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
@@ -240,7 +237,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
             // ανάκτηση λίστας προς επεξεργασία
-            Playlist sp = playlistList.get(selectedIndex);
+            Playlist sp = playlists.get(selectedIndex);
             // αίτημα για μετάβαση στον PlaylistEditor
             controller.switchToEditor(MainFrameController.EditorType.PLAYLIST_EDITOR, sp);
         }
@@ -253,7 +250,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private void exportButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Playlist sp = playlistList.get(selectedIndex);
+            Playlist sp = playlists.get(selectedIndex);
             exportListToXml(sp);
         }
     }//GEN-LAST:event_exportButtonActionPerformed
@@ -261,7 +258,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int selectedIndex = playlistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Playlist sp = playlistList.get(selectedIndex);
+            Playlist sp = playlists.get(selectedIndex);
             Object[] options = {"Ναι", "Όχι"};
             int selectedOption = JOptionPane.showOptionDialog(this, "Να διαγραφεί η λίστα '" + sp.getName() + "';", "Επιβεβαίωση διαγραφής", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (selectedOption == JOptionPane.YES_OPTION) {
@@ -271,7 +268,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                 em.getTransaction().begin();
                 em.remove(sp);
                 em.getTransaction().commit();
-                playlistList.remove(sp);
+                playlists.remove(sp);
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -288,6 +285,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton backButton;
+    private List<Playlist> boundPlaylistList;
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
@@ -300,10 +298,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private Box.Filler filler7;
     private Box.Filler filler8;
     private JButton importButton;
-    private EntityManager localEm;
     private JButton newButton;
-    private List<Playlist> playlistList;
-    private Query playlistQuery;
     private JTable playlistTable;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -315,6 +310,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private static final Logger LOGGER = Logger.getLogger(PlaylistTablePanel.class.getName());
     private MainFrameController controller;
     private EntityManager em;
+    private List<Playlist> playlists;
 
     /**
      * Δημιουργεί ένα {@code PlaylistTablePanel} με ελεγκτή τον
@@ -326,6 +322,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     public PlaylistTablePanel(MainFrameController controller) {
         this.controller = controller;
         this.em = DatabaseHandler.getInstance().getEm();
+        playlists = ObservableCollections.observableList(em.createNamedQuery("Playlist.findAll", Playlist.class).getResultList());
         initComponents();
         initFurther();
     }
@@ -336,23 +333,21 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
     private void initFurther() {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
-        // Καθορισμός εμφάνισης πίνακα
+        // ρύθμιση στηλών πίνακα επιλεγμένων (επικεφαλίδες, πλάτη, renderers)
         TableColumnModel tcm = playlistTable.getColumnModel();
+        String[] headers = {"Όνομα", "Ημερομηνία δημιουργίας", "Πλήθος τραγουδιών", "Διάρκεια"};
+        int[] widths = {100, 100, 100, 100};
+        TableCellRendererFactory.RendererType[] renderers
+                = {TableCellRendererFactory.RendererType.GENERIC,
+                    TableCellRendererFactory.RendererType.DATE,
+                    TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED,
+                    TableCellRendererFactory.RendererType.DURATION
+                };
         for (int i = 0; i < tcm.getColumnCount(); i++) {
-            switch (i) {
-                case 1:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
-                    break;
-                case 2:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
-                    break;
-                case 3:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
-                    break;
-                default:
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
-                    break;
-            }
+            TableColumn col = tcm.getColumn(i);
+            col.setCellRenderer(TableCellRendererFactory.getTableCellRenderer(renderers[i]));
+            col.setHeaderValue(headers[i]);
+            col.setPreferredWidth(widths[i]);
         }
     }
 
@@ -370,7 +365,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                 Playlist newPl = XmlHandler.buildPlaylistFromDocument(doc, em);
                 if (newPl != null) {
                     String newName = newPl.getName();
-                    for (Playlist p : playlistList) {
+                    for (Playlist p : playlists) {
                         String g = p.getName();
                         if (newName.toLowerCase().equals(g.toLowerCase())) {
                             newName = g + " [αντίγραφο]";
@@ -384,7 +379,7 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
                     em.getTransaction().begin();
                     em.persist(newPl);
                     em.getTransaction().commit();
-                    playlistList.add(newPl);
+                    playlists.add(newPl);
                 } else {
                     JOptionPane.showMessageDialog(this, "Το αρχείο xml δεν είναι έγκυρο!", "Σφάλμα", JOptionPane.WARNING_MESSAGE);
                 }
