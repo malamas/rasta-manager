@@ -18,10 +18,12 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eu.malamas.rastaman.ui;
+package eu.malamas.rastaman.ui.album;
 
+import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Artist;
-import eu.malamas.rastaman.model.Genre;
+import eu.malamas.rastaman.model.Song;
+import eu.malamas.rastaman.ui.MainFrameController;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import eu.malamas.rastaman.util.DatabaseHandler;
@@ -57,13 +59,14 @@ import org.jdesktop.swingbinding.SwingBindings;
 /**
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
-public class ArtistTablePanel extends javax.swing.JPanel {
+public class ArtistAlbumTablePanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form ArtistTablePanel
+     * Creates new form ArtistAlbumTablePanel
      */
-    public ArtistTablePanel() {
+    public ArtistAlbumTablePanel() {
         initComponents();
     }
 
@@ -80,8 +83,10 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         localEm = em;
         artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
         artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
+        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.artist is not null");
+        albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
         scrollPane1 = new JScrollPane();
-        artistTable = new JTable();
+        artistAlbumTable = new JTable();
         buttonPanel = new JPanel();
         filler3 = new Box.Filler(new Dimension(5, 15), new Dimension(5, 15), new Dimension(5, 15));
         backButton = new JButton();
@@ -95,41 +100,45 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
         setLayout(new BorderLayout());
 
-        artistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        artistTable.getTableHeader().setReorderingAllowed(false);
+        artistAlbumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        artistAlbumTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistTable);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastName}"));
-        columnBinding.setColumnName("Επώνυμο");
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, albumList, artistAlbumTable);
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${title}"));
+        columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstName}"));
-        columnBinding.setColumnName("Όνομα");
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.firstName}"));
+        columnBinding.setColumnName("Ονομα Καλιτέχνη");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artisticName}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.lastName}"));
+        columnBinding.setColumnName("Επίθετο Καλλιτέχνη");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.artisticName}"));
         columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${gender}"));
-        columnBinding.setColumnName("Φύλο");
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${type}"));
+        columnBinding.setColumnName("Τύπος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthDate}"));
-        columnBinding.setColumnName("Ημ. Γέννησης");
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${diskNo}"));
+        columnBinding.setColumnName("No Δίσκου");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${label.name}"));
+        columnBinding.setColumnName("Εταιρία");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${releaseDate}"));
+        columnBinding.setColumnName("Ημ.Κυκλοφορίας");
         columnBinding.setColumnClass(Date.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthPlace}"));
-        columnBinding.setColumnName("Τόπος Γέννησης");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${genre}"));
-        columnBinding.setColumnName("Είδος Μουσικής");
-        columnBinding.setColumnClass(Genre.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        scrollPane1.setViewportView(artistTable);
+        scrollPane1.setViewportView(artistAlbumTable);
 
         add(scrollPane1, BorderLayout.CENTER);
 
@@ -163,7 +172,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         editButton.setText("Επεξεργασία");
         editButton.setPreferredSize(new Dimension(120, 36));
 
-        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistTable, ELProperty.create("${selectedElement!=null}"), editButton, BeanProperty.create("enabled"));
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistAlbumTable, ELProperty.create("${selectedElement!=null}"), editButton, BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         editButton.addActionListener(new ActionListener() {
@@ -178,7 +187,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         deleteButton.setText("Διαγραφή");
         deleteButton.setPreferredSize(new Dimension(120, 36));
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistTable, ELProperty.create("${selectedElement!=null}"), deleteButton, BeanProperty.create("enabled"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistAlbumTable, ELProperty.create("${selectedElement!=null}"), deleteButton, BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         deleteButton.addActionListener(new ActionListener() {
@@ -193,39 +202,39 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
-
-    //κλίκ στο πλήκτρο Εισαγωγή Καλιτέχνη
+    // κλικ στο πλήκτρο Εισαγωγή νέου Αλμπουμ
     private void newButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        //¨Ανοιγμα της φόρμας επεξεργασίας καλιτέχνη με
-        // παράμετρο νέο καλιτέχνη
-        controller.switchToEditor(MainFrameController.EditorType.ARTIST_EDITOR, new Artist());
+        // Ανοιγμα της φόρμας επεξεργασίας Αλμπουμ για νέο Αλμπουμ
+        controller.switchToEditor(MainFrameController.EditorType.ARTIST_ALBUM_EDITOR, new Album());
     }//GEN-LAST:event_newButtonActionPerformed
 
-    //κλίκ στο πληκτρο Επεξεργασία Καλιτέχνη
+    // κλικ στο πλήκτρο Επεξεργασία Αλμπουμ
     private void editButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        //¨Ανοιγμα της φόρμας επεξεργασίας καλιτέχνη με
-        // παράμετρο τον επιλεγμένο από τον πίνακα καλιτεχνών
-        // καλιτέχνη
-        int selectedIndex = artistTable.getSelectedRow();
+        // Ανοιγμα της φόρμας επεξεργασίας Αλμπουμ για το επιλεγμένο Αλμπουμ
+        int selectedIndex = artistAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Artist selectedArtist = artistList.get(selectedIndex);
-            controller.switchToEditor(MainFrameController.EditorType.ARTIST_EDITOR, selectedArtist);
+            Album selectedAlbum = albumList.get(selectedIndex);
+            controller.switchToEditor(MainFrameController.EditorType.ARTIST_ALBUM_EDITOR, selectedAlbum);
         }
     }//GEN-LAST:event_editButtonActionPerformed
-    //κλίκ στο πλήκτρο Διαγραφή καλιτέχνη
+
+    // κλικ στο πλήκτρο Διαγραφή Αλμπουμ       
     private void deleteButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        deleteArtist();
+        deleteArtistAlbum();
     }//GEN-LAST:event_deleteButtonActionPerformed
-    // κλικ στο πλήκτρο επιστροφή στο κυρίως μενού
+
+    // κλικ στο πλήκτρο επιστροφή στο κυρίως μενού    
     private void backButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         controller.switchToPanel(MainFrameController.PanelType.ROOT_MENU);
     }//GEN-LAST:event_backButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private List<Album> albumList;
+    private Query albumQuery;
+    private JTable artistAlbumTable;
     private List<Artist> artistList;
     private Query artistQuery;
-    private JTable artistTable;
     private JButton backButton;
     private JPanel buttonPanel;
     private JButton deleteButton;
@@ -247,7 +256,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
 
-    public ArtistTablePanel(MainFrameController controller) {
+    public ArtistAlbumTablePanel(MainFrameController controller) {
         this.controller = controller;
         this.em = DatabaseHandler.getInstance().getEm();
         initComponents();
@@ -258,55 +267,59 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         buttonPanel.setPreferredSize(new Dimension(0, SkinProvider.getInstance().getSkin().getButtonPanelHeight()));
 
         // Καθορισμός εμφάνισης πίνακα
-        TableColumnModel tcm = artistTable.getColumnModel();
+        TableColumnModel tcm = artistAlbumTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 3:  // στήλη Φύλο
-                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.SEX));
+                case 5: //στήλη Νο δισκου
+                    tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC_RIGHT_ALIGNED));
                     break;
-                case 4: // στήλη Ημερομηνία Γέννησης
+                case 7: //στήλη Ημερομηνία Κυκλοφορίας
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DATE));
                     break;
-                default: // όλες οι στήλες...
+                default:
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.GENERIC));
                     break;
             }
         }
     }
 
-    // Μέθοδος deleteArtist()
-    // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή Καλιτέχνη και αφου κάνει τους 
-    // απαραίτητους ελέγχους διαγράφει τον επιλεγμένο καλιτέχνη
-    private void deleteArtist() {
-        int selectedIndex = artistTable.getSelectedRow();
+    // Μέθοδος deleteGroupAlbum()
+    // Καλείται όταν πατηθεί το πλήκτρο Διαγραφή Album και αφου κάνει τους 
+    // απαραίτητους ελέγχους διαγράφει το επιλεγμένο Album    
+    private void deleteArtistAlbum() {
+        int selectedIndex = artistAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Artist selectedArtist = artistList.get(selectedIndex);
-            if (selectedArtist.getAlbumList().isEmpty()) { // εαν δεν συμμετέχει σε αλμπουμ
-                if (selectedArtist.getMusicGroupList().isEmpty()) { //εαν δεν συμμετέχει σε γκρουπ
-                    Object[] options = {"Ναι", "Όχι"};
-                    int n = JOptionPane.showOptionDialog(this,
-                            "Να διαγραφεί ο Καλιτέχνης: " + selectedArtist.getScreenName() + ";",
-                            "Επιβεβαίωση Διαγραφής",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, //do not use a custom Icon
-                            options, //the titles of buttons
-                            options[1]); //default button title
-                    if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
-                        em.getTransaction().begin();
-                        em.remove(artistList.remove(selectedIndex));
-                        em.getTransaction().commit();
-                        artistTable.updateUI();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί,\n γιατί συμμετέχει σε συγκρότημα.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+            Album a = albumList.get(selectedIndex);
+            //Έλεγχος Συμμετοχής κάποιου τραγουδιού σε PlayList
+            boolean isInPlaylist = false;
+            for (Song s : a.getSongList()) {
+                if (!s.getPlaylistSongList().isEmpty()) {
+                    isInPlaylist = true;
+                    break;
                 }
-            } else {
-                if (selectedArtist.getMusicGroupList().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί,\n γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί, \n γιατί συμμετέχει σε συγκρότημα και υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (!isInPlaylist) { // Εαν δεν συμμετέχει σε PlayList  διαγράφεται
+                Object[] options = {"Ναι", "Όχι"};
+                int n = JOptionPane.showOptionDialog(this,
+                        "Να διαγραφεί το Άλμπουμ " + a.getTitle() + ";",
+                        "Επιβεβαίωση Διαγραφής",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, //do not use a custom Icon
+                        options, //the titles of buttons
+                        options[1]); //default button title
+                if (n == 0) {
+                    em.getTransaction().begin();
+                    em.remove(albumList.remove(selectedIndex));
+                    em.getTransaction().commit();
+                    em.refresh(a.getArtist());
+                    em.refresh(a.getLabel());
+                    artistAlbumTable.updateUI();
                 }
+            } else { // Εαν συμμετέχει σε PlayList δεν διαγράφεται
+                JOptionPane.showMessageDialog(this, "Kάποιο(α) τραγούδι(α) συμμετέχει σε λίστα \n"
+                        + "πρέπει πρώτα να διαγραφεί απο αυτή",
+                        "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

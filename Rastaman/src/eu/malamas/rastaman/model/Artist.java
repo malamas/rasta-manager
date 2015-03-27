@@ -96,18 +96,6 @@ public class Artist implements Serializable {
     public Artist() {
     }
 
-    public Artist(Long artistid) {
-        this.id = artistid;
-    }
-
-    public Artist(Long artistid, String firstname, String lastname, String artisticname, String sex) {
-        this.id = artistid;
-        this.firstName = firstname;
-        this.lastName = lastname;
-        this.artisticName = artisticname;
-        this.gender = sex;
-    }
-
     public Long getId() {
         return id;
     }

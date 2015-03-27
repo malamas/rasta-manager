@@ -18,28 +18,28 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eu.malamas.rastaman.ui;
+package eu.malamas.rastaman.ui.album;
 
 import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Label;
 import eu.malamas.rastaman.model.Song;
+import eu.malamas.rastaman.ui.MainFrameController;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import eu.malamas.rastaman.util.DatabaseHandler;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import java.util.Comparator;
-
 
 /*
- *
+ * 
  * @author Apostolis Iakovakis
  * @author Malamas Malamidis
  */
-public class GroupAlbumEditorPanel extends javax.swing.JPanel {
+public class ArtistAlbumEditorPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form EditGroupPanel
@@ -63,9 +63,9 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         labelNamelist = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : labelNamequery.getResultList();
         songQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT s FROM Song s");
         songList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : songQuery.getResultList();
+        artistQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT  a  FROM Artist a");
+        artistList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : artistQuery.getResultList();
         boundAlbum = album;
-        musicgroupQuery = java.beans.Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgroup m");
-        musicgroupList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : musicgroupQuery.getResultList();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -73,7 +73,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         newButton = new javax.swing.JButton();
         releasedateField = new javax.swing.JFormattedTextField();
         labelComboBox = new javax.swing.JComboBox();
-        groupComboBox = new javax.swing.JComboBox();
+        artistComboBox = new javax.swing.JComboBox();
         titleField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -130,9 +130,9 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${label}"), labelComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, groupComboBox);
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${musicGroup}"), groupComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${artist}"), artistComboBox, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundAlbum, org.jdesktop.beansbinding.ELProperty.create("${title}"), titleField, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -142,7 +142,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Τίτλος :");
 
-        jLabel4.setText("Συγκρότημα:");
+        jLabel4.setText("Καλιτέχνης:");
 
         jLabel3.setText("Εταιρία:");
 
@@ -179,7 +179,6 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
             }
         });
         songTable.setCellSelectionEnabled(true);
-        songTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         songTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         songTable.getTableHeader().setReorderingAllowed(false);
         songTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -215,7 +214,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(titleField)
                                 .addComponent(labelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(groupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(artistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -246,7 +245,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                     .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(groupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(artistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -300,24 +299,30 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
+    // κλικ στο πλήκτρο Ακύρωση
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        localEm.getTransaction().rollback();
-        controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);
+        localEm.getTransaction().rollback(); //Ακύρωση όλων των αλλαγών
+        controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    // Κλικ στο πλήκτρο Διαγραφή Τραγουδιού
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteSong();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //κλικ στο πλήκτρο Εισαγωγή Τραγουδιού
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         addSong();
     }//GEN-LAST:event_newButtonActionPerformed
 
+    //κλικ στο πλήκτρο  Αποθήκευση
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         saveAndExit();
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    // κλικ και επιλογή τραγουδιού
     private void songTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_songTableMouseClicked
+        //ενεργοποίηση του πλήκτρου διαγραφής τραγουδιού
         deleteButton.setEnabled(true);
     }//GEN-LAST:event_songTableMouseClicked
 
@@ -325,11 +330,13 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.util.List<eu.malamas.rastaman.model.Album> albumList;
     private javax.persistence.Query albumQuery;
+    private javax.swing.JComboBox artistComboBox;
+    private java.util.List<eu.malamas.rastaman.model.Artist> artistList;
+    private javax.persistence.Query artistQuery;
     private eu.malamas.rastaman.model.Album boundAlbum;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField disknumberTextField;
-    private javax.swing.JComboBox groupComboBox;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -344,8 +351,6 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     private javax.persistence.Query labelNamequery;
     private javax.persistence.Query labelquery;
     private javax.persistence.EntityManager localEm;
-    private java.util.List<eu.malamas.rastaman.model.Musicgroup> musicgroupList;
-    private javax.persistence.Query musicgroupQuery;
     private javax.swing.JButton newButton;
     private javax.swing.JFormattedTextField releasedateField;
     private javax.swing.JButton saveButton;
@@ -363,10 +368,11 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
     private Album album;
+    private String artistName;
     private DefaultTableModel model;
     private Comparator<Song> songComparator;
 
-    public GroupAlbumEditorPanel(MainFrameController controller, Album album) {
+    public ArtistAlbumEditorPanel(MainFrameController controller, Album album) {
         this.controller = controller;
         this.em = DatabaseHandler.getInstance().getEm();
         this.album = album;
@@ -376,7 +382,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         TableColumnModel tcm = songTable.getColumnModel();
         for (int i = 0; i < tcm.getColumnCount(); i++) {
             switch (i) {
-                case 2:  // στήλη διάρκεια
+                case 2: // στήλη διάρκεια
                     tcm.getColumn(i).setCellRenderer(TableCellRendererFactory.getTableCellRenderer(TableCellRendererFactory.RendererType.DURATION));
                     break;
                 default:
@@ -384,7 +390,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                     break;
             }
         }
-
+        this.artistName = album.getArtist() == null ? null : album.getArtist().getScreenName();
         model = (DefaultTableModel) songTable.getModel();
         songComparator = (Song s1, Song s2) -> (Integer.compare(s1.getTrackNo(), s2.getTrackNo()));
         //Εισαγωγή τραγουδιών στον πίνακα
@@ -396,13 +402,14 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                 model.addRow(new Object[]{s.getTrackNo(), s.getTitle(), s.getDuration()});
             }
         }
+
         localEm.getTransaction().begin(); // Αρχή Transaction
         localEm.persist(boundAlbum);
     }
 
     // Μέθοδος addSong()
     // Καλείται όταν πατηθεί το πλήκτρο Εισαγωγή τραγουδιού και 
-    // δημιουργεί μια νέα γραμμή για την καταχώρηση νέου τραγουδιού    
+    // δημιουργεί μια νέα γραμμή για την καταχώρηση νέου τραγουδιού
     private void addSong() {
         boolean found;
         int i;
@@ -452,6 +459,7 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "Δεν Επιλέχθηκε Τραγούδι \nπρος Διαγραφή", "Rastaman", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }
 
     /**
@@ -461,12 +469,11 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
      */
     private void saveAndExit() {
         try {
-            //Έλεγχοι Ακεραιότητας δεδομένων
             if (titleField.getText().isEmpty()) {
                 throw new Exception("Συμπληρώστε Τίτλο");
             }
-            if (groupComboBox.getSelectedItem().toString().isEmpty()) {
-                throw new Exception("Επιλέξτε Συγκροτημα");
+            if (artistComboBox.getSelectedItem().toString().isEmpty()) {
+                throw new Exception("Επιλέξτε Καλλιτέχνη");
             }
             if (labelComboBox.getSelectedItem().toString().isEmpty()) {
                 throw new Exception("Επιλέξτε Εταιρία");
@@ -494,7 +501,6 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
                     }
                 }
             }
-
             boolean found;
             for (int i = 0; i < model.getRowCount(); i++) {
                 if (model.getValueAt(i, 1) == null || model.getValueAt(i, 1).equals("")) {
@@ -527,14 +533,15 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
             boundAlbum.setSongList(albumSongList);
 
             localEm.getTransaction().commit();
-            localEm.refresh(boundAlbum.getMusicGroup());
+            localEm.refresh(boundAlbum.getArtist());
             localEm.refresh(boundAlbum.getLabel());
             for (Song s : albumSongList) {
                 localEm.refresh(s);
             }
-            controller.switchToPanel(MainFrameController.PanelType.GROUP_ALBUM_TABLE);
+            controller.switchToPanel(MainFrameController.PanelType.ARTIST_ALBUM_TABLE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
+
     }
 }

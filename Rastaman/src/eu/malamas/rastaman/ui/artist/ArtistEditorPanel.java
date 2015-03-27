@@ -18,10 +18,11 @@
  * along with Rastaman.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package eu.malamas.rastaman.ui;
+package eu.malamas.rastaman.ui.artist;
 
 import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Genre;
+import eu.malamas.rastaman.ui.MainFrameController;
 import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.Font;
 import java.awt.event.ActionEvent;

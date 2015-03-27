@@ -20,6 +20,14 @@
  */
 package eu.malamas.rastaman.ui;
 
+import eu.malamas.rastaman.ui.artist.GroupTablePanel;
+import eu.malamas.rastaman.ui.artist.ArtistEditorPanel;
+import eu.malamas.rastaman.ui.artist.GroupEditorPanel;
+import eu.malamas.rastaman.ui.artist.ArtistTablePanel;
+import eu.malamas.rastaman.ui.album.GroupAlbumTablePanel;
+import eu.malamas.rastaman.ui.album.GroupAlbumEditorPanel;
+import eu.malamas.rastaman.ui.album.ArtistAlbumEditorPanel;
+import eu.malamas.rastaman.ui.album.ArtistAlbumTablePanel;
 import eu.malamas.rastaman.ui.playlist.PlaylistEditorController;
 import eu.malamas.rastaman.ui.playlist.PlaylistTablePanel;
 import eu.malamas.rastaman.model.Album;
