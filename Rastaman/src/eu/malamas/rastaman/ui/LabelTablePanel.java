@@ -274,7 +274,10 @@ public class LabelTablePanel extends javax.swing.JPanel {
                     labelTable.updateUI();
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Η εταιρία δεν μπορεί να διαγραφεί, \n γιατί υπάρχει άλμπουμ της.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Η εταιρία δεν μπορεί να διαγραφεί, \n γιατί υπάρχει άλμπουμ της.",
+                        "Αδυναμία διαγραφής",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

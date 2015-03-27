@@ -259,7 +259,10 @@ public class GenreTablePanel extends javax.swing.JPanel {
                     genreTable.updateUI();
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Το είδος Μουσικής δεν μπορεί να διαγραφεί, \n διότι υπάρχει καλλιτέχνης σε αυτό.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Το είδος Μουσικής δεν μπορεί να διαγραφεί, \n διότι υπάρχει καλλιτέχνης σε αυτό.",
+                        "Αδυναμία διαγραφής",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

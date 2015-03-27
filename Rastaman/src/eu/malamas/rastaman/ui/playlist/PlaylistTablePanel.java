@@ -261,7 +261,15 @@ public class PlaylistTablePanel extends javax.swing.JPanel {
         if (selectedIndex != -1) {
             Playlist sp = playlists.get(selectedIndex);
             Object[] options = {"Ναι", "Όχι"};
-            int selectedOption = JOptionPane.showOptionDialog(this, "Να διαγραφεί η λίστα '" + sp.getName() + "';", "Επιβεβαίωση διαγραφής", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            int selectedOption = JOptionPane.showOptionDialog(this,
+                    "Να διαγραφεί η λίστα '" + sp.getName() + "';",
+                    "Επιβεβαίωση διαγραφής",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
             if (selectedOption == JOptionPane.YES_OPTION) {
                 for (PlaylistSong ps : sp.getPlaylistSongList()) {
                     ps.getSong().getPlaylistSongList().remove(ps);

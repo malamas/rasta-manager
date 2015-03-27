@@ -202,7 +202,15 @@ public class MainFrameController implements Runnable {
      */
     public void shutdown() {
         Object[] options = {"Ναι", "Όχι"};
-        int selectedOption = JOptionPane.showOptionDialog(mainFrame, "Να τερματιστεί η εφαρμογή;", "Exodus...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int selectedOption = JOptionPane.showOptionDialog(mainFrame,
+                "Να τερματιστεί η εφαρμογή;",
+                "Exodus...",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
         if (selectedOption == JOptionPane.YES_OPTION) {
             DatabaseHandler.getInstance().close();
             mainFrame.dispose();
