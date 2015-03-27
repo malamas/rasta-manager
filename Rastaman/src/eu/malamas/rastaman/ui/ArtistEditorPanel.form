@@ -283,21 +283,21 @@
         </Component>
         <Component class="javax.swing.JTextField" name="firstNameField">
           <BindingProperties>
-            <BindingProperty name="text" source="boundArtist" sourcePath="${firstname}" target="firstNameField" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="boundArtist" sourcePath="${firstName}" target="firstNameField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="lastNameField">
           <BindingProperties>
-            <BindingProperty name="text" source="boundArtist" sourcePath="${lastname}" target="lastNameField" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="boundArtist" sourcePath="${lastName}" target="lastNameField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="artisticNameField">
           <BindingProperties>
-            <BindingProperty name="text" source="boundArtist" sourcePath="${artisticname}" target="artisticNameField" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="boundArtist" sourcePath="${artisticName}" target="artisticNameField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
@@ -312,7 +312,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${sex}" target="sexComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false">
+            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${gender}" target="sexComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false">
               <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                 <Connection code="conv" type="code"/>
               </Property>
@@ -326,12 +326,12 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="value" source="boundArtist" sourcePath="${birthday}" target="birthdayField" targetPath="value" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="value" source="boundArtist" sourcePath="${birthDate}" target="birthdayField" targetPath="value" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="birthPlaceField">
           <BindingProperties>
-            <BindingProperty name="text" source="boundArtist" sourcePath="${birthplace}" target="birthPlaceField" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="boundArtist" sourcePath="${birthPlace}" target="birthPlaceField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
@@ -342,7 +342,7 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="musicGenreList" target="genreComboBox" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${muscigenreid}" target="genreComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false">
+            <BindingProperty name="selectedItem" source="boundArtist" sourcePath="${genre}" target="genreComboBox" targetPath="selectedItem" updateStrategy="0" immediately="false">
               <Property name="nullValue" type="java.lang.Object" value="null"/>
             </BindingProperty>
           </BindingProperties>

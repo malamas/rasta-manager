@@ -49,7 +49,7 @@ import javax.persistence.Transient;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "ALBUM")
+@Table(name = "Album")
 @NamedQueries({
     @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a")})
 public class Album implements Serializable {
@@ -57,32 +57,41 @@ public class Album implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
-    @Column(name = "TITLE")
+    @Column(name = "title")
     private String title;
-    @Column(name = "RELEASE_DATE")
+
+    @Column(name = "release_date")
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
+
     @Basic(optional = false)
-    @Column(name = "TYPE")
+    @Column(name = "type")
     private String type;
+
     @Basic(optional = false)
-    @Column(name = "DISK_NO")
+    @Column(name = "disk_no")
     private int diskNo;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
     private List<Song> songList;
-    @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ARTISTID")
+
+    @JoinColumn(name = "artist_id", referencedColumnName = "id")
     @ManyToOne
     private Artist artist;
-    @JoinColumn(name = "LABEL_ID", referencedColumnName = "ID")
+
+    @JoinColumn(name = "label_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Label label;
-    @JoinColumn(name = "MUSIC_GROUP_ID", referencedColumnName = "ID")
+
+    @JoinColumn(name = "music_group_id", referencedColumnName = "id")
     @ManyToOne
     private Musicgroup musicGroup;
 

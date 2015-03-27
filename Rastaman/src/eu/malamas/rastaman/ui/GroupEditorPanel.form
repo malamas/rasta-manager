@@ -246,7 +246,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="value" source="boundGroup" sourcePath="${formationdate}" target="formationdateField" targetPath="value" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="value" source="boundGroup" sourcePath="${formationDate}" target="formationdateField" targetPath="value" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">

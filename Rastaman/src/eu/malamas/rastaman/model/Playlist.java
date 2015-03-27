@@ -48,7 +48,7 @@ import javax.persistence.Transient;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "PLAYLIST")
+@Table(name = "Playlist")
 @NamedQueries({
     @NamedQuery(name = "Playlist.findAll", query = "SELECT p FROM Playlist p")})
 public class Playlist implements Serializable {
@@ -56,18 +56,22 @@ public class Playlist implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
+
     @Basic(optional = false)
-    @Column(name = "CREATION_DATE")
+    @Column(name = "creation_date")
     @Temporal(TemporalType.DATE)
     private Date creationDate;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist")
     @OrderBy("slot ASC")
     private List<PlaylistSong> playlistSongList;

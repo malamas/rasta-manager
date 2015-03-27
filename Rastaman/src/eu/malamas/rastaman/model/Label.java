@@ -44,7 +44,7 @@ import javax.persistence.Transient;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "LABEL")
+@Table(name = "Label")
 @NamedQueries({
     @NamedQuery(name = "Label.findAll", query = "SELECT l FROM Label l")})
 public class Label implements Serializable {
@@ -56,15 +56,19 @@ public class Label implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
-    @Column(name = "ADDRESS")
+
+    @Column(name = "address")
     private String address;
-    @Column(name = "TELEPHONE_NO")
+
+    @Column(name = "telephone_no")
     private String telephoneNo;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "label")
     private List<Album> albumList;
 
@@ -141,7 +145,8 @@ public class Label implements Serializable {
 
     @Override
     public String toString() {
-        return "eu.malamas.rastaman.model.Label[ id=" + id + " ]";
+        return name; // necessary for comboboxes - must be fixed
+        //return "eu.malamas.rastaman.model.Label[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

@@ -42,21 +42,24 @@ import javax.persistence.Transient;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "GENRE")
+@Table(name = "Genre")
 public class Genre implements Serializable {
 
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
+    
     @Basic(optional = false)
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "muscigenreid")
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre")
     private List<Artist> artistList;
 
     public Genre() {
@@ -112,7 +115,8 @@ public class Genre implements Serializable {
 
     @Override
     public String toString() {
-        return "eu.malamas.rastaman.model.Genre[ id=" + id + " ]";
+        return name; // necessary for comboboxes - must be fixed
+        //return "eu.malamas.rastaman.model.Genre[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

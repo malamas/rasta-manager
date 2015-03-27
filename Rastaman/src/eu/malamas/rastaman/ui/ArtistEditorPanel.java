@@ -147,34 +147,34 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
         jLabel8.setHorizontalAlignment(SwingConstants.RIGHT);
         jLabel8.setText("Είδος Μουσικής :");
 
-        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${firstname}"), firstNameField, BeanProperty.create("text"));
+        Binding binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${firstName}"), firstNameField, BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${lastname}"), lastNameField, BeanProperty.create("text"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${lastName}"), lastNameField, BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${artisticname}"), artisticNameField, BeanProperty.create("text"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${artisticName}"), artisticNameField, BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         sexComboBox.setModel(new DefaultComboBoxModel(new String[] { "Άνδρας", "Γυναίκα" }));
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${sex}"), sexComboBox, BeanProperty.create("selectedItem"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${gender}"), sexComboBox, BeanProperty.create("selectedItem"));
         binding.setConverter(conv);
         bindingGroup.addBinding(binding);
 
         birthdayField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(DateFormat.getDateInstance(DateFormat.SHORT))));
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${birthday}"), birthdayField, BeanProperty.create("value"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${birthDate}"), birthdayField, BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${birthplace}"), birthPlaceField, BeanProperty.create("text"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${birthPlace}"), birthPlaceField, BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         genreComboBox.setActionCommand("");
 
         JComboBoxBinding jComboBoxBinding = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicGenreList, genreComboBox);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${muscigenreid}"), genreComboBox, BeanProperty.create("selectedItem"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtist, ELProperty.create("${genre}"), genreComboBox, BeanProperty.create("selectedItem"));
         binding.setSourceNullValue(null);
         bindingGroup.addBinding(binding);
 

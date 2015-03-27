@@ -105,7 +105,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationdate}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${formationDate}"));
         columnBinding.setColumnName("Ημερομηνία δημιουργίας");
         columnBinding.setColumnClass(Date.class);
         columnBinding.setEditable(false);

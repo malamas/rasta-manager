@@ -50,7 +50,7 @@ public final class TableCellRendererFactory {
         renderers.put(RendererType.GENERIC, new GenericTableCellRenderer());
         renderers.put(RendererType.GENERIC_RIGHT_ALIGNED, new RightAlignedTableCellRenderer());
         renderers.put(RendererType.DATE, new DateTableCellRenderer());
-        renderers.put(RendererType.SEX, new SexTableCellRenderer());
+        renderers.put(RendererType.SEX, new GenderTableCellRenderer());
         renderers.put(RendererType.DURATION, new DurationTableCellRenderer());
     }
 

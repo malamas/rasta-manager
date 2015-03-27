@@ -106,39 +106,39 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="artistList" target="artistTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${lastname}">
+              <Subbinding sourcePath="${lastName}">
                 <BindingParameter name="NAME" value="&#x395;&#x3c0;&#x3ce;&#x3bd;&#x3c5;&#x3bc;&#x3bf;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${firstname}">
+              <Subbinding sourcePath="${firstName}">
                 <BindingParameter name="NAME" value="&#x38c;&#x3bd;&#x3bf;&#x3bc;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${artisticname}">
+              <Subbinding sourcePath="${artisticName}">
                 <BindingParameter name="NAME" value="&#x39a;&#x3b1;&#x3bb;&#x3b9;&#x3c4;&#x3b5;&#x3c7;&#x3bd;&#x3b9;&#x3ba;&#x3cc; &#x38c;&#x3bd;&#x3bf;&#x3bc;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${sex}">
+              <Subbinding sourcePath="${gender}">
                 <BindingParameter name="NAME" value="&#x3a6;&#x3cd;&#x3bb;&#x3bf;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${birthday}">
+              <Subbinding sourcePath="${birthDate}">
                 <BindingParameter name="NAME" value="&#x397;&#x3bc;. &#x393;&#x3ad;&#x3bd;&#x3bd;&#x3b7;&#x3c3;&#x3b7;&#x3c2;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${birthplace}">
+              <Subbinding sourcePath="${birthPlace}">
                 <BindingParameter name="NAME" value="&#x3a4;&#x3cc;&#x3c0;&#x3bf;&#x3c2; &#x393;&#x3ad;&#x3bd;&#x3bd;&#x3b7;&#x3c3;&#x3b7;&#x3c2;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${muscigenreid.name}">
+              <Subbinding sourcePath="${genre}">
                 <BindingParameter name="NAME" value="&#x395;&#x3af;&#x3b4;&#x3bf;&#x3c2; &#x39c;&#x3bf;&#x3c5;&#x3c3;&#x3b9;&#x3ba;&#x3ae;&#x3c2;"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="eu.malamas.rastaman.model.Genre.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>

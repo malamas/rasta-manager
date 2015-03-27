@@ -21,6 +21,7 @@
 package eu.malamas.rastaman.ui;
 
 import eu.malamas.rastaman.model.Artist;
+import eu.malamas.rastaman.model.Genre;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
 import java.awt.BorderLayout;
@@ -97,33 +98,33 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         artistTable.getTableHeader().setReorderingAllowed(false);
 
         JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistTable);
-        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastname}"));
+        JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastName}"));
         columnBinding.setColumnName("Επώνυμο");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${firstName}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artisticname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artisticName}"));
         columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${sex}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${gender}"));
         columnBinding.setColumnName("Φύλο");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthday}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthDate}"));
         columnBinding.setColumnName("Ημ. Γέννησης");
         columnBinding.setColumnClass(Date.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthplace}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${birthPlace}"));
         columnBinding.setColumnName("Τόπος Γέννησης");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${muscigenreid.name}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${genre}"));
         columnBinding.setColumnName("Είδος Μουσικής");
-        columnBinding.setColumnClass(String.class);
+        columnBinding.setColumnClass(Genre.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
@@ -280,7 +281,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         if (selectedIndex != -1) {
             Artist selectedArtist = artistList.get(selectedIndex);
             if (selectedArtist.getAlbumList().isEmpty()) { // εαν δεν συμμετέχει σε αλμπουμ
-                if (selectedArtist.getMusicgroupList().isEmpty()) { //εαν δεν συμμετέχει σε γκρουπ
+                if (selectedArtist.getMusicGroupList().isEmpty()) { //εαν δεν συμμετέχει σε γκρουπ
                     Object[] options = {"Ναι", "Όχι"};
                     int n = JOptionPane.showOptionDialog(this,
                             "Να διαγραφεί ο Καλιτέχνης: " + selectedArtist.getScreenName() + ";",
@@ -300,7 +301,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί,\n γιατί συμμετέχει σε συγκρότημα.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
-                if (selectedArtist.getMusicgroupList().isEmpty()) {
+                if (selectedArtist.getMusicGroupList().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί,\n γιατί υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Ο καλλιτέχνης δεν μπορεί να διαγραφεί, \n γιατί συμμετέχει σε συγκρότημα και υπάρχει άλμπουμ του.", "Αδυναμία διαγραφής", JOptionPane.INFORMATION_MESSAGE);

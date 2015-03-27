@@ -27,12 +27,12 @@ package eu.malamas.rastaman.ui.tablecellrenderers;
  *
  * @author Malamas Malamidis
  */
-public class SexTableCellRenderer extends GenericTableCellRenderer {
+public class GenderTableCellRenderer extends GenericTableCellRenderer {
 
     /**
      * Δημιουργεί έναν {@code SexTableCellRenderer}.
      */
-    public SexTableCellRenderer() {
+    public GenderTableCellRenderer() {
         super();
     }
 

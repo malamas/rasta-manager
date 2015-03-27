@@ -137,7 +137,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
 
         formationdateField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(DateFormat.getDateInstance(DateFormat.SHORT))));
 
-        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, ELProperty.create("${formationdate}"), formationdateField, BeanProperty.create("value"));
+        binding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundGroup, ELProperty.create("${formationDate}"), formationdateField, BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
         groupArtistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

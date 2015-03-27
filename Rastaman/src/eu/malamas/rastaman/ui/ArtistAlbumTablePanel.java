@@ -105,15 +105,15 @@ public class ArtistAlbumTablePanel extends javax.swing.JPanel {
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.firstname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.firstName}"));
         columnBinding.setColumnName("Ονομα Καλιτέχνη");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.lastname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.lastName}"));
         columnBinding.setColumnName("Επίθετο Καλλιτέχνη");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.artisticname}"));
+        columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${artist.artisticName}"));
         columnBinding.setColumnName("Καλιτεχνικό Όνομα");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);

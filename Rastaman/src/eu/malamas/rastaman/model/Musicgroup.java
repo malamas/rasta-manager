@@ -41,68 +41,57 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Η κλάση {@code Musicgroup} παριστάνει ένα μουσικό συγκρότημα. Είναι κλάση
  * οντότητας JPA.
  *
- * @author Apostolis Iakovakis
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "MUSIC_GROUP")
-@XmlRootElement
+@Table(name = "Music_group")
 @NamedQueries({
-    @NamedQuery(name = "Musicgroup.findAll", query = "SELECT m FROM Musicgroup m"),
-    @NamedQuery(name = "Musicgroup.findByMusicgroupid", query = "SELECT m FROM Musicgroup m WHERE m.musicgroupid = :musicgroupid"),
-    @NamedQuery(name = "Musicgroup.findByName", query = "SELECT m FROM Musicgroup m WHERE m.name = :name"),
-    @NamedQuery(name = "Musicgroup.findByFormationdate", query = "SELECT m FROM Musicgroup m WHERE m.formationdate = :formationdate")})
+    @NamedQuery(name = "Musicgroup.findAll", query = "SELECT m FROM Musicgroup m")})
 public class Musicgroup implements Serializable {
 
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Long musicgroupid;
+    @Column(name = "id")
+    private Long id;
+
     @Basic(optional = false)
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
-    @Column(name = "FORMATION_DATE")
+
+    @Column(name = "formation_date")
     @Temporal(TemporalType.DATE)
-    private Date formationdate;
-    @JoinTable(name = "ARTIST_MUSIC_GROUP", joinColumns = {
-        @JoinColumn(name = "MUSIC_GROUP_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ARTISTID")})
-    @ManyToMany
-    private List<Artist> artistList;
+    private Date formationDate;
+
     @OneToMany(mappedBy = "musicGroup")
     private List<Album> albumList;
+
+    @JoinTable(name = "Artist_Music_group", joinColumns = {
+        @JoinColumn(name = "music_group_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "artist_id", referencedColumnName = "id")})
+    @ManyToMany
+    private List<Artist> artistList;
 
     public Musicgroup() {
     }
 
-    public Musicgroup(Long musicgroupid) {
-        this.musicgroupid = musicgroupid;
+    public Long getId() {
+        return id;
     }
 
-    public Musicgroup(Long musicgroupid, String name) {
-        this.musicgroupid = musicgroupid;
-        this.name = name;
-    }
-
-    public Long getMusicgroupid() {
-        return musicgroupid;
-    }
-
-    public void setMusicgroupid(Long musicgroupid) {
-        Long oldMusicgroupid = this.musicgroupid;
-        this.musicgroupid = musicgroupid;
-        changeSupport.firePropertyChange("musicgroupid", oldMusicgroupid, musicgroupid);
+    public void setId(Long id) {
+        Long oldId = this.id;
+        this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getName() {
@@ -115,26 +104,16 @@ public class Musicgroup implements Serializable {
         changeSupport.firePropertyChange("name", oldName, name);
     }
 
-    public Date getFormationdate() {
-        return formationdate;
+    public Date getFormationDate() {
+        return formationDate;
     }
 
-    public void setFormationdate(Date formationdate) {
-        Date oldFormationdate = this.formationdate;
-        this.formationdate = formationdate;
-        changeSupport.firePropertyChange("formationdate", oldFormationdate, formationdate);
+    public void setFormationDate(Date formationDate) {
+        Date oldFormationDate = this.formationDate;
+        this.formationDate = formationDate;
+        changeSupport.firePropertyChange("formationDate", oldFormationDate, formationDate);
     }
 
-    @XmlTransient
-    public List<Artist> getArtistList() {
-        return artistList;
-    }
-
-    public void setArtistList(List<Artist> artistList) {
-        this.artistList = artistList;
-    }
-
-    @XmlTransient
     public List<Album> getAlbumList() {
         return albumList;
     }
@@ -143,10 +122,18 @@ public class Musicgroup implements Serializable {
         this.albumList = albumList;
     }
 
+    public List<Artist> getArtistList() {
+        return artistList;
+    }
+
+    public void setArtistList(List<Artist> artistList) {
+        this.artistList = artistList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (musicgroupid != null ? musicgroupid.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -157,7 +144,7 @@ public class Musicgroup implements Serializable {
             return false;
         }
         Musicgroup other = (Musicgroup) object;
-        if ((this.musicgroupid == null && other.musicgroupid != null) || (this.musicgroupid != null && !this.musicgroupid.equals(other.musicgroupid))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -166,7 +153,7 @@ public class Musicgroup implements Serializable {
     @Override
     public String toString() {
         return name;
-        //return "eap.pli24.rastaman.entities.Musicgroup[ musicgroupid=" + musicgroupid + " ]";
+        //return "eap.pli24.rastaman.entities.Musicgroup[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

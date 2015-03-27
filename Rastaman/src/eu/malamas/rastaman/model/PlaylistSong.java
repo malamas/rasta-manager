@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Η κλάση {@code PlaylistSong} παριστάνει ένα τραγούδι σε συγκεκριμένη θέση
@@ -38,22 +39,27 @@ import javax.persistence.Table;
  * @author Malamas Malamidis
  */
 @Entity
-@Table(name = "PLAYLIST_SONG")
+@Table(name = "Playlist_Song")
 public class PlaylistSong implements Serializable {
 
+    @Transient
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
-    @Column(name = "SLOT")
+    @Column(name = "slot")
     private int slot;
-    @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID")
+
+    @JoinColumn(name = "playlist_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Playlist playlist;
-    @JoinColumn(name = "SONG_ID", referencedColumnName = "ID")
+
+    @JoinColumn(name = "song_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Song song;
 
