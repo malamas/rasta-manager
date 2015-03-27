@@ -24,6 +24,7 @@ import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Label;
 import eu.malamas.rastaman.model.Song;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -36,6 +37,7 @@ import java.util.Comparator;
 /*
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
 public class GroupAlbumEditorPanel extends javax.swing.JPanel {
 
@@ -364,9 +366,9 @@ public class GroupAlbumEditorPanel extends javax.swing.JPanel {
     private DefaultTableModel model;
     private Comparator<Song> songComparator;
 
-    public GroupAlbumEditorPanel(MainFrameController controller, EntityManager em, Album album) {
+    public GroupAlbumEditorPanel(MainFrameController controller, Album album) {
         this.controller = controller;
-        this.em = em;
+        this.em = DatabaseHandler.getInstance().getEm();
         this.album = album;
         initComponents();
         songTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);

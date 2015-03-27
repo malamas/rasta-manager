@@ -24,6 +24,7 @@ import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Genre;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -246,9 +247,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
 
-    public ArtistTablePanel(MainFrameController controller, EntityManager em) {
+    public ArtistTablePanel(MainFrameController controller) {
         this.controller = controller;
-        this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
+        this.em = DatabaseHandler.getInstance().getEm();
         initComponents();
         initFurther();
     }
@@ -292,9 +293,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                             options, //the titles of buttons
                             options[1]); //default button title
                     if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
-                        localEm.getTransaction().begin();
-                        localEm.remove(artistList.remove(selectedIndex));
-                        localEm.getTransaction().commit();
+                        em.getTransaction().begin();
+                        em.remove(artistList.remove(selectedIndex));
+                        em.getTransaction().commit();
                         artistTable.updateUI();
                     }
                 } else {

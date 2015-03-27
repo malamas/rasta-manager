@@ -25,6 +25,7 @@ import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Song;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -57,6 +58,7 @@ import org.jdesktop.swingbinding.SwingBindings;
 /**
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
 public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
@@ -246,9 +248,9 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
 
-    public GroupAlbumTablePanel(MainFrameController controller, EntityManager em) {
+    public GroupAlbumTablePanel(MainFrameController controller) {
         this.controller = controller;
-        this.em = em;
+        this.em = DatabaseHandler.getInstance().getEm();
         initComponents();
         initFurther();
     }
@@ -299,11 +301,11 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                         options, //the titles of buttons
                         options[1]); //default button title
                 if (n == 0) {
-                    localEm.getTransaction().begin();
-                    localEm.remove(albumList.remove(selectedIndex));
-                    localEm.getTransaction().commit();
-                    localEm.refresh(a.getMusicGroup());
-                    localEm.refresh(a.getLabel());
+                    em.getTransaction().begin();
+                    em.remove(albumList.remove(selectedIndex));
+                    em.getTransaction().commit();
+                    em.refresh(a.getMusicGroup());
+                    em.refresh(a.getLabel());
                     groupAlbumTable.updateUI();
                 }
             } else { // Εαν συμμετέχει σε PlayList δεν διαγράφεται

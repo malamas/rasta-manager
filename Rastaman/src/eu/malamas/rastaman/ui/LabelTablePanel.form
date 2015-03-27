@@ -2,29 +2,12 @@
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="localEm">
+    <Component class="java.util.List" name="boundLabelList">
       <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
+        <Property name="query" type="java.lang.Object" value="null"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="labelQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT l FROM Label l"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="labelList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="labelQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="labels"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Label&gt;"/>
       </AuxValues>
     </Component>
@@ -85,7 +68,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="labelList" target="labelTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="boundLabelList" target="labelTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${name}">
                 <BindingParameter name="NAME" value="&#x38c;&#x3bd;&#x3bf;&#x3bc;&#x3b1;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

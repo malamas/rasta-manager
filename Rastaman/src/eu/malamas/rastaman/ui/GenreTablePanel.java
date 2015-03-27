@@ -23,15 +23,13 @@ package eu.malamas.rastaman.ui;
 import eu.malamas.rastaman.model.Genre;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -48,12 +46,14 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
 public class GenreTablePanel extends javax.swing.JPanel {
 
@@ -74,9 +74,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        localEm = em;
-        musicgenreQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT g FROM Genre g");
-        musicgenreList = Beans.isDesignTime() ? Collections.emptyList() : musicgenreQuery.getResultList();
+        boundGenreList = genres;
         scrollPane1 = new JScrollPane();
         genreTable = new JTable();
         buttonPanel = new JPanel();
@@ -95,7 +93,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
         genreTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         genreTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgenreList, genreTable);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundGenreList, genreTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Name");
         columnBinding.setColumnClass(String.class);
@@ -181,7 +179,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
         // Είδος μουσικής
         int selectedIndex = genreTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Genre selectedGenre = musicgenreList.get(selectedIndex);
+            Genre selectedGenre = genres.get(selectedIndex);
             controller.switchToEditor(MainFrameController.EditorType.GENRE_EDITOR, selectedGenre);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -197,6 +195,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton backButton;
+    private List<Genre> boundGenreList;
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
@@ -206,9 +205,6 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private Box.Filler filler5;
     private Box.Filler filler6;
     private JTable genreTable;
-    private EntityManager localEm;
-    private List<Genre> musicgenreList;
-    private Query musicgenreQuery;
     private JButton newButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -219,10 +215,12 @@ public class GenreTablePanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
+    private List<Genre> genres;
 
-    public GenreTablePanel(MainFrameController controller, EntityManager em) {
+    public GenreTablePanel(MainFrameController controller) {
         this.controller = controller;
-        this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
+        this.em = DatabaseHandler.getInstance().getEm();
+        genres = ObservableCollections.observableList(em.createNamedQuery("Genre.findAll", Genre.class).getResultList());
         initComponents();
         initFurther();
     }
@@ -243,7 +241,7 @@ public class GenreTablePanel extends javax.swing.JPanel {
     private void deleteGenre() {
         int selectedIndex = genreTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Genre selectedGenre = musicgenreList.get(selectedIndex);
+            Genre selectedGenre = genres.get(selectedIndex);
             if (selectedGenre.getArtistList().isEmpty()) { // εαν δεν υπάρχει καλλιτέχνης
                 Object[] options = {"Ναι", "Όχι"};
                 int n = JOptionPane.showOptionDialog(this,
@@ -255,9 +253,9 @@ public class GenreTablePanel extends javax.swing.JPanel {
                         options, //the titles of buttons
                         options[1]); //default button title
                 if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
-                    localEm.getTransaction().begin();
-                    localEm.remove(musicgenreList.remove(selectedIndex));
-                    localEm.getTransaction().commit();
+                    em.getTransaction().begin();
+                    em.remove(genres.remove(selectedIndex));
+                    em.getTransaction().commit();
                     genreTable.updateUI();
                 }
             } else {

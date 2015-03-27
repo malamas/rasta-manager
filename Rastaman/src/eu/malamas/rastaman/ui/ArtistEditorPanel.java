@@ -22,6 +22,7 @@ package eu.malamas.rastaman.ui;
 
 import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Genre;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -331,12 +332,11 @@ public class ArtistEditorPanel extends javax.swing.JPanel {
      * {@code Artist}, και με ορισμένο {@code MainFrameController}.
      *
      * @param controller ο ελεγκτής
-     * @param em
      * @param artist ο καλλιτέχνης προς επεξεργασία
      */
-    public ArtistEditorPanel(MainFrameController controller, EntityManager em, Artist artist) {
+    public ArtistEditorPanel(MainFrameController controller, Artist artist) {
         this.controller = controller;
-        this.em = em;
+        this.em = DatabaseHandler.getInstance().getEm();
         this.artist = artist;
         initialize();
         initComponents();

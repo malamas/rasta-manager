@@ -2,29 +2,12 @@
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="localEm">
+    <Component class="java.util.List" name="boundGenreList">
       <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
+        <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="musicgenreQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT g FROM Genre g"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="musicgenreList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="musicgenreQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="genres"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Genre&gt;"/>
       </AuxValues>
     </Component>
@@ -75,7 +58,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="musicgenreList" target="genreTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="boundGenreList" target="genreTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${name}">
                 <BindingParameter name="NAME" value="Name"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

@@ -88,7 +88,6 @@ public class MainFrameController implements Runnable {
     }
 
     private static final Logger LOGGER = Logger.getLogger(MainFrameController.class.getName());
-    private EntityManager em;
     private MainFrame mainFrame;
     private HeaderPanel headerPanel;
     private SideBarPanel sideBarPanel;
@@ -103,7 +102,6 @@ public class MainFrameController implements Runnable {
     @Override
     public void run() {
         initLookAndFeel();
-        initDatabase();
         initMainFrame();
     }
 
@@ -118,13 +116,6 @@ public class MainFrameController implements Runnable {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * Αρχικοποιεί τη σύνδεση με τη ΒΔ.
-     */
-    private void initDatabase() {
-        em = DatabaseHandler.getInstance().getEm();
     }
 
     /**
@@ -231,25 +222,25 @@ public class MainFrameController implements Runnable {
         switch (et) {
             case ARTIST_EDITOR:
                 Artist artist = (Artist) o;
-                editor = new ArtistEditorPanel(this, em, artist);
+                editor = new ArtistEditorPanel(this, artist);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία καλλιτέχνη: " + ((artist.getScreenName() != null) ? artist.getScreenName() : "Νέος Καλλιτέχνης"));
                 break;
             case GROUP_EDITOR:
                 Musicgroup group = (Musicgroup) o;
-                editor = new GroupEditorPanel(this, em, group);
+                editor = new GroupEditorPanel(this, group);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία συγκροτήματος: " + ((group.getName() != null) ? group.getName() : "Νέο Συγκρότημα"));
                 break;
             case ARTIST_ALBUM_EDITOR:
                 Album album1 = (Album) o;
-                editor = new ArtistAlbumEditorPanel(this, em, album1);
+                editor = new ArtistAlbumEditorPanel(this, album1);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album1.getTitle() != null) ? album1.getTitle() : "Νέο Άλμπουμ"));
                 break;
             case GROUP_ALBUM_EDITOR:
                 Album album2 = (Album) o;
-                editor = new GroupAlbumEditorPanel(this, em, album2);
+                editor = new GroupAlbumEditorPanel(this, album2);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία άλμπουμ: " + ((album2.getTitle() != null) ? album2.getTitle() : "Νέο Άλμπουμ"));
                 break;
@@ -262,13 +253,13 @@ public class MainFrameController implements Runnable {
                 break;
             case LABEL_EDITOR:
                 Label label = (Label) o;
-                editor = new LabelEditorPanel(this, em, label);
+                editor = new LabelEditorPanel(this, label);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία Εταιρίας: " + ((label.getName() != null) ? label.getName() : "Νέα Εταιρία"));
                 break;
             case GENRE_EDITOR:
                 Genre genre = (Genre) o;
-                editor = new GenreEditorPanel(this, em, genre);
+                editor = new GenreEditorPanel(this, genre);
                 displayPanel(editor);
                 headerPanel.setHeaderLabel("Επεξεργασία Είδους Μουσικής: " + ((genre.getName() != null) ? genre.getName() : "Νέο Είδος Μουσικής"));
                 break;
@@ -307,25 +298,25 @@ public class MainFrameController implements Runnable {
         JPanel p;
         switch (type) {
             case ARTIST_TABLE:
-                p = new ArtistTablePanel(this, em);
+                p = new ArtistTablePanel(this);
                 break;
             case GROUP_TABLE:
-                p = new GroupTablePanel(this, em);
+                p = new GroupTablePanel(this);
                 break;
             case ARTIST_ALBUM_TABLE:
-                p = new ArtistAlbumTablePanel(this, em);
+                p = new ArtistAlbumTablePanel(this);
                 break;
             case GROUP_ALBUM_TABLE:
-                p = new GroupAlbumTablePanel(this, em);
+                p = new GroupAlbumTablePanel(this);
                 break;
             case PLAYLIST_TABLE:
                 p = new PlaylistTablePanel(this);
                 break;
             case LABEL_TABLE:
-                p = new LabelTablePanel(this, em);
+                p = new LabelTablePanel(this);
                 break;
             case GENRE_TABLE:
-                p = new GenreTablePanel(this, em);
+                p = new GenreTablePanel(this);
                 break;
             case ROOT_MENU:
             default:

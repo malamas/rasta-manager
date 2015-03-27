@@ -23,6 +23,7 @@ package eu.malamas.rastaman.ui;
 import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Musicgroup;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,6 +64,7 @@ import org.jdesktop.swingbinding.SwingBindings;
 /*
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
 public class GroupEditorPanel extends javax.swing.JPanel {
 
@@ -336,7 +338,7 @@ public class GroupEditorPanel extends javax.swing.JPanel {
         // ενεργοποίηση κατάλληλων πλήκτρων
         groupArtistTable.clearSelection();
         newButton.setEnabled(true);
-        deleteButton.setEnabled(false);        // TODO add your handling code here:
+        deleteButton.setEnabled(false);
     }//GEN-LAST:event_availArtistTableMousePressed
 
 
@@ -373,9 +375,9 @@ public class GroupEditorPanel extends javax.swing.JPanel {
     private EntityManager em;
     private Musicgroup group;
 
-    public GroupEditorPanel(MainFrameController controller, EntityManager em, Musicgroup group) {
+    public GroupEditorPanel(MainFrameController controller, Musicgroup group) {
         this.controller = controller;
-        this.em = em;
+        this.em = DatabaseHandler.getInstance().getEm();
         this.group = group;
         initComponents();
         // Καθορισμός εμφάνισης των πινακων

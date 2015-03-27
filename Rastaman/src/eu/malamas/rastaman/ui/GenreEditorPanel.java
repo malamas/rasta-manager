@@ -21,12 +21,14 @@
 package eu.malamas.rastaman.ui;
 
 import eu.malamas.rastaman.model.Genre;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
 /*
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
 public class GenreEditorPanel extends javax.swing.JPanel {
 
@@ -47,8 +49,7 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        localEm = em;
-        boundMusicgenre = musicgenre;
+        boundGenre = genre;
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -77,7 +78,7 @@ public class GenreEditorPanel extends javax.swing.JPanel {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Όνομα :");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundMusicgenre, org.jdesktop.beansbinding.ELProperty.create("${name}"), genreNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, boundGenre, org.jdesktop.beansbinding.ELProperty.create("${name}"), genreNameField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -132,7 +133,7 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // κλικ στο πλήκτρο Ακύρωση
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        localEm.getTransaction().rollback(); //ακύρωση όλων των μεταβολών
+        em.getTransaction().rollback(); //ακύρωση όλων των μεταβολών
         controller.switchToPanel(MainFrameController.PanelType.GENRE_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -143,12 +144,11 @@ public class GenreEditorPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private eu.malamas.rastaman.model.Genre boundMusicgenre;
+    private eu.malamas.rastaman.model.Genre boundGenre;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField genreNameField;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.persistence.EntityManager localEm;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -158,23 +158,22 @@ public class GenreEditorPanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
-    private Genre musicgenre;
+    private Genre genre;
 
     /**
      * Δημιουργεί ένα {@code GenreEditorPanel} για την επεξεργασία ενός
      * {@code Genre}, και με ορισμένο {@code MainFrameController}.
      *
      * @param controller ο ελεγκτής
-     * @param em
-     * @param musicgenre Tο είδος μουσικής προς επεξεργασία
+     * @param genre Tο είδος μουσικής προς επεξεργασία
      */
-    public GenreEditorPanel(MainFrameController controller, EntityManager em, Genre musicgenre) {
+    public GenreEditorPanel(MainFrameController controller, Genre genre) {
         this.controller = controller;
-        this.em = em;
-        this.musicgenre = musicgenre;
+        this.em = DatabaseHandler.getInstance().getEm();
+        this.genre = genre;
         initComponents();
-        localEm.getTransaction().begin();
-        localEm.persist(boundMusicgenre);
+        em.getTransaction().begin();
+        em.persist(this.genre);
 
     }
 
@@ -190,7 +189,7 @@ public class GenreEditorPanel extends javax.swing.JPanel {
                 throw new Exception("Πρέπει να συμπληρώσετε Όνομα");
             }
 
-            localEm.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
+            em.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
             controller.switchToPanel(MainFrameController.PanelType.GENRE_TABLE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());

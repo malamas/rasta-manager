@@ -21,6 +21,7 @@
 package eu.malamas.rastaman.ui;
 
 import eu.malamas.rastaman.model.Label;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
@@ -48,7 +49,6 @@ public class LabelEditorPanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        localEm = em;
         boundLabel = label;
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -169,7 +169,7 @@ public class LabelEditorPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // κλικ στο πλήκτρο Ακύρωση
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        localEm.getTransaction().rollback(); //ακύρωση όλων των μεταβολών
+        em.getTransaction().rollback(); //ακύρωση όλων των μεταβολών
         controller.switchToPanel(MainFrameController.PanelType.LABEL_TABLE);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -189,7 +189,6 @@ public class LabelEditorPanel extends javax.swing.JPanel {
     private javax.swing.JTextField labelAddressField;
     private javax.swing.JTextField labelNameField;
     private javax.swing.JTextField labelTelephoneField;
-    private javax.persistence.EntityManager localEm;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -202,26 +201,19 @@ public class LabelEditorPanel extends javax.swing.JPanel {
     private Label label;
 
     /**
-     * Δημιουργεί ένα {@code ArtistEditorPanel} για την επεξεργασία ενός
-     * {@code Artist}, και με ορισμένο {@code MainFrameController}.
+     * Δημιουργεί ένα {@code LabelEditorPanel} για την επεξεργασία μιας
+     * {@code Label}, και με ορισμένο {@code MainFrameController}.
      *
      * @param controller ο ελεγκτής
-     * @param em
      * @param label η εταιρία προς επεξεργασία
      */
-    public LabelEditorPanel(MainFrameController controller, EntityManager em, Label label) {
+    public LabelEditorPanel(MainFrameController controller, Label label) {
         this.controller = controller;
-        this.em = em;
+        this.em = DatabaseHandler.getInstance().getEm();
         this.label = label;
-        initialize();
         initComponents();
-        localEm.getTransaction().begin();
-        localEm.persist(boundLabel);
-
-    }
-
-    private void initialize() {
-
+        em.getTransaction().begin();
+        em.persist(this.label);
     }
 
     /**
@@ -236,7 +228,7 @@ public class LabelEditorPanel extends javax.swing.JPanel {
                 throw new Exception("Πρέπει να συμπληρώσετε Όνομα");
             }
 
-            localEm.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
+            em.getTransaction().commit(); //Αποθήκευση στη βάση των αλλαγών
             controller.switchToPanel(MainFrameController.PanelType.LABEL_TABLE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());

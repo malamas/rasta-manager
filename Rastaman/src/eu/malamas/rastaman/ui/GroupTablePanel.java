@@ -24,6 +24,7 @@ import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Musicgroup;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -233,9 +234,9 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private MainFrameController controller;
     private EntityManager em;
 
-    public GroupTablePanel(MainFrameController controller, EntityManager em) {
+    public GroupTablePanel(MainFrameController controller) {
         this.controller = controller;
-        this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
+        this.em = DatabaseHandler.getInstance().getEm();
         initComponents();
         initFurther();
     }
@@ -289,9 +290,9 @@ public class GroupTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                 }
                 if (n == 0) { //Εαν τελικά επιλέξουμε να το διαγράψουμε
-                    localEm.getTransaction().begin();
-                    localEm.remove(musicgroupList.remove(selectedIndex));
-                    localEm.getTransaction().commit();
+                    em.getTransaction().begin();
+                    em.remove(musicgroupList.remove(selectedIndex));
+                    em.getTransaction().commit();
                     groupTable.updateUI();
                 }
             } else {

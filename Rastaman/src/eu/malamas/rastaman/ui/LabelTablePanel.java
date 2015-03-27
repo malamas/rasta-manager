@@ -23,15 +23,13 @@ package eu.malamas.rastaman.ui;
 import eu.malamas.rastaman.model.Label;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
 import eu.malamas.rastaman.ui.tablecellrenderers.TableCellRendererFactory;
+import eu.malamas.rastaman.util.DatabaseHandler;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -48,6 +46,7 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
@@ -77,9 +76,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        localEm = em;
-        labelQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT l FROM Label l");
-        labelList = Beans.isDesignTime() ? Collections.emptyList() : labelQuery.getResultList();
+        boundLabelList = labels;
         scrollPane1 = new JScrollPane();
         labelTable = new JTable();
         buttonPanel = new JPanel();
@@ -98,7 +95,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
         labelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         labelTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, labelList, labelTable);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundLabelList, labelTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
@@ -189,7 +186,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
         // Εταιρία
         int selectedIndex = labelTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Label selectedLabel = labelList.get(selectedIndex);
+            Label selectedLabel = labels.get(selectedIndex);
             controller.switchToEditor(MainFrameController.EditorType.LABEL_EDITOR, selectedLabel);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -205,6 +202,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton backButton;
+    private List<Label> boundLabelList;
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
@@ -213,10 +211,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
     private Box.Filler filler4;
     private Box.Filler filler5;
     private Box.Filler filler6;
-    private List<Label> labelList;
-    private Query labelQuery;
     private JTable labelTable;
-    private EntityManager localEm;
     private JButton newButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -227,18 +222,17 @@ public class LabelTablePanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
+    private List<Label> labels;
 
     /**
      * Δημιουργεί ένα {@code LabelTablePanel} με ελεγκτή τον {@code controller}.
-     * Δέχεται αναφορά σε έναν {@code EntityManager} που θα χρησιμοποιήσει η
-     * φόρμα.
      *
      * @param controller ο ελεγκτής
-     * @param em ο EntityManager
      */
-    public LabelTablePanel(MainFrameController controller, EntityManager em) {
+    public LabelTablePanel(MainFrameController controller) {
         this.controller = controller;
-        this.em = em; // Ο entity manager ο οποίος περνιεται και στον localEm της φόρμας
+        this.em = DatabaseHandler.getInstance().getEm();
+        labels = ObservableCollections.observableList(em.createNamedQuery("Label.findAll", Label.class).getResultList());
         initComponents();
         initFurther();
     }
@@ -262,7 +256,7 @@ public class LabelTablePanel extends javax.swing.JPanel {
     private void deleteLabel() {
         int selectedIndex = labelTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Label selectedLabel = labelList.get(selectedIndex);
+            Label selectedLabel = labels.get(selectedIndex);
             if (selectedLabel.getAlbumList().isEmpty()) { // εαν δεν συμμετέχει σε αλμπουμ
                 Object[] options = {"Ναι", "Όχι"};
                 int n = JOptionPane.showOptionDialog(this,
@@ -274,9 +268,9 @@ public class LabelTablePanel extends javax.swing.JPanel {
                         options, //the titles of buttons
                         options[1]); //default button title
                 if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
-                    localEm.getTransaction().begin();
-                    localEm.remove(labelList.remove(selectedIndex));
-                    localEm.getTransaction().commit();
+                    em.getTransaction().begin();
+                    em.remove(labels.remove(selectedIndex));
+                    em.getTransaction().commit();
                     labelTable.updateUI();
                 }
             } else {
