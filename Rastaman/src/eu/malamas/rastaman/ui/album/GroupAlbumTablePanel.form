@@ -2,47 +2,15 @@
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="localEm">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="artistQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT a FROM Artist a"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="artistList">
+    <Component class="java.util.List" name="boundAlbumList">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="artistQuery"/>
+          <ComponentRef name="null"/>
         </Property>
+        <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Artist&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="albumQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT a FROM Album a where a.musicGroup is not null"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="albumList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="albumQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="albums"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Album&gt;"/>
       </AuxValues>
     </Component>
@@ -118,7 +86,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="albumList" target="groupAlbumTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="boundAlbumList" target="groupAlbumTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${title}">
                 <BindingParameter name="NAME" value="&#x3a4;&#x3af;&#x3c4;&#x3bb;&#x3bf;&#x3c2;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

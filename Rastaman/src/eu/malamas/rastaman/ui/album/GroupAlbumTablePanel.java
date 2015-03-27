@@ -21,7 +21,6 @@
 package eu.malamas.rastaman.ui.album;
 
 import eu.malamas.rastaman.model.Album;
-import eu.malamas.rastaman.model.Artist;
 import eu.malamas.rastaman.model.Song;
 import eu.malamas.rastaman.ui.MainFrameController;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
@@ -31,12 +30,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -53,6 +49,7 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
@@ -80,11 +77,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        localEm = em;
-        artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
-        artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a where a.musicGroup is not null");
-        albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
+        boundAlbumList = albums;
         scrollPane1 = new JScrollPane();
         groupAlbumTable = new JTable();
         buttonPanel = new JPanel();
@@ -103,7 +96,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         groupAlbumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupAlbumTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, albumList, groupAlbumTable);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundAlbumList, groupAlbumTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${title}"));
         columnBinding.setColumnName("Τίτλος");
         columnBinding.setColumnClass(String.class);
@@ -211,7 +204,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
         // Ανοιγμα της φόρμας επεξεργασίας Αλμπουμ για το επιλεγμένο Αλμπουμ
         int selectedIndex = groupAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Album selectedAlbum = albumList.get(selectedIndex);
+            Album selectedAlbum = albums.get(selectedIndex);
             controller.switchToEditor(MainFrameController.EditorType.GROUP_ALBUM_EDITOR, selectedAlbum);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -223,11 +216,8 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private List<Album> albumList;
-    private Query albumQuery;
-    private List<Artist> artistList;
-    private Query artistQuery;
     private JButton backButton;
+    private List<Album> boundAlbumList;
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
@@ -237,7 +227,6 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     private Box.Filler filler5;
     private Box.Filler filler6;
     private JTable groupAlbumTable;
-    private EntityManager localEm;
     private JButton newButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -248,10 +237,12 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
+    private List<Album> albums;
 
     public GroupAlbumTablePanel(MainFrameController controller) {
         this.controller = controller;
         this.em = DatabaseHandler.getInstance().getEm();
+        albums = ObservableCollections.observableList(em.createNamedQuery("Album.findAllMusicgroupAlbums", Album.class).getResultList());
         initComponents();
         initFurther();
     }
@@ -282,7 +273,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
     private void deleteGroupAlbum() {
         int selectedIndex = groupAlbumTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Album a = albumList.get(selectedIndex);
+            Album a = albums.get(selectedIndex);
             //Έλεγχος Συμμετοχής κάποιου τραγουδιού σε PlayList
             boolean isInPlaylist = false;
             for (Song s : a.getSongList()) {
@@ -303,7 +294,7 @@ public class GroupAlbumTablePanel extends javax.swing.JPanel {
                         options[1]); //default button title
                 if (n == 0) {
                     em.getTransaction().begin();
-                    em.remove(albumList.remove(selectedIndex));
+                    em.remove(albums.remove(selectedIndex));
                     em.getTransaction().commit();
                     em.refresh(a.getMusicGroup());
                     em.refresh(a.getLabel());

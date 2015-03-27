@@ -51,7 +51,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "Album")
 @NamedQueries({
-    @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a")})
+    @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a"),
+    @NamedQuery(name = "Album.findAllArtistAlbums", query = "SELECT a FROM Album a WHERE a.artist IS NOT NULL"),
+    @NamedQuery(name = "Album.findAllMusicgroupAlbums", query = "SELECT a FROM Album a WHERE a.musicGroup IS NOT NULL")})
 public class Album implements Serializable {
 
     @Transient

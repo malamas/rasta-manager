@@ -2,29 +2,13 @@
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="localEm">
+    <Component class="java.util.List" name="boundArtistList">
       <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="RastamanPU"/>
+        <Property name="query" type="java.lang.Object" value="null"/>
+        <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="artistQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT a FROM Artist a"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="localEm"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="artistList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="artistQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="artists"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;eu.malamas.rastaman.model.Artist&gt;"/>
       </AuxValues>
     </Component>
@@ -105,7 +89,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="artistList" target="artistTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="boundArtistList" target="artistTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${lastName}">
                 <BindingParameter name="NAME" value="&#x395;&#x3c0;&#x3ce;&#x3bd;&#x3c5;&#x3bc;&#x3bf;"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

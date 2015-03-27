@@ -30,12 +30,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -52,12 +49,14 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
 /**
  *
  * @author Apostolis Iakovakis
+ * @author Malamas Malamidis
  */
 public class ArtistTablePanel extends javax.swing.JPanel {
 
@@ -78,9 +77,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        localEm = em;
-        artistQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Artist a");
-        artistList = Beans.isDesignTime() ? Collections.emptyList() : artistQuery.getResultList();
+        boundArtistList = artists;
         scrollPane1 = new JScrollPane();
         artistTable = new JTable();
         buttonPanel = new JPanel();
@@ -99,7 +96,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         artistTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         artistTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, artistList, artistTable);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundArtistList, artistTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${lastName}"));
         columnBinding.setColumnName("Επώνυμο");
         columnBinding.setColumnClass(String.class);
@@ -209,7 +206,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
         // καλιτέχνη
         int selectedIndex = artistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Artist selectedArtist = artistList.get(selectedIndex);
+            Artist selectedArtist = artists.get(selectedIndex);
             controller.switchToEditor(MainFrameController.EditorType.ARTIST_EDITOR, selectedArtist);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -224,10 +221,9 @@ public class ArtistTablePanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private List<Artist> artistList;
-    private Query artistQuery;
     private JTable artistTable;
     private JButton backButton;
+    private List<Artist> boundArtistList;
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
@@ -236,7 +232,6 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private Box.Filler filler4;
     private Box.Filler filler5;
     private Box.Filler filler6;
-    private EntityManager localEm;
     private JButton newButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -247,10 +242,12 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
+    private List<Artist> artists;
 
     public ArtistTablePanel(MainFrameController controller) {
         this.controller = controller;
         this.em = DatabaseHandler.getInstance().getEm();
+        artists = ObservableCollections.observableList(em.createNamedQuery("Artist.findAll", Artist.class).getResultList());
         initComponents();
         initFurther();
     }
@@ -281,7 +278,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
     private void deleteArtist() {
         int selectedIndex = artistTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Artist selectedArtist = artistList.get(selectedIndex);
+            Artist selectedArtist = artists.get(selectedIndex);
             if (selectedArtist.getAlbumList().isEmpty()) { // εαν δεν συμμετέχει σε αλμπουμ
                 if (selectedArtist.getMusicGroupList().isEmpty()) { //εαν δεν συμμετέχει σε γκρουπ
                     Object[] options = {"Ναι", "Όχι"};
@@ -295,7 +292,7 @@ public class ArtistTablePanel extends javax.swing.JPanel {
                             options[1]); //default button title
                     if (n == 0) { //εαν επιλέξουμε να διαγράψουμε τον καλιτέχνη
                         em.getTransaction().begin();
-                        em.remove(artistList.remove(selectedIndex));
+                        em.remove(artists.remove(selectedIndex));
                         em.getTransaction().commit();
                         artistTable.updateUI();
                     }

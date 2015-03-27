@@ -20,7 +20,6 @@
  */
 package eu.malamas.rastaman.ui.artist;
 
-import eu.malamas.rastaman.model.Album;
 import eu.malamas.rastaman.model.Musicgroup;
 import eu.malamas.rastaman.ui.MainFrameController;
 import eu.malamas.rastaman.ui.skins.SkinProvider;
@@ -30,12 +29,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Beans;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -52,6 +48,7 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 
@@ -79,11 +76,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new BindingGroup();
 
-        localEm = em;
-        musicgroupQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT m FROM Musicgroup m");
-        musicgroupList = Beans.isDesignTime() ? Collections.emptyList() : musicgroupQuery.getResultList();
-        albumQuery = Beans.isDesignTime() ? null : localEm.createQuery("SELECT a FROM Album a");
-        albumList = Beans.isDesignTime() ? Collections.emptyList() : albumQuery.getResultList();
+        boundMusicgroupList = musicgroups;
         scrollPane1 = new JScrollPane();
         groupTable = new JTable();
         buttonPanel = new JPanel();
@@ -102,7 +95,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         groupTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupTable.getTableHeader().setReorderingAllowed(false);
 
-        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, musicgroupList, groupTable);
+        JTableBinding jTableBinding = SwingBindings.createJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, boundMusicgroupList, groupTable);
         JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(ELProperty.create("${name}"));
         columnBinding.setColumnName("Όνομα");
         columnBinding.setColumnClass(String.class);
@@ -195,7 +188,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
         // συγκρότημα
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Musicgroup selectedMusicgroup = musicgroupList.get(selectedIndex);
+            Musicgroup selectedMusicgroup = musicgroups.get(selectedIndex);
             controller.switchToEditor(MainFrameController.EditorType.GROUP_EDITOR, selectedMusicgroup);
         }
     }//GEN-LAST:event_editButtonActionPerformed
@@ -209,9 +202,8 @@ public class GroupTablePanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private List<Album> albumList;
-    private Query albumQuery;
     private JButton backButton;
+    private List<Musicgroup> boundMusicgroupList;
     private JPanel buttonPanel;
     private JButton deleteButton;
     private JButton editButton;
@@ -221,9 +213,6 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private Box.Filler filler5;
     private Box.Filler filler6;
     private JTable groupTable;
-    private EntityManager localEm;
-    private List<Musicgroup> musicgroupList;
-    private Query musicgroupQuery;
     private JButton newButton;
     private JScrollPane scrollPane1;
     private BindingGroup bindingGroup;
@@ -234,10 +223,12 @@ public class GroupTablePanel extends javax.swing.JPanel {
     //
     private MainFrameController controller;
     private EntityManager em;
+    private List<Musicgroup> musicgroups;
 
     public GroupTablePanel(MainFrameController controller) {
         this.controller = controller;
         this.em = DatabaseHandler.getInstance().getEm();
+        musicgroups = ObservableCollections.observableList(em.createNamedQuery("Musicgroup.findAll", Musicgroup.class).getResultList());
         initComponents();
         initFurther();
     }
@@ -265,7 +256,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
     private void deleteGroup() {
         int selectedIndex = groupTable.getSelectedRow();
         if (selectedIndex != -1) {
-            Musicgroup a = musicgroupList.get(selectedIndex);
+            Musicgroup a = musicgroups.get(selectedIndex);
             if (a.getAlbumList().isEmpty()) { //εαν δεν έχει αλμπουμ
                 Object[] options = {"Ναι", "Όχι"};
                 int n;
@@ -292,7 +283,7 @@ public class GroupTablePanel extends javax.swing.JPanel {
                 }
                 if (n == 0) { //Εαν τελικά επιλέξουμε να το διαγράψουμε
                     em.getTransaction().begin();
-                    em.remove(musicgroupList.remove(selectedIndex));
+                    em.remove(musicgroups.remove(selectedIndex));
                     em.getTransaction().commit();
                     groupTable.updateUI();
                 }
